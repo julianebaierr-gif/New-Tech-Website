@@ -21,7 +21,15 @@ async function testGemini(apiKey) {
       res.on('data', chunk => body += chunk);
       res.on('end', () => {
         if (res.statusCode === 200) {
-          resolve({ ok: true, msg: `Verified successfully! (Key preview: ${preview})` });
+          try {
+            const data = JSON.parse(body);
+            const models = data.models?.map(m => m.name.replace('models/', '')) || [];
+            const count = models.length;
+            const sample = models.filter(m => m.includes('flash') || m.includes('pro')).slice(0, 4).join(', ');
+            resolve({ ok: true, msg: `Verified! (${count} models detected, e.g. ${sample})` });
+          } catch {
+            resolve({ ok: true, msg: `Verified successfully! (Key preview: ${preview})` });
+          }
         } else {
           try {
             const err = JSON.parse(body);
