@@ -288,29 +288,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             )}
           </article>
 
-          {/* Sticky Sidebar with TOC and Guide Meta */}
-          <aside className="hidden lg:block lg:col-span-4 space-y-5">
+          {/* Sticky Sidebar with TOC */}
+          <aside className="hidden lg:block lg:col-span-4">
             <TableOfContents items={article.tableOfContents} />
-
-            <div className="p-5 rounded-2xl border border-slate-200/90 bg-slate-50/80 space-y-3 text-xs text-slate-600">
-              <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[11px]">
-                Guide Overview
-              </h4>
-              <div className="space-y-2 pt-1 border-t border-slate-200 text-xs">
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Domain:</span>
-                  <span className="font-semibold text-slate-800">{article.categoryName}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Difficulty:</span>
-                  <span className="font-semibold text-slate-800">{article.difficulty}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Estimated Read:</span>
-                  <span className="font-semibold text-slate-800">{article.readingTimeMinutes} minutes</span>
-                </div>
-              </div>
-            </div>
           </aside>
         </div>
       </div>

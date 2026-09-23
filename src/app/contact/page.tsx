@@ -13,7 +13,7 @@ export default function ContactPage() {
       <Breadcrumbs crumbs={[{ label: "Contact", href: "/contact" }]} />
 
       <header className="mb-10 space-y-3 pb-8 border-b border-slate-200">
-        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 inline-block">
+        <span className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider block">
           Direct Editorial Channel
         </span>
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">

@@ -14,10 +14,7 @@ export function FaqAccordion({ faqs }: FaqAccordionProps) {
 
   return (
     <div className="my-10 p-6 bg-slate-50 border border-slate-200 rounded-2xl">
-      <div className="flex items-center gap-2 mb-6">
-        <span className="px-2 py-0.5 bg-blue-100 border border-blue-200 rounded text-blue-800 font-mono text-xs font-semibold">
-          FAQ
-        </span>
+      <div className="mb-6 pb-3 border-b border-slate-200">
         <h3 className="text-lg font-bold text-slate-900 tracking-tight">
           Frequently Asked Questions
         </h3>

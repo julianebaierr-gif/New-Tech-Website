@@ -116,17 +116,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     alt={art.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute top-3 left-3">
-                    <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-white/95 text-slate-800 border border-slate-200 shadow-2xs backdrop-blur-xs">
-                      {art.categoryName}
-                    </span>
-                  </div>
                 </div>
 
                 <div className="p-5 space-y-2.5">
-                  <div className="flex items-center justify-between text-[11px] font-mono text-slate-500">
-                    <span>{art.readingTimeMinutes} min read</span>
-                    <span>{art.difficulty}</span>
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="font-semibold text-blue-600 uppercase tracking-wider text-[11px]">
+                      {art.categoryName}
+                    </span>
+                    <span className="text-slate-500 font-mono">{art.readingTimeMinutes} min read</span>
                   </div>
 
                   <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">

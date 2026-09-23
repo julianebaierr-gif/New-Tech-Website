@@ -25,6 +25,12 @@ export function Navbar() {
 
           {/* Core Categories with soft pills */}
           <nav className="hidden md:flex items-center space-x-1 lg:space-x-1.5">
+            <Link
+              href="/"
+              className="px-3 py-1.5 text-xs lg:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 rounded-md transition-all"
+            >
+              Home
+            </Link>
             {siteConfig.categories.map((cat) => (
               <Link
                 key={cat.slug}

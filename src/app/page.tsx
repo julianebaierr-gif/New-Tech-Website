@@ -27,19 +27,16 @@ export default function HomePage() {
               {/* Gradient Overlay for Crisp Typography Contrast */}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
 
-              {/* Top Floating Category Tag */}
-              <div className="absolute top-4 left-4 z-10">
-                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-600 text-white shadow-xs">
-                  {leadArticle.categoryName}
-                </span>
-              </div>
-
               {/* Bottom Card Content */}
               <div className="relative z-10 p-6 sm:p-8 space-y-3">
-                <div className="flex items-center gap-2 text-xs text-slate-300">
-                  <span>{leadArticle.readingTimeMinutes} min read</span>
-                  <span>•</span>
-                  <span>Elena Rostova</span>
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="text-blue-400 font-bold uppercase tracking-wider text-xs">
+                    {leadArticle.categoryName}
+                  </span>
+                  <span className="text-slate-400">•</span>
+                  <span className="text-slate-300">{leadArticle.readingTimeMinutes} min read</span>
+                  <span className="text-slate-400">•</span>
+                  <span className="text-slate-300">Elena Rostova</span>
                 </div>
 
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight group-hover:text-blue-300 transition-colors">
@@ -158,17 +155,14 @@ export default function HomePage() {
                     alt={art.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute top-3 left-3">
-                    <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-white/95 text-slate-800 border border-slate-200 shadow-2xs backdrop-blur-xs">
-                      {art.categoryName}
-                    </span>
-                  </div>
                 </div>
 
                 <div className="p-5 space-y-2.5">
-                  <div className="flex items-center justify-between text-[11px] font-mono text-slate-500">
-                    <span>{art.readingTimeMinutes} min read</span>
-                    <span>{art.difficulty}</span>
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="font-semibold text-blue-600 uppercase tracking-wider text-[11px]">
+                      {art.categoryName}
+                    </span>
+                    <span className="text-slate-500 font-mono">{art.readingTimeMinutes} min read</span>
                   </div>
 
                   <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
