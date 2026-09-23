@@ -1,0 +1,40 @@
+## TechOps Wire Content Generator (Gemini API)
+- Started at: 2026-09-23T14:31:52.528Z
+- Selected Active Model: **models/gemini-3.6-flash**
+
+### Article [excel-drop-down-list]
+- Calling Gemini API for section: troubleshooting-drop-down-glitches...
+- Calling model models/gemini-3.6-flash...
+- Model models/gemini-3.6-flash error: HTTP 503: {
+  "error": {
+    "code": 503,
+    "message": "This model is currently experiencing high 
+- Calling model models/gemini-2.0-flash...
+- Model models/gemini-2.0-flash error: HTTP 404: {
+  "error": {
+    "code": 404,
+    "message": "This model models/gemini-2.0-flash is no l
+- Calling model models/gemini-1.5-flash...
+- Model models/gemini-1.5-flash error: HTTP 404: {
+  "error": {
+    "code": 404,
+    "message": "models/gemini-1.5-flash is not found for A
+❌ Error generating for excel-drop-down-list: HTTP 404: {
+  "error": {
+    "code": 404,
+    "message": "models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.",
+    
+
+🚨 **FATAL ERROR:** HTTP 404: {
+  "error": {
+    "code": 404,
+    "message": "models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.",
+    
+Fatal error: Error: HTTP 404: {
+  "error": {
+    "code": 404,
+    "message": "models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.",
+    
+    at callGemini (/home/runner/work/New-Tech-Website/New-Tech-Website/scripts/generate-articles-with-gemini.js:124:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async main (/home/runner/work/New-Tech-Website/New-Tech-Website/scripts/generate-articles-with-gemini.js:249:23)
