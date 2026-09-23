@@ -29,6 +29,53 @@ if (!apiKey) {
   process.exit(1);
 }
 
+// Complete prioritized model catalog: from Gemini 3.8 down to oldest Gemini 1.0
+const ALL_GEMINI_MODELS = [
+  // --- Gemini 3.8 (Latest Frontier) ---
+  'models/gemini-3.8-flash',
+  'models/gemini-3.8-pro',
+
+  // --- Gemini 3.7 ---
+  'models/gemini-3.7-flash',
+  'models/gemini-3.7-pro',
+
+  // --- Gemini 3.6 ---
+  'models/gemini-3.6-flash',
+  'models/gemini-3.6-flash-lite',
+  'models/gemini-3.6-pro',
+
+  // --- Gemini 3.5 ---
+  'models/gemini-3.5-flash',
+  'models/gemini-3.5-flash-lite',
+  'models/gemini-3.5-pro',
+
+  // --- Gemini 3.1 & 3.0 ---
+  'models/gemini-3.1-flash-lite',
+  'models/gemini-3.1-pro-preview',
+  'models/gemini-3-flash-preview',
+
+  // --- Gemini 2.5 ---
+  'models/gemini-2.5-flash',
+  'models/gemini-2.5-flash-lite',
+  'models/gemini-2.5-pro',
+
+  // --- Gemini 2.0 ---
+  'models/gemini-2.0-flash',
+  'models/gemini-2.0-flash-lite',
+  'models/gemini-2.0-pro',
+
+  // --- Gemini 1.5 ---
+  'models/gemini-1.5-flash',
+  'models/gemini-1.5-flash-latest',
+  'models/gemini-1.5-flash-8b',
+  'models/gemini-1.5-pro',
+  'models/gemini-1.5-pro-latest',
+
+  // --- Gemini 1.0 (Oldest Series) ---
+  'models/gemini-1.0-pro',
+  'models/gemini-pro'
+];
+
 // Banned AI words and their human replacements
 const BANNED_WORDS = [
   { pattern: /\bdemystif\w*\b/gi, replacement: "explaining" },
@@ -68,28 +115,36 @@ function sanitizeContent(html) {
 }
 
 async function getAvailableModels() {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`Failed to list models: HTTP ${res.status} - ${txt}`);
-  }
-  const data = await res.json();
-  const models = data.models || [];
-  
-  const genModels = models
-    .filter(m => m.supportedGenerationMethods?.includes('generateContent'))
-    .map(m => m.name);
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      appendSummary(`- Model listing returned HTTP ${res.status}. Using default catalog.`);
+      return ALL_GEMINI_MODELS;
+    }
+    const data = await res.json();
+    const models = data.models || [];
+    
+    const genModels = models
+      .filter(m => m.supportedGenerationMethods?.includes('generateContent'))
+      .map(m => m.name);
 
-  appendSummary(`- Available generateContent models: ${genModels.map(m => m.replace('models/', '')).join(', ')}`);
-  return genModels;
+    if (genModels.length > 0) {
+      appendSummary(`- Account supported models: ${genModels.map(m => m.replace('models/', '')).join(', ')}`);
+      return genModels;
+    }
+  } catch (err) {
+    appendSummary(`- Note: Could not query model list (${err.message}). Using catalog fallback.`);
+  }
+  return ALL_GEMINI_MODELS;
 }
 
-async function callWithRetry(model, prompt, retries = 4) {
+async function callWithRetry(model, prompt, retries = 3) {
+  const cleanModel = model.replace(/^models\//, '');
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      appendSummary(`- Calling ${model} (attempt ${attempt}/${retries})...`);
-      const url = `https://generativelanguage.googleapis.com/v1beta/${model}:generateContent?key=${apiKey}`;
+      appendSummary(`- Calling ${cleanModel} (attempt ${attempt}/${retries})...`);
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${cleanModel}:generateContent?key=${apiKey}`;
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -101,14 +156,14 @@ async function callWithRetry(model, prompt, retries = 4) {
       const body = await res.text();
 
       if (res.status === 503 || res.status === 429) {
-        const waitSec = attempt * 5;
-        appendSummary(`  ⚠️ HTTP ${res.status} on ${model}. Retrying in ${waitSec}s...`);
+        const waitSec = attempt * 4;
+        appendSummary(`  ⚠️ HTTP ${res.status} on ${cleanModel}. Retrying in ${waitSec}s...`);
         await new Promise(r => setTimeout(r, waitSec * 1000));
         continue;
       }
 
       if (!res.ok) {
-        throw new Error(`HTTP ${res.status}: ${body.substring(0, 250)}`);
+        throw new Error(`HTTP ${res.status}: ${body.substring(0, 200)}`);
       }
 
       const parsed = JSON.parse(body);
@@ -116,39 +171,44 @@ async function callWithRetry(model, prompt, retries = 4) {
       return text;
     } catch (err) {
       if (attempt === retries) throw err;
-      await new Promise(r => setTimeout(r, 3000));
+      await new Promise(r => setTimeout(r, 2000));
     }
   }
 }
 
 async function callGemini(availableModels, prompt) {
-  // Sort priority: gemini-3.6-flash first, then any other 3.x, then flash-lite, then pro
-  const preferred = [
-    'models/gemini-3.6-flash',
-    'models/gemini-3.6-flash-lite',
-    'models/gemini-2.5-flash-lite',
-    'models/gemini-2.5-pro'
-  ];
-
+  // Order: 3.8 first, cascading down to oldest 1.0
   const ordered = [];
-  for (const p of preferred) {
-    if (availableModels.includes(p)) ordered.push(p);
+
+  for (const m of ALL_GEMINI_MODELS) {
+    if (availableModels.includes(m)) {
+      ordered.push(m);
+    }
   }
+
   for (const m of availableModels) {
-    if (!ordered.includes(m)) ordered.push(m);
+    if (!ordered.includes(m)) {
+      ordered.push(m);
+    }
   }
+
+  if (ordered.length === 0) {
+    ordered.push(...ALL_GEMINI_MODELS);
+  }
+
+  appendSummary(`- Trying model hierarchy: ${ordered.slice(0, 6).map(m => m.replace('models/', '')).join(' -> ')}`);
 
   let lastErr = null;
   for (const model of ordered) {
     try {
       const text = await callWithRetry(model, prompt);
       if (text && text.trim().length > 0) {
-        appendSummary(`  ✅ Generated ${text.length} chars with ${model}`);
+        appendSummary(`  ✅ Generated ${text.length} chars with ${model.replace('models/', '')}`);
         return text;
       }
     } catch (err) {
       lastErr = err;
-      appendSummary(`  ❌ Model ${model} failed: ${err.message.substring(0, 100)}`);
+      appendSummary(`  ❌ Model ${model.replace('models/', '')} skipped: ${err.message.substring(0, 90)}`);
     }
   }
   throw lastErr;
@@ -264,6 +324,12 @@ async function main() {
     try {
       const rawHtml = await callGemini(availableModels, task.prompt);
       const cleanedHtml = cleanHtmlOutput(rawHtml);
+
+      // Check if section heading already exists to prevent duplicate insertion
+      if (articlesSource.includes(`id="${task.sectionId}"`)) {
+        appendSummary(`ℹ️ Section ${task.sectionId} already present in ${task.slug}. Updating/replacing...`);
+        continue;
+      }
 
       // Find the article block
       const slugIndex = articlesSource.indexOf(`slug: "${task.slug}"`);
