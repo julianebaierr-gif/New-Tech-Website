@@ -39,9 +39,9 @@ export default function ContactPage() {
         </div>
 
         <div className="pt-6 border-t border-slate-200 space-y-2 text-xs text-slate-500 leading-relaxed">
-          <h4 className="font-semibold text-slate-800">Editorial Independence:</h4>
+          <h4 className="font-semibold text-slate-800">Editorial Submissions &amp; Errata:</h4>
           <p>
-            SysOps Journal does not sell dofollow links, participate in private blog networks, or accept unsolicited marketing guest posts.
+            We welcome technical feedback, corrections, and article suggestions from practicing systems engineers and cloud architects.
           </p>
         </div>
       </div>

@@ -96,8 +96,8 @@ export function Footer() {
         <div className="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
           <p>© {currentYear} {siteConfig.name}. All rights reserved.</p>
           <div className="flex space-x-6">
-            <Link href="/about" className="hover:text-slate-800">Privacy Policy</Link>
-            <Link href="/about" className="hover:text-slate-800">Terms</Link>
+            <Link href="/privacy" className="hover:text-slate-800">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-slate-800">Terms of Use</Link>
             <Link href="/sitemap.xml" className="hover:text-slate-800">XML Sitemap</Link>
           </div>
         </div>

@@ -139,24 +139,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         {/* Article Masthead */}
         <header className="max-w-4xl mb-8 space-y-4">
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
             <Link
               href={`/category/${article.categorySlug}`}
-              className="text-xs font-semibold px-2.5 py-1 rounded bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors"
+              className="font-semibold px-2.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors"
             >
               {article.categoryName}
             </Link>
-            <span className="text-xs text-slate-300">•</span>
-            <span className="text-xs font-mono text-slate-500">
-              {article.readingTimeMinutes} min read
-            </span>
-            <span className="text-xs text-slate-300">•</span>
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
-              Level: {article.difficulty}
-            </span>
-            <span className="text-xs text-slate-300">•</span>
-            <span className="text-xs font-mono text-emerald-700 font-medium">
-              Verified {new Date(article.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+            <span>•</span>
+            <span>{article.readingTimeMinutes} min read</span>
+            <span>•</span>
+            <span>
+              Updated {new Date(article.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
             </span>
           </div>
 
@@ -213,16 +207,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Article Body */}
           <article className="lg:col-span-8 space-y-6 text-slate-700 leading-relaxed font-sans">
-            {/* Executive Summary Callout */}
-            <div className="p-5 rounded-xl border border-blue-100 bg-blue-50/50 mb-8 space-y-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-blue-900 font-mono">
-                Executive Takeaways
-              </h4>
-              <p className="text-sm text-blue-950/80 leading-relaxed">
-                This guide provides verified, non-destructive workflows for enterprise datasets and servers. Follow the step-by-step procedures below, and review the troubleshooting section before modifying live records.
-              </p>
-            </div>
-
             {/* Injected Article HTML */}
             <div
               className="article-content"

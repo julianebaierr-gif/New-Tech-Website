@@ -100,8 +100,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 </div>
 
                 <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-xs text-slate-500">
-                    {art.combinedVolume.toLocaleString()} searches/mo
+                  <span className="text-xs text-slate-500 font-medium">
+                    By {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "SysOps Team"}
                   </span>
                   <Link
                     href={`/articles/${art.slug}`}

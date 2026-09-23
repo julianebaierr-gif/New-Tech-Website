@@ -28,10 +28,10 @@ export default function AboutPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-slate-900 tracking-tight">Our Mission</h2>
           <p>
-            Technical documentation has become crowded with superficial overviews, AI-spun articles, and hidden sponsored affiliate placements.
+            Modern infrastructure changes rapidly, making reliable technical reference material essential for engineering teams.
           </p>
           <p>
-            SysOps Journal was created to deliver clean, reproducible, and field-tested tutorials. Every command and configuration guide is written and audited by real systems engineers.
+            SysOps Journal delivers clean, reproducible, and field-tested tutorials. Every command, script, and configuration guide is written and verified by practicing systems engineers.
           </p>
         </section>
 

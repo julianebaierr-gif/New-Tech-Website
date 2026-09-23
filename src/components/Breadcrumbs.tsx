@@ -32,21 +32,21 @@ export function Breadcrumbs({ crumbs }: { crumbs: BreadcrumbCrumb[] }) {
   return (
     <>
       <SchemaJsonLd schema={breadcrumbSchema} />
-      <nav aria-label="Breadcrumb" className="mb-6 flex items-center space-x-2 text-xs font-mono text-slate-400">
-        <Link href="/" className="hover:text-white transition-colors">
+      <nav aria-label="Breadcrumb" className="mb-6 flex items-center space-x-2 text-xs text-slate-500">
+        <Link href="/" className="hover:text-blue-600 transition-colors">
           Home
         </Link>
         {crumbs.map((c, idx) => {
           const isLast = idx === crumbs.length - 1;
           return (
             <div key={c.href} className="flex items-center space-x-2">
-              <span className="text-slate-600">/</span>
+              <span className="text-slate-300">/</span>
               {isLast ? (
-                <span className="text-slate-300 font-medium truncate max-w-[200px] sm:max-w-xs">
+                <span className="text-slate-800 font-medium truncate max-w-[200px] sm:max-w-xs">
                   {c.label}
                 </span>
               ) : (
-                <Link href={c.href} className="hover:text-white transition-colors">
+                <Link href={c.href} className="hover:text-blue-600 transition-colors">
                   {c.label}
                 </Link>
               )}

@@ -39,17 +39,10 @@ export function Navbar() {
           {/* Quick Actions */}
           <div className="flex items-center gap-3">
             <Link
-              href="/editorial-policy"
-              className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-full border border-slate-200 hover:border-slate-300 bg-slate-50 transition-all"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              Editorial Policy
-            </Link>
-            <Link
               href="/about"
-              className="text-xs font-semibold text-white bg-slate-900 hover:bg-blue-600 px-3.5 py-1.5 rounded-lg transition-all shadow-xs"
+              className="text-xs font-semibold text-slate-700 hover:text-blue-600 px-3.5 py-1.5 rounded-lg hover:bg-slate-100 transition-all"
             >
-              About Staff
+              About
             </Link>
           </div>
         </div>

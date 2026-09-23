@@ -9,30 +9,19 @@ export default function HomePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-      {/* Magazine Masthead Header */}
-      <div className="pb-8 mb-10 border-b border-slate-200/90 flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div className="max-w-3xl space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono font-semibold tracking-wider text-blue-700 uppercase">
-            <span>Engineering Dispatch</span>
-            <span>•</span>
-            <span>Updated Weekly</span>
-          </div>
+      {/* Publication Masthead Header */}
+      <div className="pb-8 mb-10 border-b border-slate-200">
+        <div className="max-w-3xl space-y-3">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
             High-Reliability Cloud, Linux &amp; Data Systems
           </h1>
-          <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
+          <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
             Practical tutorials, architectural benchmarks, and enterprise automation guides written by experienced practitioners.
           </p>
         </div>
-
-        <div className="hidden lg:flex flex-col items-end text-right text-xs text-slate-500 font-mono space-y-1">
-          <span className="font-semibold text-slate-800">SysOps Journal Archive</span>
-          <span>Open Technical Access</span>
-          <span className="text-emerald-600 font-medium">100% Peer-Audited Code</span>
-        </div>
       </div>
 
-      {/* Hero Magazine Section (2 Columns: Featured Lead + Editor's Pick) */}
+      {/* Hero Section (Featured Lead + Editor's Pick) */}
       <section className="mb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Main Featured Lead Story */}
@@ -44,7 +33,7 @@ export default function HomePage() {
                 className="object-cover w-full h-full"
               />
               <span className="absolute top-4 left-4 text-xs font-semibold px-3 py-1 rounded-full bg-white/95 text-blue-800 border border-slate-200 shadow-sm backdrop-blur-sm">
-                Featured Investigation
+                Featured Guide
               </span>
             </div>
 
@@ -138,14 +127,15 @@ export default function HomePage() {
       </section>
 
       {/* Category Silo Explorer */}
+      {/* Category Explorer */}
       <section className="mb-16">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
-              Knowledge Silos
+              Browse Categories
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
-              Structured technical disciplines adhering to strict topical depth.
+              Core technical disciplines covering infrastructure, automation, and systems administration.
             </p>
           </div>
         </div>
@@ -157,34 +147,31 @@ export default function HomePage() {
               href={`/category/${cat.slug}`}
               className="p-5 rounded-xl border border-slate-200 bg-white hover:border-blue-300 publication-card group"
             >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+              <div className="mb-2">
+                <span className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
                   {cat.name}
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600">
-                  Silo
                 </span>
               </div>
               <p className="text-xs text-slate-500 leading-relaxed mb-4">
                 {cat.description}
               </p>
               <span className="text-xs font-semibold text-blue-600 group-hover:translate-x-1 inline-flex items-center gap-1 transition-transform">
-                Explore Guides <span>→</span>
+                Browse Articles <span>→</span>
               </span>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Latest Technical Publications Grid */}
+      {/* Latest Publications Grid */}
       <section className="mb-16">
         <div className="mb-8 pb-4 border-b border-slate-200 flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-              Latest Technical Blueprints
+              Latest Articles
             </h2>
             <p className="text-xs text-slate-500 mt-1">
-              Field-tested guides with complete terminal snippets and architectural benchmark tables.
+              Field-tested guides, architectural comparisons, and terminal workflows.
             </p>
           </div>
         </div>
@@ -236,24 +223,6 @@ export default function HomePage() {
               </div>
             </article>
           ))}
-        </div>
-      </section>
-
-      {/* Editorial Trust Statement */}
-      <section className="p-8 rounded-2xl border border-slate-200 bg-slate-50/70 text-center max-w-4xl mx-auto space-y-3">
-        <h3 className="text-base font-bold text-slate-900 tracking-tight">
-          Our Editorial Integrity Guarantee
-        </h3>
-        <p className="text-xs text-slate-600 leading-relaxed max-w-2xl mx-auto">
-          SysOps Journal does not accept sponsored links, private blog network syndications, or unverified AI summaries. Every tutorial is audited against production environments and updated on breaking changes.
-        </p>
-        <div className="pt-2">
-          <Link
-            href="/editorial-policy"
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 underline underline-offset-4"
-          >
-            Review our Verification &amp; Fact-Checking Standards ↗
-          </Link>
         </div>
       </section>
     </div>

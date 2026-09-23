@@ -25,28 +25,28 @@ export default function EditorialPolicyPage() {
 
       <div className="space-y-8 text-slate-700 leading-relaxed text-sm sm:text-base border-t border-slate-200 pt-8">
         <section className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 tracking-tight">1. Hands-on Verification</h2>
+          <h2 className="text-lg font-bold text-slate-900 tracking-tight">Hands-on Verification</h2>
           <p>
             Tutorials and commands published on SysOps Journal are tested in isolated environments (Ubuntu, Debian, or AWS) before release. We verify that commands produce expected outcomes and document edge cases.
           </p>
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 tracking-tight">2. Original Technical Value</h2>
+          <h2 className="text-lg font-bold text-slate-900 tracking-tight">Original Technical Value</h2>
           <p>
             We prioritize tutorials with practical depth: clear CLI commands, configuration benchmarks, and troubleshooting warnings that save engineering hours.
           </p>
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 tracking-tight">3. Independent Editorial Integrity</h2>
+          <h2 className="text-lg font-bold text-slate-900 tracking-tight">Independent Editorial Integrity</h2>
           <p>
             SysOps Journal does not sell paid links or publish undisclosed sponsored content. External links exist solely to cite official documentation (AWS documentation, RFC specifications, Python PEPs).
           </p>
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 tracking-tight">4. Errata & Updates</h2>
+          <h2 className="text-lg font-bold text-slate-900 tracking-tight">Errata and Ongoing Updates</h2>
           <p>
             Operating systems and cloud interfaces evolve. When tools or flags change, articles are updated and tagged with a &quot;Last Updated&quot; date to keep readers current.
           </p>
