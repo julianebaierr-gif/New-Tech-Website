@@ -36,15 +36,6 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* Quick Actions */}
-          <div className="flex items-center gap-3">
-            <Link
-              href="/about"
-              className="text-xs font-semibold text-slate-700 hover:text-blue-600 px-3.5 py-1.5 rounded-lg hover:bg-slate-100 transition-all"
-            >
-              About
-            </Link>
-          </div>
         </div>
       </div>
     </header>
