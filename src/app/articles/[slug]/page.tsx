@@ -7,6 +7,8 @@ import { TableOfContents } from "@/components/TableOfContents";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
+import { ReadingProgressBar } from "@/components/ReadingProgressBar";
+import { ShareBar } from "@/components/ShareBar";
 
 interface ArticlePageProps {
   params: Promise<{
@@ -74,6 +76,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     .filter((a) => a.slug !== article.slug)
     .slice(0, 2);
 
+  const articleUrl = `${siteConfig.baseUrl}/articles/${article.slug}`;
+
   const techArticleSchema = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -100,7 +104,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `${siteConfig.baseUrl}/articles/${article.slug}`,
+      "@id": articleUrl,
     },
     "proficiencyLevel": article.difficulty,
     "keywords": [article.primaryKeyword, ...article.secondaryKeywords].join(", "),
@@ -121,6 +125,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <>
+      <ReadingProgressBar />
       <SchemaJsonLd schema={techArticleSchema} />
       {faqSchema && <SchemaJsonLd schema={faqSchema} />}
 
@@ -132,7 +137,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           ]}
         />
 
-        {/* Article Header */}
+        {/* Article Masthead */}
         <header className="max-w-4xl mb-8 space-y-4">
           <div className="flex flex-wrap items-center gap-2.5">
             <Link
@@ -142,12 +147,16 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               {article.categoryName}
             </Link>
             <span className="text-xs text-slate-300">•</span>
-            <span className="text-xs text-slate-500">
+            <span className="text-xs font-mono text-slate-500">
               {article.readingTimeMinutes} min read
             </span>
             <span className="text-xs text-slate-300">•</span>
-            <span className="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
-              Updated {new Date(article.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+            <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+              Level: {article.difficulty}
+            </span>
+            <span className="text-xs text-slate-300">•</span>
+            <span className="text-xs font-mono text-emerald-700 font-medium">
+              Verified {new Date(article.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
             </span>
           </div>
 
@@ -155,7 +164,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             {article.title}
           </h1>
 
-          <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
+          <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
             {article.excerpt}
           </p>
 
@@ -168,7 +177,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 className="w-10 h-10 rounded-full object-cover border border-slate-200"
               />
               <div>
-                <p className="text-xs font-semibold text-slate-900">{author.name}</p>
+                <p className="text-xs font-bold text-slate-900">{author.name}</p>
                 <p className="text-[11px] text-slate-500">{author.role}</p>
               </div>
             </div>
@@ -179,17 +188,20 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                   href={author.socials.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-blue-600 transition-colors"
+                  className="hover:text-blue-600 transition-colors font-medium"
                 >
                   LinkedIn Profile ↗
                 </a>
               )}
             </div>
           </div>
+
+          {/* Social Share Bar */}
+          <ShareBar title={article.title} url={articleUrl} />
         </header>
 
         {/* Featured Cover Image */}
-        <div className="relative h-64 sm:h-96 w-full rounded-2xl overflow-hidden border border-slate-200 mb-12 shadow-sm">
+        <div className="relative h-72 sm:h-96 w-full rounded-2xl overflow-hidden border border-slate-200 mb-12 shadow-sm">
           <img
             src={article.coverImage}
             alt={article.title}
@@ -201,6 +213,17 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Article Body */}
           <article className="lg:col-span-8 space-y-6 text-slate-700 leading-relaxed font-sans">
+            {/* Executive Summary Callout */}
+            <div className="p-5 rounded-xl border border-blue-100 bg-blue-50/50 mb-8 space-y-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-blue-900 font-mono">
+                Executive Takeaways
+              </h4>
+              <p className="text-sm text-blue-950/80 leading-relaxed">
+                This guide provides verified, non-destructive workflows for enterprise datasets and servers. Follow the step-by-step procedures below, and review the troubleshooting section before modifying live records.
+              </p>
+            </div>
+
+            {/* Injected Article HTML */}
             <div
               className="article-content"
               dangerouslySetInnerHTML={{ __html: article.contentHtml }}
@@ -250,7 +273,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                       href={`/articles/${rel.slug}`}
                       className="p-4 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm transition-all block group"
                     >
-                      <span className="text-[10px] text-blue-600 font-semibold mb-1 block">
+                      <span className="text-[10px] text-blue-600 font-semibold mb-1 block font-mono">
                         {rel.readingTimeMinutes} min read
                       </span>
                       <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">

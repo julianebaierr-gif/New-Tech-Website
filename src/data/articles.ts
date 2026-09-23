@@ -57,13 +57,13 @@ export const articles: Article[] = [
     featured: true,
     coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=630&q=80",
     tableOfContents: [
-      { id: "understanding-duplicate-types", title: "1. Exact Matches vs Partial Match Duplicates", level: 2 },
-      { id: "method-1-conditional-formatting", title: "2. How to Highlight Duplicates Visually (Conditional Formatting)", level: 2 },
-      { id: "method-2-remove-duplicates-tool", title: "3. How to Delete Duplicates Permanently Using Built-in Tools", level: 2 },
-      { id: "method-3-unique-formula", title: "4. Extracting Unique Values Non-Destructively (=UNIQUE)", level: 2 },
-      { id: "method-4-vba-macro", title: "5. Automated VBA Script for High-Volume Workbooks", level: 2 },
-      { id: "troubleshooting-duplicate-errors", title: "6. Why Excel Misses Hidden Duplicates (Trailing Spaces & Formats)", level: 2 },
-      { id: "frequently-asked-questions", title: "7. Frequently Asked Questions", level: 2 },
+      { id: "understanding-duplicate-types", title: "Exact Matches vs Partial Match Duplicates", level: 2 },
+      { id: "method-1-conditional-formatting", title: "Visual Auditing with Conditional Formatting", level: 2 },
+      { id: "method-2-remove-duplicates-tool", title: "Permanent Removal Using Built-in Tools", level: 2 },
+      { id: "method-3-unique-formula", title: "Extracting Unique Records Dynamically (=UNIQUE)", level: 2 },
+      { id: "method-4-vba-macro", title: "Automating Deduplication with VBA Scripts", level: 2 },
+      { id: "troubleshooting-duplicate-errors", title: "Troubleshooting Hidden Whitespace & Formatting Mismatches", level: 2 },
+      { id: "frequently-asked-questions", title: "Frequently Asked Questions", level: 2 },
     ],
     faqs: [
       {
@@ -84,47 +84,47 @@ export const articles: Article[] = [
       }
     ],
     contentHtml: `
-      <p class="lead text-lg text-slate-300 leading-relaxed mb-8">
-        Managing clean datasets is the foundational requirement of accurate financial reporting, database exports, and customer relationship records. In modern enterprise environments, duplicate records cause inflated invoice metrics, botched CRM automations, and skewed machine learning training sets.
+      <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
+        Managing clean datasets is the foundational requirement of accurate financial reporting, database exports, and customer relationship records. In modern enterprise environments, duplicate records cause inflated invoice metrics, botched CRM automations, and skewed analytics models.
       </p>
 
-      <div class="my-8 p-5 bg-surface-raised/60 border border-slate-700/60 rounded-xl">
-        <h4 class="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-2">⚡ Quick Answer (TL;DR)</h4>
-        <p class="text-slate-300 text-sm">
-          To delete duplicates immediately: Select your range, navigate to <strong>Data &gt; Remove Duplicates</strong> (or press <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-600 rounded text-xs text-white">Alt + A + M</kbd>), check the key identifiers, and click <strong>OK</strong>. To keep original records safe, use <code class="text-emerald-300 bg-slate-900 px-1.5 py-0.5 rounded">=UNIQUE(A2:D500)</code>.
+      <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
+        <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Workflow Summary</h4>
+        <p class="text-slate-700 text-sm">
+          To delete duplicates immediately: Select your data range, navigate to <strong>Data &gt; Remove Duplicates</strong> (shortcut: <kbd class="px-2 py-0.5 bg-white border border-slate-300 rounded text-xs text-slate-800 font-mono shadow-2xs">Alt + A + M</kbd>), check the key identifiers, and click <strong>OK</strong>. To keep original records safe, extract non-destructively using <code>=UNIQUE(A2:D500)</code>.
         </p>
       </div>
 
-      <h2 id="understanding-duplicate-types" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">1. Exact Matches vs Partial Match Duplicates</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="understanding-duplicate-types" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Exact Matches vs Partial Match Duplicates</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         Before modifying workbooks, determine whether your dataset contains <strong>full-row duplicates</strong> (where every single cell across columns A through Z matches) or <strong>primary key duplicates</strong> (where an Account ID or Email matches, but timestamps differ).
       </p>
-      <p class="text-slate-300 leading-relaxed mb-6">
-        Deleting records based on a single column when timestamps or transaction IDs vary will permanently erase historical audit trails. Always duplicate your sheet tab (<kbd class="px-2 py-0.5 bg-slate-800 border border-slate-600 rounded text-xs text-white">Ctrl + Drag tab</kbd>) before performing destructive operations.
+      <p class="text-slate-700 leading-relaxed mb-6">
+        Deleting records based on a single column when timestamps or transaction IDs vary will permanently erase historical audit trails. Always duplicate your sheet tab (<kbd class="px-2 py-0.5 bg-white border border-slate-300 rounded text-xs text-slate-800 font-mono shadow-2xs">Ctrl + Drag tab</kbd>) before performing destructive operations.
       </p>
 
-      <h2 id="method-1-conditional-formatting" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">2. How to Highlight Duplicates Visually (Conditional Formatting)</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="method-1-conditional-formatting" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Visual Auditing with Conditional Formatting</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         If you need to audit duplicates before taking action, visual highlighting is the safest first step:
       </p>
-      <ol class="list-decimal pl-6 space-y-3 text-slate-300 mb-6">
-        <li>Highlight the target column or data range (e.g., <code class="text-blue-400 bg-slate-900 px-1 rounded">B2:B5000</code>).</li>
+      <ol class="list-decimal pl-6 space-y-2 text-slate-700 mb-6">
+        <li>Highlight the target column or data range (for example, <code>B2:B5000</code>).</li>
         <li>On the <strong>Home</strong> tab, click <strong>Conditional Formatting &gt; Highlight Cells Rules &gt; Duplicate Values</strong>.</li>
         <li>In the dialog box, select your preferred styling (e.g., <em>Light Red Fill with Dark Red Text</em>).</li>
         <li>Click <strong>OK</strong>. Every repeated entry will immediately illuminate.</li>
       </ol>
 
-      <div class="my-8 p-4 border-l-4 border-amber-500 bg-amber-500/5 rounded-r-lg">
-        <p class="text-sm text-amber-200">
-          <strong>Production Warning:</strong> Conditional Formatting in Excel is volatile. If applied across 50,000+ rows, workbook calculation times increase significantly. Clear conditional formatting rules prior to exporting large spreadsheets to shared network drives.
+      <div class="my-6 p-4 border-l-4 border-amber-500 bg-amber-50/70 rounded-r-lg">
+        <p class="text-xs text-amber-900 font-medium">
+          <strong>Production Note:</strong> Conditional Formatting in Excel is volatile. If applied across 50,000+ rows, workbook calculation times increase significantly. Clear conditional formatting rules prior to exporting large spreadsheets to shared network drives.
         </p>
       </div>
 
-      <h2 id="method-2-remove-duplicates-tool" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">3. How to Delete Duplicates Permanently Using Built-in Tools</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="method-2-remove-duplicates-tool" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Permanent Removal Using Built-in Tools</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         When you are ready to permanently purge identical records, use the native Data Deduplication utility:
       </p>
-      <ol class="list-decimal pl-6 space-y-3 text-slate-300 mb-6">
+      <ol class="list-decimal pl-6 space-y-2 text-slate-700 mb-6">
         <li>Click any cell inside your data table.</li>
         <li>Go to the <strong>Data</strong> tab and click <strong>Remove Duplicates</strong> (in the Data Tools group).</li>
         <li>Ensure <strong>"My data has headers"</strong> is checked if your first row contains labels.</li>
@@ -132,20 +132,20 @@ export const articles: Article[] = [
         <li>Click <strong>OK</strong>. Excel will report the exact count of duplicate records eliminated and unique records retained.</li>
       </ol>
 
-      <h2 id="method-3-unique-formula" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">4. Extracting Unique Values Non-Destructively (=UNIQUE)</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="method-3-unique-formula" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Extracting Unique Records Dynamically (=UNIQUE)</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         In modern Excel (Excel 365, Excel 2021, and Excel for the Web), dynamic arrays allow you to stream deduplicated data to a clean report without altering the source records:
       </p>
-      <pre class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-emerald-400 font-mono text-sm overflow-x-auto my-6"><code>=UNIQUE(SORT(FILTER(A2:D1000, A2:A1000<>"")))</code></pre>
-      <p class="text-slate-300 leading-relaxed mb-6">
+      <pre><code>=UNIQUE(SORT(FILTER(A2:D1000, A2:A1000<>"")))</code></pre>
+      <p class="text-slate-700 leading-relaxed mb-6">
         This formula filters out blank rows, sorts the dataset alphabetically, and delivers a pristine unique list that automatically recalculates whenever original records are appended.
       </p>
 
-      <h2 id="method-4-vba-macro" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">5. Automated VBA Script for High-Volume Workbooks</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="method-4-vba-macro" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Automating Deduplication with VBA Scripts</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         For enterprise administrators who clean weekly batch CSVs, automate deduplication with this optimized VBA subroutine:
       </p>
-      <pre class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-slate-200 font-mono text-sm overflow-x-auto my-6"><code>Sub PurgeDuplicateRecords()
+      <pre><code>Sub PurgeDuplicateRecords()
     Dim ws As Worksheet
     Dim lastRow As Long
     Dim lastCol As Long
@@ -155,21 +155,20 @@ export const articles: Article[] = [
     lastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
     lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
     
-    If lastRow &gt; 1 Then
+    If lastRow > 1 Then
         Set targetRange = ws.Range(ws.Cells(1, 1), ws.Cells(lastRow, lastCol))
-        ' Deduplicate based on primary key in Column 1
         targetRange.RemoveDuplicates Columns:=Array(1), Header:=xlYes
-        MsgBox "Deduplication complete. Retained " &amp; ws.Cells(ws.Rows.Count, "A").End(xlUp).Row - 1 &amp; " records.", vbInformation
+        MsgBox "Deduplication complete. Retained " & ws.Cells(ws.Rows.Count, "A").End(xlUp).Row - 1 & " records.", vbInformation
     End If
 End Sub</code></pre>
 
-      <h2 id="troubleshooting-duplicate-errors" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">6. Why Excel Misses Hidden Duplicates (Trailing Spaces & Formats)</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="troubleshooting-duplicate-errors" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Troubleshooting Hidden Whitespace & Formatting Mismatches</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         If Excel reports "No duplicate values found" when identical entries clearly exist, check these two common culprits:
       </p>
-      <ul class="list-disc pl-6 space-y-3 text-slate-300 mb-6">
-        <li><strong>Hidden Whitespace:</strong> Web scrapes and ERP exports frequently append non-breaking spaces (<code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-amber-300">CHAR(160)</code>). Clean them using <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-emerald-300">=TRIM(SUBSTITUTE(A2, CHAR(160), " "))</code>.</li>
-        <li><strong>Text vs Number Storage:</strong> A numeric customer ID stored as text (<code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-amber-300">'10293</code>) will never match a true numeric value (<code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-emerald-300">10293</code>). Multiply the range by 1 or use Text-to-Columns to standardize datatypes.</li>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+        <li><strong>Hidden Whitespace:</strong> Web scrapes and ERP exports frequently append non-breaking spaces (<code>CHAR(160)</code>). Clean them using <code>=TRIM(SUBSTITUTE(A2, CHAR(160), " "))</code>.</li>
+        <li><strong>Text vs Number Storage:</strong> A numeric customer ID stored as text (<code>'10293</code>) will never match a true numeric value (<code>10293</code>). Multiply the range by 1 or use Text-to-Columns to standardize datatypes.</li>
       </ul>
     `
   },
@@ -196,12 +195,12 @@ End Sub</code></pre>
     featured: true,
     coverImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&h=630&q=80",
     tableOfContents: [
-      { id: "ec2-naming-convention-decoded", title: "1. The EC2 Naming Convention Decoded", level: 2 },
-      { id: "compute-families-matrix", title: "2. The 5 Core EC2 Compute Families", level: 2 },
-      { id: "x86-vs-graviton", title: "3. Intel vs AMD vs AWS Graviton (ARM64)", level: 2 },
-      { id: "sizing-rules-workloads", title: "4. Sizing Matrix: Web Apps, DBs & Background Workers", level: 2 },
-      { id: "aws-cli-inspection", title: "5. Automating Instance Sizing with AWS CLI", level: 2 },
-      { id: "frequently-asked-questions", title: "6. Frequently Asked Questions", level: 2 },
+      { id: "ec2-naming-convention-decoded", title: "The EC2 Naming Convention Decoded", level: 2 },
+      { id: "compute-families-matrix", title: "Core Compute Families and Architectural Trade-offs", level: 2 },
+      { id: "x86-vs-graviton", title: "Intel vs AMD vs AWS Graviton ARM64 Benchmarks", level: 2 },
+      { id: "sizing-rules-workloads", title: "Workload Sizing Matrix: Web Frontends and Relational Databases", level: 2 },
+      { id: "aws-cli-inspection", title: "Automating Instance Discovery via AWS CLI", level: 2 },
+      { id: "frequently-asked-questions", title: "Frequently Asked Questions", level: 2 },
     ],
     faqs: [
       {
@@ -218,85 +217,85 @@ End Sub</code></pre>
       }
     ],
     contentHtml: `
-      <p class="lead text-lg text-slate-300 leading-relaxed mb-8">
+      <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
         Navigating AWS compute options is one of the most consequential architectural choices cloud engineers make. With hundreds of instance configurations spanning diverse microarchitectures and memory configurations, selecting the wrong instance family results in runaway monthly AWS invoices or sudden production latency spikes.
       </p>
 
-      <h2 id="ec2-naming-convention-decoded" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">1. The EC2 Naming Convention Decoded</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
-        Every EC2 instance follows a structured syntax (e.g., <code class="text-emerald-400 bg-slate-900 px-2 py-0.5 rounded font-mono">c7g.2xlarge</code>). Understanding this taxonomy allows you to evaluate capabilities instantly:
+      <h2 id="ec2-naming-convention-decoded" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">The EC2 Naming Convention Decoded</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Every EC2 instance follows a structured syntax (such as <code>c7g.2xlarge</code>). Understanding this taxonomy allows you to evaluate capabilities instantly:
       </p>
-      <ul class="list-disc pl-6 space-y-2 text-slate-300 mb-6 font-mono text-sm">
-        <li><strong class="text-white">c:</strong> Instance Family (C = Compute Optimized, M = General Purpose, R = Memory Optimized).</li>
-        <li><strong class="text-white">7:</strong> Generation number (higher numbers denote newer microarchitectures and better throughput).</li>
-        <li><strong class="text-white">g:</strong> Processor attribute (g = Graviton ARM, a = AMD EPYC, i = Intel Xeon).</li>
-        <li><strong class="text-white">2xlarge:</strong> Sizing tier (governing vCPUs, RAM, and network bandwidth allocation).</li>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6 font-mono text-sm">
+        <li><strong>c:</strong> Instance Family (C = Compute Optimized, M = General Purpose, R = Memory Optimized).</li>
+        <li><strong>7:</strong> Generation number (higher numbers denote newer microarchitectures and better throughput).</li>
+        <li><strong>g:</strong> Processor attribute (g = Graviton ARM, a = AMD EPYC, i = Intel Xeon).</li>
+        <li><strong>2xlarge:</strong> Sizing tier (governing vCPUs, RAM, and network bandwidth allocation).</li>
       </ul>
 
-      <h2 id="compute-families-matrix" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">2. The 5 Core EC2 Compute Families</h2>
+      <h2 id="compute-families-matrix" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Core Compute Families and Architectural Trade-offs</h2>
       <div class="overflow-x-auto my-6">
-        <table class="w-full text-left text-sm text-slate-300 border border-slate-800 rounded-lg">
-          <thead class="bg-surface-raised text-white border-b border-slate-700">
+        <table>
+          <thead>
             <tr>
-              <th class="p-3">Family</th>
-              <th class="p-3">vCPU to RAM Ratio</th>
-              <th class="p-3">Recommended Use Cases</th>
-              <th class="p-3">Flagship Generation</th>
+              <th>Instance Family</th>
+              <th>vCPU to RAM Ratio</th>
+              <th>Recommended Workloads</th>
+              <th>Flagship Generation</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-800">
+          <tbody>
             <tr>
-              <td class="p-3 font-semibold text-emerald-400">T-Series (Burstable)</td>
-              <td class="p-3">1:2 to 1:4</td>
-              <td class="p-3">Dev environments, microservices, low-traffic APIs</td>
-              <td class="p-3 font-mono">t4g</td>
+              <td><strong>T-Series (Burstable)</strong></td>
+              <td>1:2 to 1:4</td>
+              <td>Development environments, microservices, low-traffic APIs</td>
+              <td><code>t4g</code></td>
             </tr>
             <tr>
-              <td class="p-3 font-semibold text-blue-400">M-Series (General)</td>
-              <td class="p-3">1:4</td>
-              <td class="p-3">Enterprise application servers, mid-tier databases</td>
-              <td class="p-3 font-mono">m7g / m7i</td>
+              <td><strong>M-Series (General Purpose)</strong></td>
+              <td>1:4</td>
+              <td>Enterprise application servers, mid-tier databases</td>
+              <td><code>m7g / m7i</code></td>
             </tr>
             <tr>
-              <td class="p-3 font-semibold text-purple-400">C-Series (Compute)</td>
-              <td class="p-3">1:2</td>
-              <td class="p-3">High-load web servers, media encoding, ML inference</td>
-              <td class="p-3 font-mono">c7g / c7i</td>
+              <td><strong>C-Series (Compute Optimized)</strong></td>
+              <td>1:2</td>
+              <td>High-load web servers, media encoding, batch computing</td>
+              <td><code>c7g / c7i</code></td>
             </tr>
             <tr>
-              <td class="p-3 font-semibold text-amber-400">R-Series (Memory)</td>
-              <td class="p-3">1:8</td>
-              <td class="p-3">In-memory caches (Redis/Memcached), PostgreSQL, Spark</td>
-              <td class="p-3 font-mono">r7g / r7i</td>
+              <td><strong>R-Series (Memory Optimized)</strong></td>
+              <td>1:8</td>
+              <td>In-memory caches (Redis/Memcached), PostgreSQL, Spark clusters</td>
+              <td><code>r7g / r7i</code></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <h2 id="x86-vs-graviton" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">3. Intel vs AMD vs AWS Graviton (ARM64)</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="x86-vs-graviton" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Intel vs AMD vs AWS Graviton ARM64 Benchmarks</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         The shift from traditional x86 architecture to 64-bit ARM-based AWS Graviton chips represents the largest efficiency leap in cloud infrastructure. Unless your workloads depend on legacy compiled x86 binaries (e.g., proprietary proprietary third-party libraries), Graviton instances deliver:
       </p>
-      <ul class="list-disc pl-6 space-y-2 text-slate-300 mb-6">
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
         <li><strong>20% Lower Raw On-Demand Cost</strong> compared to identical Intel configurations.</li>
         <li><strong>Up to 40% Higher Price/Performance</strong> across containerized Go, Node.js, Python, and Java runtimes.</li>
         <li><strong>Hardware-level crypto acceleration</strong> with continuous memory encryption enabled by default.</li>
       </ul>
 
-      <h2 id="sizing-rules-workloads" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">4. Sizing Matrix: Web Apps, DBs & Background Workers</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="sizing-rules-workloads" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Workload Sizing Matrix: Web Frontends and Relational Databases</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         Follow these baseline sizing rules when configuring autoscaling groups and stateful hosts:
       </p>
-      <ul class="list-disc pl-6 space-y-3 text-slate-300 mb-6">
-        <li><strong>Stateless Web Frontends (Next.js / Node):</strong> Favor horizontal scale across smaller compute nodes (<code class="font-mono text-emerald-400 bg-slate-900 px-1 rounded">c7g.medium</code> or <code class="font-mono text-emerald-400 bg-slate-900 px-1 rounded">c7g.large</code>) across multiple availability zones.</li>
-        <li><strong>Relational DBs (PostgreSQL / MySQL):</strong> Never use T-series burstable instances for production databases. Memory allocation drives buffer pool cache hits; deploy on <code class="font-mono text-amber-400 bg-slate-900 px-1 rounded">r7g.xlarge</code> minimum.</li>
+      <ul class="list-disc pl-6 space-y-3 text-slate-700 mb-6">
+        <li><strong>Stateless Web Frontends (Next.js / Node):</strong> Favor horizontal scale across smaller compute nodes (<code>c7g.medium</code> or <code>c7g.large</code>) across multiple availability zones.</li>
+        <li><strong>Relational DBs (PostgreSQL / MySQL):</strong> Never use T-series burstable instances for production databases. Memory allocation drives buffer pool cache hits; deploy on <code>r7g.xlarge</code> minimum.</li>
       </ul>
 
-      <h2 id="aws-cli-inspection" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">5. Automating Instance Sizing with AWS CLI</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="aws-cli-inspection" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Automating Instance Discovery via AWS CLI</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         Query instance attributes programmatically using the AWS CLI and jq to discover available instance configurations in your region:
       </p>
-      <pre class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-emerald-400 font-mono text-sm overflow-x-auto my-6"><code>aws ec2 describe-instance-types \
+      <pre><code>aws ec2 describe-instance-types \
   --filters "Name=current-generation,Values=true" \
             "Name=processor-info.supported-architecture,Values=arm64" \
             "Name=vcpu-info.default-vcpus,Values=4" \
@@ -327,12 +326,12 @@ End Sub</code></pre>
     featured: false,
     coverImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80",
     tableOfContents: [
-      { id: "anatomy-of-llm-latency", title: "1. The Anatomy of LLM Inference Latency", level: 2 },
-      { id: "reason-1-gpu-queue-saturation", title: "2. Server-side GPU Queue Saturation & Throttling", level: 2 },
-      { id: "reason-2-token-generation-speed", title: "3. Autoregressive Token Generation Constraints", level: 2 },
-      { id: "reason-3-websocket-network-delays", title: "4. WebSocket Streaming and Browser Extension Conflicts", level: 2 },
-      { id: "actionable-fixes", title: "5. 5 Actionable Fixes to Restore Maximum Generation Speed", level: 2 },
-      { id: "frequently-asked-questions", title: "6. Frequently Asked Questions", level: 2 },
+      { id: "anatomy-of-llm-latency", title: "The Anatomy of LLM Inference Latency", level: 2 },
+      { id: "reason-1-gpu-queue-saturation", title: "Server-side GPU Queue Saturation & Throttling", level: 2 },
+      { id: "reason-2-token-generation-speed", title: "Autoregressive Token Generation Constraints", level: 2 },
+      { id: "reason-3-websocket-network-delays", title: "WebSocket Streaming and Browser Extension Conflicts", level: 2 },
+      { id: "actionable-fixes", title: "Actionable Fixes to Restore Maximum Generation Speed", level: 2 },
+      { id: "frequently-asked-questions", title: "Frequently Asked Questions", level: 2 },
     ],
     faqs: [
       {
@@ -349,41 +348,40 @@ End Sub</code></pre>
       }
     ],
     contentHtml: `
-      <p class="lead text-lg text-slate-300 leading-relaxed mb-8">
-        When an artificial intelligence assistant hesitates for 15 seconds before producing a single token, user productivity grinds to a halt. While users often assume a slow AI response indicates a local internet outage, the underlying bottleneck involves deep GPU hardware contention and model inference physics.
+      <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
+        When an artificial intelligence assistant hesitates before producing a single token, engineering workflow grinds to a halt. While users often assume a slow AI response indicates a local internet outage, the underlying bottleneck involves deep GPU hardware contention and model inference physics.
       </p>
 
-      <h2 id="anatomy-of-llm-latency" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">1. The Anatomy of LLM Inference Latency</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="anatomy-of-llm-latency" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">The Anatomy of LLM Inference Latency</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         Every interaction with an LLM comprises two distinct latency metrics:
       </p>
-      <ul class="list-disc pl-6 space-y-2 text-slate-300 mb-6">
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
         <li><strong>Time to First Token (TTFT):</strong> The delay between clicking "Send" and seeing the first character appear. This metric represents prompt ingestion, vector processing, and server queue wait times.</li>
         <li><strong>Time Per Output Token (TPOT):</strong> The continuous streaming speed (measured in tokens per second). This reflects GPU memory bandwidth limitations during autoregressive decoding.</li>
       </ul>
 
-      <h2 id="reason-1-gpu-queue-saturation" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">2. Server-side GPU Queue Saturation & Throttling</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
-        Datacenter clusters hosting multi-billion-parameter foundation models operate near continuous capacity. During US and European working overlaps (1:00 PM to 4:00 PM UTC), incoming prompt queues spike exponentially. OpenAI dynamically throttles token generation rates per user to maintain service uptime rather than serving 503 gateway outages.
+      <h2 id="reason-1-gpu-queue-saturation" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Server-side GPU Queue Saturation & Throttling</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Datacenter clusters hosting multi-billion-parameter foundation models operate near continuous capacity. During US and European working overlaps (1:00 PM to 4:00 PM UTC), incoming prompt queues spike exponentially. Providers dynamically throttle token generation rates per user to maintain service uptime rather than serving 503 gateway outages.
       </p>
 
-      <h2 id="reason-2-token-generation-speed" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">3. Autoregressive Token Generation Constraints</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
-        Unlike web servers fetching static database rows, Large Language Models generate text <strong>sequentially, one token at a time</strong>. To generate token #50, the model must execute a full forward pass incorporating tokens #1 through #49. Because GPU memory bandwidth is the primary physical constraint, generation speeds cannot be magically accelerated past hardware thresholds.
+      <h2 id="reason-2-token-generation-speed" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Autoregressive Token Generation Constraints</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Unlike web servers fetching static database rows, Large Language Models generate text <strong>sequentially, one token at a time</strong>. To generate token #50, the model must execute a full forward pass incorporating tokens #1 through #49. Because GPU memory bandwidth is the primary physical constraint, generation speeds cannot be accelerated past hardware thresholds.
       </p>
 
-      <h2 id="reason-3-websocket-network-delays" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">4. WebSocket Streaming and Browser Extension Conflicts</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
-        ChatGPT relies on Server-Sent Events (SSE) or WebSockets to stream tokens to your browser. Third-party ad-blockers, security suites, and translation extensions often buffer incoming TCP packets to inspect them for malicious code before rendering. This local buffering makes the response look stuck until the buffer flushes.
+      <h2 id="reason-3-websocket-network-delays" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">WebSocket Streaming and Browser Extension Conflicts</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Web-based AI platforms rely on Server-Sent Events (SSE) or WebSockets to stream tokens to your browser. Third-party ad-blockers, security suites, and translation extensions often buffer incoming TCP packets to inspect them for malicious code before rendering. This local buffering makes the response look stuck until the buffer flushes.
       </p>
 
-      <h2 id="actionable-fixes" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">5. 5 Actionable Fixes to Restore Maximum Generation Speed</h2>
-      <ol class="list-decimal pl-6 space-y-3 text-slate-300 mb-6">
+      <h2 id="actionable-fixes" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Actionable Fixes to Restore Maximum Generation Speed</h2>
+      <ol class="list-decimal pl-6 space-y-2 text-slate-700 mb-6">
         <li><strong>Archive Bloated Threads:</strong> Never conduct prolonged coding projects in a single chat thread. Start a clean chat whenever context exceeds 10 messages.</li>
-        <li><strong>Disable Heavy Browser Extensions:</strong> Test ChatGPT in an incognito window without script blockers to isolate local client buffering issues.</li>
-        <li><strong>Specify Concise Output Constraints:</strong> Append <code class="text-emerald-400 bg-slate-900 px-1.5 py-0.5 rounded text-xs font-mono">"Respond in concise bullet points with zero conversational filler"</code> to your system prompts.</li>
-        <li><strong>Leverage the Official API / Playground:</strong> The OpenAI Developer Platform features dedicated rate-limits and direct streaming endpoints that bypass web interface queue congestions.</li>
-        <li><strong>Utilize Alternative Edge Regions:</strong> Connecting via an enterprise VPN to regions outside peak business hours (e.g., Singapore or Tokyo during US mornings) frequently routes traffic to less saturated GPU pools.</li>
+        <li><strong>Disable Heavy Browser Extensions:</strong> Test the interface in an incognito window without script blockers to isolate local client buffering issues.</li>
+        <li><strong>Specify Concise Output Constraints:</strong> Append <code>"Respond in concise bullet points with zero conversational filler"</code> to your system prompts.</li>
+        <li><strong>Leverage the Official Developer API:</strong> Dedicated API endpoints feature custom rate-limits and direct streaming connections that bypass consumer web interface queue congestion.</li>
       </ol>
     `
   },
@@ -410,13 +408,13 @@ End Sub</code></pre>
     featured: false,
     coverImage: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=1200&h=630&q=80",
     tableOfContents: [
-      { id: "core-specifications-comparison", title: "1. Core Hardware Limits & Specifications", level: 2 },
-      { id: "security-bitlocker-vs-device-encryption", title: "2. Security: BitLocker vs Device Encryption", level: 2 },
-      { id: "virtualization-hyper-v-sandbox", title: "3. Developer Virtualization: Hyper-V & Windows Sandbox", level: 2 },
-      { id: "remote-desktop-hosting", title: "4. Remote Desktop: Client vs Host Capabilities", level: 2 },
-      { id: "group-policy-domain-joining", title: "5. Active Directory, Domain Joining & Group Policy (gpedit.msc)", level: 2 },
-      { id: "verdict-who-should-upgrade", title: "6. The Verdict: Who Should Upgrade?", level: 2 },
-      { id: "frequently-asked-questions", title: "7. Frequently Asked Questions", level: 2 },
+      { id: "core-specifications-comparison", title: "Core Hardware Limits and Specifications", level: 2 },
+      { id: "security-bitlocker-vs-device-encryption", title: "Security Architecture: BitLocker vs Device Encryption", level: 2 },
+      { id: "virtualization-hyper-v-sandbox", title: "Developer Virtualization: Hyper-V and Windows Sandbox", level: 2 },
+      { id: "remote-desktop-hosting", title: "Remote Desktop: Client vs Host Capabilities", level: 2 },
+      { id: "group-policy-domain-joining", title: "Active Directory, Domain Joining and Group Policy (gpedit.msc)", level: 2 },
+      { id: "verdict-who-should-upgrade", title: "The Verdict: Which Edition Fits Your Workload?", level: 2 },
+      { id: "frequently-asked-questions", title: "Frequently Asked Questions", level: 2 },
     ],
     faqs: [
       {
@@ -433,78 +431,78 @@ End Sub</code></pre>
       }
     ],
     contentHtml: `
-      <p class="lead text-lg text-slate-300 leading-relaxed mb-8">
+      <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
         When provisioning developer workstations, remote office laptops, or enterprise administrative machines, deciding between Microsoft's Windows 11 Home and Windows 11 Pro tiers impacts daily security posture and IT management capabilities.
       </p>
 
-      <h2 id="core-specifications-comparison" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">1. Core Hardware Limits & Specifications</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="core-specifications-comparison" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Core Hardware Limits and Specifications</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         While both editions share identical gaming performance, DirectX 12 Ultimate support, and desktop aesthetics, their underlying hardware allocation limits differ dramatically:
       </p>
       <div class="overflow-x-auto my-6">
-        <table class="w-full text-left text-sm text-slate-300 border border-slate-800 rounded-lg">
-          <thead class="bg-surface-raised text-white border-b border-slate-700">
+        <table>
+          <thead>
             <tr>
-              <th class="p-3">Specification</th>
-              <th class="p-3">Windows 11 Home</th>
-              <th class="p-3">Windows 11 Pro</th>
+              <th>Specification</th>
+              <th>Windows 11 Home</th>
+              <th>Windows 11 Pro</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-800">
+          <tbody>
             <tr>
-              <td class="p-3 font-semibold">Max Physical RAM Support</td>
-              <td class="p-3 text-amber-400">128 GB</td>
-              <td class="p-3 text-emerald-400 font-bold">2 TB (2,048 GB)</td>
+              <td><strong>Max Physical RAM Support</strong></td>
+              <td>128 GB</td>
+              <td><strong>2 TB (2,048 GB)</strong></td>
             </tr>
             <tr>
-              <td class="p-3 font-semibold">Max Physical CPU Sockets</td>
-              <td class="p-3 text-amber-400">1 CPU Socket</td>
-              <td class="p-3 text-emerald-400 font-bold">2 CPU Sockets</td>
+              <td><strong>Max Physical CPU Sockets</strong></td>
+              <td>1 Socket</td>
+              <td><strong>2 Sockets</strong></td>
             </tr>
             <tr>
-              <td class="p-3 font-semibold">Max Logical CPU Cores</td>
-              <td class="p-3">64 Cores</td>
-              <td class="p-3 font-bold text-emerald-400">128 Cores</td>
+              <td><strong>Max Logical CPU Cores</strong></td>
+              <td>64 Cores</td>
+              <td><strong>128 Cores</strong></td>
             </tr>
             <tr>
-              <td class="p-3 font-semibold">Local Offline Account Setup</td>
-              <td class="p-3 text-red-400">Restricted (MS Account Req.)</td>
-              <td class="p-3 text-emerald-400">Supported (Domain/Workgroup)</td>
+              <td><strong>Local Offline Account Setup</strong></td>
+              <td>Microsoft Account Required</td>
+              <td><strong>Supported (Local / Domain)</strong></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <h2 id="security-bitlocker-vs-device-encryption" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">2. Security: BitLocker vs Device Encryption</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="security-bitlocker-vs-device-encryption" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Security Architecture: BitLocker vs Device Encryption</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         Data protection is the paramount reason enterprise businesses enforce Windows 11 Pro:
       </p>
-      <ul class="list-disc pl-6 space-y-3 text-slate-300 mb-6">
+      <ul class="list-disc pl-6 space-y-3 text-slate-700 mb-6">
         <li><strong>Windows 11 Pro (BitLocker):</strong> Features military-grade AES-128 / AES-256 hardware volume encryption. Allows locking external thumb drives via <em>BitLocker To Go</em>, automated corporate key backup to Azure Active Directory, and pre-boot PIN security.</li>
         <li><strong>Windows 11 Home (Device Encryption):</strong> Only enables basic encryption if your device possesses a hardware TPM 2.0 and you are signed in with a personal Microsoft cloud account. It lacks removable USB drive encryption.</li>
       </ul>
 
-      <h2 id="virtualization-hyper-v-sandbox" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">3. Developer Virtualization: Hyper-V & Windows Sandbox</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="virtualization-hyper-v-sandbox" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Developer Virtualization: Hyper-V and Windows Sandbox</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         For software engineers and DevOps professionals, Windows 11 Pro is practically required:
       </p>
-      <ul class="list-disc pl-6 space-y-3 text-slate-300 mb-6">
+      <ul class="list-disc pl-6 space-y-3 text-slate-700 mb-6">
         <li><strong>Client Hyper-V:</strong> Native type-1 hypervisor allowing developers to run Linux virtual machines and Docker containers at hardware speeds without third-party tools.</li>
         <li><strong>Windows Sandbox:</strong> A temporary, disposable desktop environment that launches in seconds. When you finish testing an unverified script or suspicious file, closing the sandbox wipes all files permanently without risking your host OS.</li>
       </ul>
 
-      <h2 id="remote-desktop-hosting" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">4. Remote Desktop: Client vs Host Capabilities</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
+      <h2 id="remote-desktop-hosting" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Remote Desktop: Client vs Host Capabilities</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
         While Windows 11 Home users can initiate RDP connections to remote cloud servers, <strong>Home edition machines cannot accept inbound Remote Desktop connections</strong>. If you want to access your high-powered office workstation from a laptop while traveling, the workstation must run Windows 11 Pro.
       </p>
 
-      <h2 id="group-policy-domain-joining" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">5. Active Directory, Domain Joining & Group Policy (gpedit.msc)</h2>
-      <p class="text-slate-300 leading-relaxed mb-4">
-        IT administrators require granular control over telemetry, automated updates, and security restrictions. Windows 11 Pro provides full access to the Local Group Policy Editor (<code class="font-mono text-emerald-400 bg-slate-900 px-1.5 py-0.5 rounded text-xs">gpedit.msc</code>) and permits joining on-premise Windows Server Active Directory domains or Microsoft Entra ID (Azure AD).
+      <h2 id="group-policy-domain-joining" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Active Directory, Domain Joining and Group Policy (gpedit.msc)</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        IT administrators require granular control over telemetry, automated updates, and security restrictions. Windows 11 Pro provides full access to the Local Group Policy Editor (<code>gpedit.msc</code>) and permits joining on-premise Windows Server Active Directory domains or Microsoft Entra ID (Azure AD).
       </p>
 
-      <h2 id="verdict-who-should-upgrade" class="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24">6. The Verdict: Who Should Upgrade?</h2>
-      <ul class="list-disc pl-6 space-y-2 text-slate-300 mb-6">
+      <h2 id="verdict-who-should-upgrade" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">The Verdict: Which Edition Fits Your Workload?</h2>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
         <li><strong>Stay on Home:</strong> Casual users, students, and pure gaming PCs where local virtualization, BitLocker USB encryption, and enterprise domain controls are unnecessary.</li>
         <li><strong>Upgrade to Pro:</strong> Developers running Docker/WSL2, remote employees needing inbound RDP host access, and businesses requiring compliance and BitLocker drive security.</li>
       </ul>
