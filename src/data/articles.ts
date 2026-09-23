@@ -507,6 +507,184 @@ End Sub</code></pre>
         <li><strong>Upgrade to Pro:</strong> Developers running Docker/WSL2, remote employees needing inbound RDP host access, and businesses requiring compliance and BitLocker drive security.</li>
       </ul>
     `
+  },
+  {
+    slug: "linux-file-permissions-chmod-chown",
+    title: "Linux File Permissions Explained: chmod, chown & Octal Notation Guide",
+    headline: "Linux File Permissions Explained: chmod, chown & Octal Notation",
+    excerpt: "Demystifying Linux security, user groups, and file access modes. A complete runbook covering rwx flags, octal calculation, recursive chown, and secure umask defaults.",
+    categorySlug: "cloud-infrastructure",
+    categoryName: "Cloud & Infrastructure",
+    authorId: "marcus-vance",
+    publishedAt: "2026-09-19T10:00:00Z",
+    updatedAt: "2026-09-23T11:00:00Z",
+    readingTimeMinutes: 8,
+    difficulty: "Intermediate",
+    primaryKeyword: "linux file permissions",
+    primaryVolume: 1200,
+    secondaryKeywords: [
+      "chmod command in linux",
+      "chown command in linux",
+      "chmod 755 vs 644",
+      "octal notation linux permissions",
+    ],
+    combinedVolume: 18500,
+    featured: false,
+    coverImage: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=1200&h=630&q=80",
+    tableOfContents: [
+      { id: "understanding-linux-permission-structure", title: "Understanding the rwx Permission Matrix", level: 2 },
+      { id: "octal-notation-binary-math", title: "Octal Notation Decoded (Read=4, Write=2, Execute=1)", level: 2 },
+      { id: "standard-permissions-table", title: "Standard Production Permission Presets", level: 2 },
+      { id: "using-chmod-command", title: "Modifying Access with the chmod Command", level: 2 },
+      { id: "using-chown-command", title: "Changing Ownership with the chown Command", level: 2 },
+      { id: "troubleshooting-permission-denied", title: "Troubleshooting Permission Denied Errors", level: 2 },
+      { id: "frequently-asked-questions", title: "Frequently Asked Questions", level: 2 },
+    ],
+    faqs: [
+      {
+        question: "What is the difference between chmod 755 and chmod 644?",
+        answer: "chmod 755 grants the file owner read, write, and execute permissions (7), while group and other users get read and execute permissions (5). It is standard for executable scripts and directories. chmod 644 gives the owner read and write (6), while everyone else only gets read (4). It is standard for regular non-executable files like HTML, PHP, or config files.",
+      },
+      {
+        question: "How do I change permissions recursively on directories only?",
+        answer: "To avoid making your files accidentally executable while fixing directory traversal, use find: 'find /var/www -type d -exec chmod 755 {} +'. For files, use 'find /var/www -type f -exec chmod 644 {} +'.",
+      },
+      {
+        question: "What does 'chown -R www-data:www-data' do on Linux servers?",
+        answer: "It recursively sets both user ownership and group ownership to www-data (the standard system user account for Apache and Nginx web servers on Debian/Ubuntu), allowing the web server daemon to read and write required assets.",
+      },
+    ],
+    contentHtml: `
+      <p class="text-slate-700 leading-relaxed mb-6 font-medium">
+        On Linux and Unix-like operating systems, the file permission model is the primary barrier defending your system binaries, configuration files, and web assets from unauthorized modification or execution.
+      </p>
+
+      <h2 id="understanding-linux-permission-structure" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Understanding the rwx Permission Matrix</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        When you execute <code>ls -l</code> inside any terminal, the first column displays a 10-character string such as <code>-rwxr-xr--</code>. Here is how that string breaks down:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+        <li><strong>Character 1 (File Type):</strong> <code>-</code> indicates a standard file, <code>d</code> indicates a directory, and <code>l</code> indicates a symbolic link.</li>
+        <li><strong>Characters 2-4 (User/Owner):</strong> The permissions granted to the user who owns the file.</li>
+        <li><strong>Characters 5-7 (Group):</strong> The permissions granted to members of the file's assigned group.</li>
+        <li><strong>Characters 8-10 (Others):</strong> The permissions granted to every other user on the machine.</li>
+      </ul>
+
+      <h2 id="octal-notation-binary-math" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Octal Notation Decoded (Read=4, Write=2, Execute=1)</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Octal notation assigns a numeric value to each fundamental permission flag:
+      </p>
+      <div class="overflow-x-auto my-6">
+        <table>
+          <thead>
+            <tr>
+              <th>Permission Flag</th>
+              <th>Letter Symbol</th>
+              <th>Octal Value</th>
+              <th>Operational Capability</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Read</strong></td>
+              <td><code>r</code></td>
+              <td><strong>4</strong></td>
+              <td>Open and view file content; list directory files</td>
+            </tr>
+            <tr>
+              <td><strong>Write</strong></td>
+              <td><code>w</code></td>
+              <td><strong>2</strong></td>
+              <td>Modify, append, or delete file; create/delete files in directory</td>
+            </tr>
+            <tr>
+              <td><strong>Execute</strong></td>
+              <td><code>x</code></td>
+              <td><strong>1</strong></td>
+              <td>Run file as a compiled binary or script; enter/traverse directory (cd)</td>
+            </tr>
+            <tr>
+              <td><strong>No Permission</strong></td>
+              <td><code>-</code></td>
+              <td><strong>0</strong></td>
+              <td>Access explicitly denied</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="standard-permissions-table" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Standard Production Permission Presets</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Memorize these four industry-standard presets used across 99% of cloud server deployments:
+      </p>
+      <div class="overflow-x-auto my-6">
+        <table>
+          <thead>
+            <tr>
+              <th>Octal Code</th>
+              <th>Symbolic Representation</th>
+              <th>Standard Production Use Case</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>600</strong></td>
+              <td><code>-rw-------</code></td>
+              <td>SSH private keys (<code>id_rsa</code>, <code>id_ed25519</code>), database credentials, environment files (<code>.env</code>)</td>
+            </tr>
+            <tr>
+              <td><strong>644</strong></td>
+              <td><code>-rw-r--r--</code></td>
+              <td>Static web assets (HTML, CSS, images), application source code, Nginx/Apache configuration files</td>
+            </tr>
+            <tr>
+              <td><strong>700</strong></td>
+              <td><code>drwx------</code></td>
+              <td>User SSH directory (<code>~/.ssh</code>), root backup folders, sensitive cron scripts</td>
+            </tr>
+            <tr>
+              <td><strong>755</strong></td>
+              <td><code>drwxr-xr-x</code></td>
+              <td>Public web root folders (<code>/var/www/html</code>), system binaries (<code>/usr/local/bin</code>), executable Bash runbooks</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="using-chmod-command" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Modifying Access with the chmod Command</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        The <code>chmod</code> (change mode) command modifies permission bits using either octal numbers or symbolic syntax:
+      </p>
+      <pre><code># Set secure read/write owner-only permissions on SSH key
+chmod 600 ~/.ssh/id_ed25519
+
+# Make a custom shell script executable by anyone
+chmod +x /usr/local/bin/backup-postgres.sh
+
+# Recursively fix web root without corrupting files
+find /var/www/html -type d -exec chmod 755 {} +
+find /var/www/html -type f -exec chmod 644 {} +</code></pre>
+
+      <h2 id="using-chown-command" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Changing Ownership with the chown Command</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Permissions only work when files belong to the correct user and group. The <code>chown</code> (change owner) command reassigns ownership:
+      </p>
+      <pre><code># Assign ownership of web root to Nginx runtime user and group
+sudo chown -R www-data:www-data /var/www/html
+
+# Change owner only, preserving existing group assignment
+sudo chown deployer /opt/applications/api-server</code></pre>
+
+      <h2 id="troubleshooting-permission-denied" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Troubleshooting Permission Denied Errors</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        When an application throws <code>EACCES: permission denied</code> or <code>403 Forbidden</code>, follow this systematic diagnostic checklist:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+        <li><strong>Missing Execute on Parent Directory:</strong> Even if a file is <code>644</code>, if any parent directory lacks <code>x</code> (execute) permission for the executing user, Linux cannot traverse into the directory to read the file.</li>
+        <li><strong>SELinux or AppArmor Enforcing:</strong> On RHEL, CentOS, or Ubuntu with strict AppArmor profiles, filesystem permissions may be overridden by security context labels. Check audit logs with <code>ausearch -m avc -ts recent</code>.</li>
+        <li><strong>Immutable Bit Set:</strong> If even root cannot edit a file, verify whether the immutable flag is set using <code>lsattr filename</code>, and remove it with <code>chattr -i filename</code>.</li>
+      </ul>
+    `
   }
 ];
 

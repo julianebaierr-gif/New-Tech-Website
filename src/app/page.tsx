@@ -1,377 +1,269 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/siteConfig";
-import { articles, getFeaturedArticles } from "@/data/articles";
+import { articles } from "@/data/articles";
 
 export default function HomePage() {
-  const featured = getFeaturedArticles()[0] || articles[0];
-  const secondaryLead = articles.find((a) => a.slug === "aws-ec2-instance-types-explained") || articles[1];
-  const regularArticles = articles.filter((a) => a.slug !== featured.slug && a.slug !== secondaryLead.slug);
-
-  // Quick jump popular runbooks for immediate reader engagement
-  const trendingGuides = [
-    { title: "Excel Deduplication: 4 Non-Destructive Methods", slug: "how-to-remove-duplicates-in-excel", category: "Excel Automation" },
-    { title: "AWS EC2 Sizing: Choosing Between c7g vs m6i", slug: "aws-ec2-instance-types-explained", category: "Cloud Architecture" },
-    { title: "Why ChatGPT Throttles: API & Browser Fixes", slug: "why-is-chatgpt-so-slow", category: "AI Tooling" },
-    { title: "Windows 11 Pro vs Home: BitLocker & RAM Limits", slug: "windows-11-pro-vs-home", category: "OS & Systems" },
-  ];
-
-  // Category direct highlights mapping
-  const categoryHighlights: Record<string, { topArticleSlug: string; topArticleTitle: string; icon: string }> = {
-    "data-excel-automation": {
-      topArticleSlug: "how-to-remove-duplicates-in-excel",
-      topArticleTitle: "Enterprise Deduplication & Cleanup",
-      icon: "M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z",
-    },
-    "cloud-infrastructure": {
-      topArticleSlug: "aws-ec2-instance-types-explained",
-      topArticleTitle: "AWS EC2 Instance Sizing & Pricing",
-      icon: "M5.5 16a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 16h-8z",
-    },
-    "ai-developer-tools": {
-      topArticleSlug: "why-is-chatgpt-so-slow",
-      topArticleTitle: "Diagnosing LLM Response Bottlenecks",
-      icon: "M13 10V3L4 14h7v7l9-11h-7z",
-    },
-    "os-systems": {
-      topArticleSlug: "windows-11-pro-vs-home",
-      topArticleTitle: "Windows 11 Enterprise Hardware Limits",
-      icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
-    },
-  };
+  // Top 5 Hero Grid articles: 1 main lead + 4 companion grid cards
+  const leadArticle = articles[0]; // Excel Deduplication
+  const topFourArticles = articles.slice(1, 5); // AWS EC2, ChatGPT, Windows 11, Linux permissions
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      {/* Editorial Masthead & Value Proposition */}
-      <div className="pb-8 mb-8 border-b border-slate-200">
-        <div className="max-w-4xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/80 text-blue-800 text-xs font-semibold">
-            <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-            Peer-Reviewed Engineering Field Notes
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            Production-Tested Runbooks for Systems, Cloud &amp; Automation
-          </h1>
-          <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-3xl">
-            Detailed technical tutorials, configuration benchmarks, and battle-tested scripts written by practicing systems engineers.
-          </p>
-        </div>
-
-        {/* Quick-Jump Trending Ticker (Instant Click Triggers) */}
-        <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center gap-3 text-xs">
-          <span className="font-bold text-slate-900 uppercase tracking-wider text-[11px] shrink-0 flex items-center gap-1.5 text-blue-700">
-            <span>⚡ Essential Guides:</span>
-          </span>
-          <div className="flex flex-wrap items-center gap-2">
-            {trendingGuides.map((guide) => (
-              <Link
-                key={guide.slug}
-                href={`/articles/${guide.slug}`}
-                className="px-3 py-1 rounded-lg bg-slate-100/80 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 border border-slate-200/80 text-slate-700 transition-all font-medium inline-flex items-center gap-1.5"
-              >
-                <span>{guide.title}</span>
-                <span className="text-slate-400 group-hover:text-blue-500">→</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Hero Magazine Section (Featured Lead + Editor's Selection) */}
-      <section className="mb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Main Featured Lead Story */}
-          <div className="lg:col-span-8 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 publication-card shadow-xs">
-            <div className="relative h-64 sm:h-84 w-full rounded-xl overflow-hidden mb-6 border border-slate-100">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      {/* =========================================================================
+          TOP 5 MAGAZINE / BENTO HERO GRID (Inspired by The Verge & Ars Technica)
+          Exactly 5 items: 1 prominent lead story + 4 complementary runbooks
+         ========================================================================= */}
+      <section className="mb-14">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          {/* Main Lead Story (Left 7 Cols on desktop, full height card) */}
+          <div className="lg:col-span-7">
+            <article className="relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 group h-full min-h-[440px] sm:min-h-[500px] flex flex-col justify-end shadow-xs hover:border-slate-300 transition-all">
+              {/* Background Image with Ambient Zoom */}
               <img
-                src={featured.coverImage}
-                alt={featured.title}
-                className="object-cover w-full h-full hover:scale-[1.02] transition-transform duration-500"
+                src={leadArticle.coverImage}
+                alt={leadArticle.title}
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-75"
               />
-              <span className="absolute top-4 left-4 text-xs font-bold px-3 py-1 rounded-full bg-white/95 text-blue-900 border border-slate-200 shadow-sm backdrop-blur-sm">
-                Featured Lead Guide
-              </span>
-            </div>
+              {/* Dark Gradient Overlay for Maximum Readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
 
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-xs text-slate-500 font-mono">
-                <span className="text-blue-700 font-semibold">{featured.categoryName}</span>
-                <span>•</span>
-                <span>{featured.readingTimeMinutes} min read</span>
-                <span>•</span>
-                <span>Updated recently</span>
+              {/* Top Floating Badge */}
+              <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-600 text-white shadow-sm">
+                  {leadArticle.categoryName}
+                </span>
+                <span className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-slate-900/80 text-slate-200 border border-slate-700/80 backdrop-blur-sm">
+                  Featured Runbook
+                </span>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug hover:text-blue-600 transition-colors">
-                <Link href={`/articles/${featured.slug}`}>
-                  {featured.title}
-                </Link>
-              </h2>
-
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                {featured.excerpt}
-              </p>
-
-              {/* Inside this Guide: Concrete Takeaways that compel clicking */}
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/90 space-y-2">
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-700">
-                  Key Technical Methods Covered:
-                </p>
-                <ul className="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
-                  <li>
-                    <strong>Visual Audits:</strong> Highlighting single vs multiple duplicates via Conditional Formatting.
-                  </li>
-                  <li>
-                    <strong>Dynamic Formulas:</strong> Extracting unique arrays dynamically with <code className="bg-slate-200/80 px-1 py-0.5 rounded text-slate-800 font-mono">=UNIQUE()</code>.
-                  </li>
-                  <li>
-                    <strong>Batch Automation:</strong> Fast, non-destructive VBA subroutines for 50,000+ row datasets.
-                  </li>
-                </ul>
-              </div>
-
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 text-xs font-mono">
-                    ER
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-slate-900">Elena Rostova</p>
-                    <p className="text-[11px] text-slate-500">Senior Data Operations Engineer</p>
-                  </div>
+              {/* Bottom Card Content */}
+              <div className="relative z-10 p-6 sm:p-8 space-y-3">
+                <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
+                  <span>{leadArticle.readingTimeMinutes} min read</span>
+                  <span>•</span>
+                  <span>Updated recently</span>
                 </div>
 
-                <Link
-                  href={`/articles/${featured.slug}`}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-all shadow-xs"
-                >
-                  Read Full Guide <span>→</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Secondary Spotlight Story */}
-          <div className="lg:col-span-4 rounded-2xl border border-slate-200 bg-white p-6 publication-card shadow-xs flex flex-col justify-between h-full">
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-blue-700">
-                  Editor&#39;s Selection
-                </span>
-                <span className="text-[11px] font-mono text-slate-500">
-                  {secondaryLead.readingTimeMinutes} min read
-                </span>
-              </div>
-
-              <div className="relative h-44 w-full rounded-xl overflow-hidden mb-5 border border-slate-100">
-                <img
-                  src={secondaryLead.coverImage}
-                  alt={secondaryLead.title}
-                  className="object-cover w-full h-full hover:scale-[1.02] transition-transform duration-500"
-                />
-              </div>
-
-              <div className="space-y-3">
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
-                  {secondaryLead.categoryName}
-                </span>
-
-                <h3 className="text-lg font-bold text-slate-900 hover:text-blue-600 transition-colors leading-snug">
-                  <Link href={`/articles/${secondaryLead.slug}`}>
-                    {secondaryLead.headline}
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight group-hover:text-blue-300 transition-colors">
+                  <Link href={`/articles/${leadArticle.slug}`}>
+                    {leadArticle.title}
                   </Link>
-                </h3>
+                </h1>
 
-                <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
-                  {secondaryLead.excerpt}
+                <p className="text-slate-300 text-sm sm:text-base leading-relaxed line-clamp-2 max-w-2xl">
+                  {leadArticle.excerpt}
                 </p>
 
-                {/* Practical Takeaway box */}
-                <div className="p-3 rounded-lg bg-blue-50/60 border border-blue-100 text-xs text-blue-950 space-y-1">
-                  <p className="font-semibold text-blue-900">Why read this guide:</p>
-                  <p className="text-blue-900/80 leading-relaxed">
-                    Stop overpaying for compute. Benchmark vCPU-to-RAM ratios and see when ARM Graviton instances cut 20% off your AWS bill.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-5 mt-5 border-t border-slate-100 flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">By Marcus Vance</span>
-              <Link
-                href={`/articles/${secondaryLead.slug}`}
-                className="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1"
-              >
-                Read Sizing Guide <span>→</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Solution Hubs & Categories (With Direct Article Links) */}
-      <section className="mb-16">
-        <div className="flex items-center justify-between mb-6 pb-2 border-b border-slate-200">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-              Explore by Technical Domain
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Direct access to field tutorials across infrastructure, automation, and core operating systems.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {siteConfig.categories.map((cat) => {
-            const highlight = categoryHighlights[cat.slug];
-            return (
-              <div
-                key={cat.slug}
-                className="p-5 rounded-2xl border border-slate-200 bg-white hover:border-blue-300 publication-card shadow-xs flex flex-col justify-between"
-              >
-                <div>
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center mb-4">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={highlight?.icon || "M4 6h16M4 12h16M4 18h16"} />
-                    </svg>
+                <div className="pt-4 flex items-center justify-between border-t border-slate-700/60">
+                  <div className="flex items-center gap-2.5 text-xs text-slate-300 font-medium">
+                    <span className="w-7 h-7 rounded-full bg-blue-600/90 flex items-center justify-center text-white font-mono font-bold text-xs">
+                      ER
+                    </span>
+                    <span>By Elena Rostova</span>
                   </div>
 
-                  <h3 className="text-base font-bold text-slate-900 mb-1.5 hover:text-blue-600 transition-colors">
-                    <Link href={`/category/${cat.slug}`}>
-                      {cat.name}
-                    </Link>
-                  </h3>
-                  <p className="text-xs text-slate-500 leading-relaxed mb-4">
-                    {cat.description}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-slate-100 space-y-2">
-                  {highlight && (
-                    <div className="text-xs">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 block mb-0.5">
-                        Essential Runbook:
-                      </span>
-                      <Link
-                        href={`/articles/${highlight.topArticleSlug}`}
-                        className="font-medium text-slate-800 hover:text-blue-600 transition-colors line-clamp-1"
-                      >
-                        {highlight.topArticleTitle} →
-                      </Link>
-                    </div>
-                  )}
-
-                  <div className="pt-1">
-                    <Link
-                      href={`/category/${cat.slug}`}
-                      className="text-xs font-semibold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1"
-                    >
-                      View All Guides <span>→</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Latest Technical Publications Grid */}
-      <section className="mb-16">
-        <div className="mb-8 pb-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
-          <div>
-            <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-              All Technical Guides &amp; Benchmarks
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Field-tested implementations with full terminal snippets and architectural tables.
-            </p>
-          </div>
-          <span className="text-xs font-mono text-slate-500">
-            {articles.length} verified publications
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((art) => (
-            <article
-              key={art.slug}
-              className="flex flex-col rounded-2xl border border-slate-200 bg-white publication-card shadow-xs overflow-hidden"
-            >
-              <div className="relative h-48 w-full overflow-hidden border-b border-slate-100">
-                <img
-                  src={art.coverImage}
-                  alt={art.title}
-                  className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
-                />
-                <span className="absolute top-3 left-3 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white/95 text-slate-800 border border-slate-200 shadow-xs backdrop-blur-sm">
-                  {art.categoryName}
-                </span>
-                <span className="absolute bottom-3 right-3 text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-900/80 text-white backdrop-blur-xs">
-                  {art.readingTimeMinutes} min read
-                </span>
-              </div>
-
-              <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                <div className="space-y-2.5">
-                  <h3 className="text-base font-bold text-slate-900 hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
-                    <Link href={`/articles/${art.slug}`}>
-                      {art.headline}
-                    </Link>
-                  </h3>
-
-                  <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">
-                    {art.excerpt}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-xs text-slate-500 font-medium">
-                    By {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "SysOps Team"}
-                  </span>
                   <Link
-                    href={`/articles/${art.slug}`}
-                    className="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1"
+                    href={`/articles/${leadArticle.slug}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg transition-all shadow-sm"
                   >
                     Read Guide <span>→</span>
                   </Link>
                 </div>
               </div>
             </article>
+          </div>
+
+          {/* 4-Story Sub-Grid (Right 5 Cols: 2x2 Grid) */}
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {topFourArticles.map((art) => (
+              <article
+                key={art.slug}
+                className="rounded-xl border border-slate-200 bg-white hover:border-blue-400 publication-card shadow-xs overflow-hidden flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="relative h-32 w-full overflow-hidden border-b border-slate-100">
+                    <img
+                      src={art.coverImage}
+                      alt={art.title}
+                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <span className="absolute top-2 left-2 text-[10px] font-semibold px-2 py-0.5 rounded bg-white/95 text-slate-800 border border-slate-200 shadow-2xs backdrop-blur-xs">
+                      {art.categoryName}
+                    </span>
+                  </div>
+
+                  <div className="p-4 space-y-2">
+                    <div className="text-[11px] font-mono text-slate-500 flex items-center justify-between">
+                      <span>{art.readingTimeMinutes} min read</span>
+                    </div>
+
+                    <h2 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                      <Link href={`/articles/${art.slug}`}>
+                        {art.headline}
+                      </Link>
+                    </h2>
+
+                    <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">
+                      {art.excerpt}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="px-4 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <span className="text-[11px] text-slate-500 font-medium truncate max-w-[120px]">
+                    By {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "SysOps Team"}
+                  </span>
+                  <Link
+                    href={`/articles/${art.slug}`}
+                    className="font-bold text-blue-600 hover:text-blue-700 text-xs inline-flex items-center gap-0.5 shrink-0"
+                  >
+                    Read →
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          TOPIC QUICK-FILTERS (Streamlined Category Bar)
+         ========================================================================= */}
+      <section className="mb-12 py-3 px-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2 font-bold text-slate-900">
+          <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+          <span>Browse Topics:</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {siteConfig.categories.map((cat) => (
+            <Link
+              key={cat.slug}
+              href={`/category/${cat.slug}`}
+              className="px-3 py-1 rounded-md bg-white border border-slate-200 text-slate-700 hover:text-blue-600 hover:border-blue-300 font-medium transition-all"
+            >
+              {cat.name}
+            </Link>
           ))}
         </div>
       </section>
 
-      {/* Engineering Standards (Genuine Value Strip) */}
-      <section className="rounded-2xl border border-slate-200 bg-slate-50/80 p-8 sm:p-10 mb-8">
-        <div className="max-w-2xl mb-8">
-          <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-            How SysOps Journal Maintains Technical Quality
-          </h2>
-          <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-            Every publication adheres to strict reproducibility standards designed for active infrastructure engineers.
-          </p>
-        </div>
+      {/* =========================================================================
+          EDITORIAL 2-COLUMN SECTION (Main Feed + Curated Sidebar)
+          Standard layout used by Ars Technica, The Verge, Smashing Magazine
+         ========================================================================= */}
+      <section className="mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          {/* Main Feed Column (8 Cols) */}
+          <div className="lg:col-span-8 space-y-6">
+            <div className="pb-3 border-b border-slate-200 flex items-center justify-between">
+              <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
+                Latest Technical Runbooks
+              </h2>
+              <span className="text-xs font-mono text-slate-500">
+                {articles.length} verified publications
+              </span>
+            </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs text-slate-600">
-          <div className="space-y-1.5 p-4 rounded-xl bg-white border border-slate-200">
-            <h3 className="font-bold text-slate-900 text-sm">Tested in Live Sandboxes</h3>
-            <p className="leading-relaxed text-slate-500">
-              Commands, configurations, and scripts are executed in clean cloud VMs to verify edge cases and flags.
-            </p>
+            <div className="divide-y divide-slate-200">
+              {articles.map((art) => (
+                <article
+                  key={art.slug}
+                  className="py-6 first:pt-0 flex flex-col sm:flex-row gap-5 items-start group"
+                >
+                  <div className="relative w-full sm:w-56 h-36 rounded-xl overflow-hidden border border-slate-200 shrink-0">
+                    <img
+                      src={art.coverImage}
+                      alt={art.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <span className="absolute top-2 left-2 text-[10px] font-semibold px-2 py-0.5 rounded bg-white/95 text-slate-800 border border-slate-200 shadow-xs">
+                      {art.categoryName}
+                    </span>
+                  </div>
+
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center gap-2 text-xs font-mono text-slate-500">
+                      <span>{art.readingTimeMinutes} min read</span>
+                      <span>•</span>
+                      <span>By {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "SysOps Team"}</span>
+                    </div>
+
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-snug">
+                      <Link href={`/articles/${art.slug}`}>
+                        {art.headline}
+                      </Link>
+                    </h3>
+
+                    <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">
+                      {art.excerpt}
+                    </p>
+
+                    <div className="pt-2 flex items-center justify-between">
+                      <Link
+                        href={`/articles/${art.slug}`}
+                        className="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1"
+                      >
+                        Read Full Runbook <span>→</span>
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
-          <div className="space-y-1.5 p-4 rounded-xl bg-white border border-slate-200">
-            <h3 className="font-bold text-slate-900 text-sm">Practical Depth First</h3>
-            <p className="leading-relaxed text-slate-500">
-              We focus on actionable runbooks, architectural decision trade-offs, and non-destructive procedures.
-            </p>
-          </div>
-          <div className="space-y-1.5 p-4 rounded-xl bg-white border border-slate-200">
-            <h3 className="font-bold text-slate-900 text-sm">Regularly Maintained</h3>
-            <p className="leading-relaxed text-slate-500">
-              When AWS, Linux distributions, or APIs introduce breaking changes, articles are updated and tagged.
-            </p>
-          </div>
+
+          {/* Right Sidebar Column (4 Cols) */}
+          <aside className="lg:col-span-4 space-y-6">
+            {/* Curated Most Referenced Box */}
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50 space-y-4">
+              <div className="flex items-center gap-2 pb-3 border-b border-slate-200">
+                <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-mono">
+                  Essential Benchmarks
+                </h3>
+              </div>
+
+              <div className="space-y-3.5">
+                {articles.map((art, idx) => (
+                  <div key={art.slug} className="flex items-start gap-3 group">
+                    <span className="text-base font-extrabold font-mono text-slate-300 group-hover:text-blue-600 transition-colors shrink-0">
+                      0{idx + 1}
+                    </span>
+                    <div className="space-y-0.5">
+                      <Link
+                        href={`/articles/${art.slug}`}
+                        className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug"
+                      >
+                        {art.headline}
+                      </Link>
+                      <p className="text-[11px] text-slate-500 font-mono">
+                        {art.readingTimeMinutes} min read
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Production Standards Box */}
+            <div className="p-6 rounded-2xl border border-slate-200 bg-white space-y-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-mono">
+                Editorial Benchmark Promise
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                SysOps Journal runbooks are executed in isolated staging environments before publication. Every CLI command and configuration preset is verified for production safety.
+              </p>
+              <div className="pt-2">
+                <Link
+                  href="/editorial-policy"
+                  className="text-xs font-semibold text-blue-600 hover:text-blue-700 underline underline-offset-4"
+                >
+                  Review Our Testing Protocol ↗
+                </Link>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
     </div>
