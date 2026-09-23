@@ -20,21 +20,21 @@ export interface AuthorConfig {
 }
 
 export const siteConfig = {
-  name: "SysOps Journal",
-  tagline: "Enterprise Systems, Cloud Architecture & Data Automation",
-  description: "Peer-reviewed technical guides, cloud architecture blueprints, and enterprise automation tutorials for DevOps engineers and system administrators.",
+  name: "TechOps Wire",
+  tagline: "Cloud Architecture, Spreadsheets & Modern Systems",
+  description: "Peer-reviewed technical guides, cloud infrastructure comparisons, spreadsheet automation, and modern developer workflows.",
   // When deploying on Vercel preview, set isStaging to true. 
   // Set to false when custom domain is connected to enable full production indexing!
   isStaging: false, // Set to true if testing on .vercel.app, false for production
-  productionUrl: "https://sysopsjournal.com",
-  stagingUrl: "https://sysops-journal.vercel.app",
+  productionUrl: "https://techopswire.com",
+  stagingUrl: "https://techopswire.vercel.app",
   
   get baseUrl() {
     return this.isStaging ? this.stagingUrl : this.productionUrl;
   },
 
   editorialStandardsUrl: "/editorial-policy",
-  contactEmail: "editorial@sysopsjournal.com",
+  contactEmail: "editorial@techopswire.com",
   foundedYear: 2026,
 
   // 4 Core High-Authority Silos

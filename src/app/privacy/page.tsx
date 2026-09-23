@@ -3,8 +3,8 @@ import { siteConfig } from "@/lib/siteConfig";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — SysOps Journal",
-  description: "SysOps Journal privacy policy regarding cookies, analytics, and data retention.",
+  title: "Privacy Policy — TechOps Wire",
+  description: "TechOps Wire privacy policy regarding cookies, analytics, and data retention.",
 };
 
 export default function PrivacyPage() {
@@ -28,7 +28,7 @@ export default function PrivacyPage() {
         <section className="space-y-2">
           <h2 className="text-lg font-bold text-slate-900 tracking-tight">Information We Collect</h2>
           <p>
-            SysOps Journal operates as an open technical publication. We do not require registration or personal accounts to read articles, tutorials, or architecture comparisons.
+            TechOps Wire operates as an open technical publication. We do not require registration or personal accounts to read articles, tutorials, or architecture comparisons.
           </p>
           <p>
             When you optionally subscribe to technical dispatches or contact our editorial staff via email, we collect only the email address and communication details you provide voluntarily.

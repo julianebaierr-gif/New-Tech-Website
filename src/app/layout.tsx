@@ -73,9 +73,9 @@ export default function RootLayout({
         "url": siteConfig.baseUrl,
         "logo": `${siteConfig.baseUrl}/logo.png`,
         "sameAs": [
-          "https://twitter.com/sysopsjournal",
-          "https://github.com/sysopsjournal",
-          "https://linkedin.com/company/sysopsjournal",
+          "https://twitter.com/techopswire",
+          "https://github.com/techopswire",
+          "https://linkedin.com/company/techopswire",
         ],
         "contactPoint": {
           "@type": "ContactPoint",

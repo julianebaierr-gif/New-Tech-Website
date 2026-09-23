@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const url = `${siteConfig.baseUrl}/category/${category.slug}`;
 
   return {
-    title: `${category.name} Guides & Articles — SysOps Journal`,
+    title: `${category.name} Guides & Articles — ${siteConfig.name}`,
     description: category.description,
     alternates: {
       canonical: url,
@@ -145,7 +145,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                       {art.authorId === "elena-rostova" ? "ER" : "MV"}
                     </span>
                     <span className="text-slate-600 font-medium">
-                      {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "SysOps Team"}
+                      {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "TechOps Team"}
                     </span>
                   </div>
                   <Link

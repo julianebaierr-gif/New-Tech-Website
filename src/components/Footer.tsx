@@ -14,7 +14,7 @@ export function Footer() {
           <div className="md:col-span-1 space-y-3">
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white font-mono font-bold text-sm">
-                SJ
+                TW
               </div>
               <span className="font-bold text-slate-900 tracking-tight text-base">
                 {siteConfig.name}

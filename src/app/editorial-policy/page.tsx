@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Editorial & Fact-Checking Policy — SysOps Journal",
+  title: "Editorial & Fact-Checking Policy — TechOps Wire",
   description: "Our technical review process, live environment benchmarking methodology, and zero-compromise link integrity standards.",
 };
 
@@ -20,7 +20,7 @@ export default function EditorialPolicyPage() {
           Editorial &amp; Verification Standards
         </h1>
         <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
-          How SysOps Journal verifies code, tests server configurations, and maintains editorial independence.
+          How TechOps Wire verifies code, tests server configurations, and maintains editorial independence.
         </p>
       </header>
 
@@ -31,7 +31,7 @@ export default function EditorialPolicyPage() {
               Hands-on Sandbox Verification
             </h2>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Every command, CLI flag, and script published on SysOps Journal is tested in clean cloud environments (Ubuntu LTS, Debian, or AWS EC2) before editorial approval. We verify exit codes, error outputs, and rollback steps.
+              Every command, CLI flag, and script published on TechOps Wire is tested in clean cloud environments (Ubuntu LTS, Debian, or AWS EC2) before editorial approval. We verify exit codes, error outputs, and rollback steps.
             </p>
           </div>
 
@@ -49,7 +49,7 @@ export default function EditorialPolicyPage() {
               Strict Link Integrity
             </h2>
             <p className="text-xs text-slate-600 leading-relaxed">
-              SysOps Journal does not sell paid dofollow links or accept commercial guest placements. Outbound citations exist exclusively to reference authoritative technical documentation (RFC standards, official AWS/Microsoft manuals, Python PEPs).
+              TechOps Wire does not sell paid dofollow links or accept commercial guest placements. Outbound citations exist exclusively to reference authoritative technical documentation (RFC standards, official AWS/Microsoft manuals, Python PEPs).
             </p>
           </div>
 

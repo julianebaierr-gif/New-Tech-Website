@@ -3,8 +3,8 @@ import { siteConfig } from "@/lib/siteConfig";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Contact Editorial Staff — SysOps Journal",
-  description: "Get in touch with the editorial team at SysOps Journal for technical corrections, feedback, and enterprise inquiries.",
+  title: "Contact Editorial Staff — TechOps Wire",
+  description: "Get in touch with the editorial team at TechOps Wire for technical corrections, feedback, and enterprise inquiries.",
 };
 
 export default function ContactPage() {

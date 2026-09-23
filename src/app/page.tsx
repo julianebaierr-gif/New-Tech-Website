@@ -184,7 +184,7 @@ export default function HomePage() {
                       {art.authorId === "elena-rostova" ? "ER" : "MV"}
                     </span>
                     <span className="text-slate-600 font-medium">
-                      {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "SysOps Team"}
+                      {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "TechOps Team"}
                     </span>
                   </div>
                   <Link

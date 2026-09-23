@@ -4,8 +4,8 @@ import { siteConfig } from "@/lib/siteConfig";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "About SysOps Journal — Engineering Staff & Mission",
-  description: "Learn about SysOps Journal, our technical editorial staff, and our commitment to peer-reviewed, reproducible cloud infrastructure and data engineering content.",
+  title: "About TechOps Wire — Engineering Staff & Mission",
+  description: "Learn about TechOps Wire, our technical editorial staff, and our commitment to peer-reviewed, reproducible cloud infrastructure, data automation, and developer tutorials.",
 };
 
 export default function AboutPage() {
@@ -18,10 +18,10 @@ export default function AboutPage() {
           Publication Staff &amp; Mission
         </span>
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
-          About SysOps Journal
+          About TechOps Wire
         </h1>
         <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
-          An independent technical publication covering cloud architecture, Linux systems administration, and enterprise data automation.
+          An independent technical publication covering cloud architecture, modern developer tools, and enterprise data automation.
         </p>
       </header>
 
@@ -35,7 +35,7 @@ export default function AboutPage() {
             Modern infrastructure changes rapidly. Engineering teams regularly lose productive hours deciphering outdated blog posts, conflicting stack overflow answers, and half-baked tutorials that fail on real servers.
           </p>
           <p>
-            SysOps Journal was founded to provide reliable, non-destructive, and battle-tested runbooks. Every command, script, and configuration guide is validated in isolated environments before release.
+            TechOps Wire was founded to provide reliable, non-destructive, and battle-tested guides. Every command, script, and configuration tutorial is validated in isolated environments before release.
           </p>
         </section>
 

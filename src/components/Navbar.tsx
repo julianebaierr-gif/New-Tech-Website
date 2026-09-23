@@ -10,14 +10,14 @@ export function Navbar() {
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-white font-mono font-bold text-sm shadow-xs group-hover:bg-blue-600 transition-colors">
-                SJ
+                TW
               </div>
               <div>
                 <span className="font-extrabold text-slate-900 tracking-tight text-lg group-hover:text-blue-600 transition-colors">
                   {siteConfig.name}
                 </span>
                 <span className="hidden lg:block text-[11px] text-slate-500 font-sans tracking-normal -mt-0.5">
-                  Systems &amp; Automation
+                  Cloud, Automation &amp; Systems
                 </span>
               </div>
             </Link>

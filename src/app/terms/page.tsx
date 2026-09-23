@@ -3,8 +3,8 @@ import { siteConfig } from "@/lib/siteConfig";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Terms of Use — SysOps Journal",
-  description: "Terms of use and disclaimer for tutorials and code examples on SysOps Journal.",
+  title: "Terms of Use — TechOps Wire",
+  description: "Terms of use and disclaimer for tutorials and code examples on TechOps Wire.",
 };
 
 export default function TermsPage() {
@@ -28,14 +28,14 @@ export default function TermsPage() {
         <section className="space-y-2">
           <h2 className="text-lg font-bold text-slate-900 tracking-tight">Technical Disclaimer</h2>
           <p>
-            Tutorials, code snippets, and architecture configurations provided on SysOps Journal are intended for educational and reference purposes. Readers are advised to test scripts and configurations in staging or isolated test environments before applying them to production systems.
+            Tutorials, code snippets, and architecture configurations provided on TechOps Wire are intended for educational and reference purposes. Readers are advised to test scripts and configurations in staging or isolated test environments before applying them to production systems.
           </p>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-lg font-bold text-slate-900 tracking-tight">Intellectual Property</h2>
           <p>
-            The original editorial content, illustrations, and analytical comparisons published on SysOps Journal are protected by copyright. Code snippets within tutorials are provided under standard open permissive terms for engineering use.
+            The original editorial content, illustrations, and analytical comparisons published on TechOps Wire are protected by copyright. Code snippets within tutorials are provided under standard open permissive terms for engineering use.
           </p>
         </section>
 
