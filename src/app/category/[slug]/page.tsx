@@ -4,6 +4,7 @@ import Link from "next/link";
 import { siteConfig } from "@/lib/siteConfig";
 import { getArticlesByCategory } from "@/data/articles";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -31,6 +32,17 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     alternates: {
       canonical: url,
     },
+    openGraph: {
+      title: `${category.name} Guides & Articles — ${siteConfig.name}`,
+      description: category.description,
+      url: url,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${category.name} Guides & Articles — ${siteConfig.name}`,
+      description: category.description,
+    },
   };
 }
 
@@ -43,9 +55,33 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   const categoryArticles = getArticlesByCategory(category.slug);
+  const categoryUrl = `${siteConfig.baseUrl}/category/${category.slug}`;
+
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": `${category.name} Guides & Articles`,
+    "description": category.description,
+    "url": categoryUrl,
+    "publisher": {
+      "@type": "Organization",
+      "name": siteConfig.name,
+      "url": siteConfig.baseUrl,
+    },
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": categoryArticles.map((art, idx) => ({
+        "@type": "ListItem",
+        "position": idx + 1,
+        "url": `${siteConfig.baseUrl}/articles/${art.slug}`,
+        "name": art.title,
+      })),
+    },
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <SchemaJsonLd schema={collectionSchema} />
       <Breadcrumbs
         crumbs={[{ label: category.name, href: `/category/${category.slug}` }]}
       />

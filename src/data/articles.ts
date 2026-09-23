@@ -475,10 +475,10 @@ End Sub</code></pre>
 
       <h2 id="security-bitlocker-vs-device-encryption" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Security Architecture: BitLocker vs Device Encryption</h2>
       <p class="text-slate-700 leading-relaxed mb-4">
-        Data protection is the paramount reason enterprise businesses enforce Windows 11 Pro:
+        Data security is the primary reason enterprise IT departments require Windows 11 Pro:
       </p>
       <ul class="list-disc pl-6 space-y-3 text-slate-700 mb-6">
-        <li><strong>Windows 11 Pro (BitLocker):</strong> Features military-grade AES-128 / AES-256 hardware volume encryption. Allows locking external thumb drives via <em>BitLocker To Go</em>, automated corporate key backup to Azure Active Directory, and pre-boot PIN security.</li>
+        <li><strong>Windows 11 Pro (BitLocker):</strong> Features standard AES-128 or AES-256 hardware volume encryption. Allows locking external thumb drives via <em>BitLocker To Go</em>, automated corporate key backup to Azure Active Directory, and pre-boot PIN security.</li>
         <li><strong>Windows 11 Home (Device Encryption):</strong> Only enables basic encryption if your device possesses a hardware TPM 2.0 and you are signed in with a personal Microsoft cloud account. It lacks removable USB drive encryption.</li>
       </ul>
 
