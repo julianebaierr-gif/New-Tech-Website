@@ -33,11 +33,13 @@ export function TableOfContents({ items }: TableOfContentsProps) {
   if (!items || items.length === 0) return null;
 
   return (
-    <div className="bg-slate-50/90 border border-slate-200 rounded-xl p-5 sticky top-24">
+    <div className="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-5 sticky top-24 shadow-xs">
       <div className="flex items-center gap-2 mb-3 pb-3 border-b border-slate-200">
-        <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">
-          Table of Contents
+        <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+        </svg>
+        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+          Contents
         </h4>
       </div>
       <nav className="space-y-1.5 max-h-[70vh] overflow-y-auto pr-1">

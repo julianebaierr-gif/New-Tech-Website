@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const url = `${siteConfig.baseUrl}/category/${category.slug}`;
 
   return {
-    title: `${category.name} Guides & Articles`,
+    title: `${category.name} Guides & Articles — SysOps Journal`,
     description: category.description,
     alternates: {
       canonical: url,
@@ -50,45 +50,86 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         crumbs={[{ label: category.name, href: `/category/${category.slug}` }]}
       />
 
-      <header className="max-w-3xl mb-10 space-y-2">
-        <span className="text-xs font-semibold px-2.5 py-1 rounded bg-blue-50 text-blue-700 border border-blue-200 inline-block">
-          Category
-        </span>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-          {category.name}
-        </h1>
-        <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-          {category.description}
-        </p>
+      {/* Category Hero Masthead */}
+      <header className="mb-10 pb-8 border-b border-slate-200">
+        <div className="max-w-3xl space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+              Technical Category
+            </span>
+            <span className="text-xs text-slate-400">•</span>
+            <span className="text-xs font-mono text-slate-500">
+              {categoryArticles.length} {categoryArticles.length === 1 ? "guide" : "guides"} available
+            </span>
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
+            {category.name}
+          </h1>
+
+          <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
+            {category.description}
+          </p>
+        </div>
+
+        {/* Quick Category Switcher Tabs */}
+        <div className="mt-8 flex flex-wrap items-center gap-2">
+          <span className="text-xs font-semibold text-slate-500 mr-1">Other Areas:</span>
+          {siteConfig.categories.map((c) => {
+            const isCurrent = c.slug === category.slug;
+            return (
+              <Link
+                key={c.slug}
+                href={`/category/${c.slug}`}
+                className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                  isCurrent
+                    ? "bg-slate-900 text-white font-semibold shadow-xs"
+                    : "bg-slate-100/80 text-slate-600 hover:text-slate-900 hover:bg-slate-200/80"
+                }`}
+              >
+                {c.name}
+              </Link>
+            );
+          })}
+        </div>
       </header>
 
+      {/* Articles Grid */}
       {categoryArticles.length === 0 ? (
-        <div className="p-12 text-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-500 text-sm">
-          No articles published in this category yet.
+        <div className="p-16 text-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-500 text-sm space-y-3">
+          <p>No guides published in this category yet.</p>
+          <Link href="/" className="inline-block text-xs font-semibold text-blue-600 hover:underline">
+            Return to Homepage →
+          </Link>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categoryArticles.map((art) => (
             <article
               key={art.slug}
-              className="flex flex-col rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-md transition-all overflow-hidden shadow-sm"
+              className="rounded-2xl border border-slate-200/90 bg-white hover:border-slate-300 publication-card shadow-xs overflow-hidden flex flex-col justify-between group transition-all"
             >
-              <div className="relative h-48 w-full overflow-hidden border-b border-slate-100">
-                <img
-                  src={art.coverImage}
-                  alt={art.title}
-                  className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
-                />
-              </div>
+              <div>
+                <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-slate-100 bg-slate-100">
+                  <img
+                    src={art.coverImage}
+                    alt={art.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 left-3">
+                    <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-white/95 text-slate-800 border border-slate-200 shadow-2xs backdrop-blur-xs">
+                      {art.categoryName}
+                    </span>
+                  </div>
+                </div>
 
-              <div className="p-5 flex-1 flex flex-col justify-between">
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between text-[11px] text-slate-500">
+                <div className="p-5 space-y-2.5">
+                  <div className="flex items-center justify-between text-[11px] font-mono text-slate-500">
                     <span>{art.readingTimeMinutes} min read</span>
                     <span>{art.difficulty}</span>
                   </div>
 
-                  <h3 className="text-base font-bold text-slate-900 hover:text-blue-600 transition-colors line-clamp-2">
+                  <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
                     <Link href={`/articles/${art.slug}`}>
                       {art.headline}
                     </Link>
@@ -98,14 +139,21 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     {art.excerpt}
                   </p>
                 </div>
+              </div>
 
-                <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-xs text-slate-500 font-medium">
-                    By {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "SysOps Team"}
-                  </span>
+              <div className="p-5 pt-0">
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-700 font-mono">
+                      {art.authorId === "elena-rostova" ? "ER" : "MV"}
+                    </span>
+                    <span className="text-slate-600 font-medium">
+                      {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "SysOps Team"}
+                    </span>
+                  </div>
                   <Link
                     href={`/articles/${art.slug}`}
-                    className="text-xs font-semibold text-blue-600 hover:text-blue-700"
+                    className="font-bold text-blue-600 hover:text-blue-700 text-xs inline-flex items-center gap-0.5"
                   >
                     Read Guide →
                   </Link>

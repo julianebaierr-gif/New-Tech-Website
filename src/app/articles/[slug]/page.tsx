@@ -244,35 +244,73 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               </div>
             </div>
 
-            {/* Related Silo Articles */}
+            {/* Related Guides */}
             {relatedArticles.length > 0 && (
-              <div className="mt-12 pt-8 border-t border-slate-200">
-                <h3 className="text-lg font-bold text-slate-900 mb-4">
-                  Related Guides in this Category
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="mt-14 pt-8 border-t border-slate-200">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-bold text-slate-900">
+                    Recommended Follow-up Guides
+                  </h3>
+                  <Link
+                    href={`/category/${article.categorySlug}`}
+                    className="text-xs font-semibold text-blue-600 hover:text-blue-700"
+                  >
+                    View Category Archive →
+                  </Link>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {relatedArticles.map((rel) => (
-                    <Link
+                    <article
                       key={rel.slug}
-                      href={`/articles/${rel.slug}`}
-                      className="p-4 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm transition-all block group"
+                      className="rounded-xl border border-slate-200 bg-white hover:border-slate-300 publication-card shadow-xs overflow-hidden flex flex-col justify-between group"
                     >
-                      <span className="text-[10px] text-blue-600 font-semibold mb-1 block font-mono">
-                        {rel.readingTimeMinutes} min read
-                      </span>
-                      <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-                        {rel.headline}
-                      </h4>
-                    </Link>
+                      <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-slate-100 bg-slate-100">
+                        <img
+                          src={rel.coverImage}
+                          alt={rel.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="p-4 space-y-2">
+                        <span className="text-[11px] font-mono text-slate-500 block">
+                          {rel.readingTimeMinutes} min read • {rel.difficulty}
+                        </span>
+                        <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                          <Link href={`/articles/${rel.slug}`}>
+                            {rel.headline}
+                          </Link>
+                        </h4>
+                      </div>
+                    </article>
                   ))}
                 </div>
               </div>
             )}
           </article>
 
-          {/* Sticky Sidebar with TOC */}
-          <aside className="hidden lg:block lg:col-span-4">
+          {/* Sticky Sidebar with TOC and Guide Meta */}
+          <aside className="hidden lg:block lg:col-span-4 space-y-5">
             <TableOfContents items={article.tableOfContents} />
+
+            <div className="p-5 rounded-2xl border border-slate-200/90 bg-slate-50/80 space-y-3 text-xs text-slate-600">
+              <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[11px]">
+                Guide Overview
+              </h4>
+              <div className="space-y-2 pt-1 border-t border-slate-200 text-xs">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Domain:</span>
+                  <span className="font-semibold text-slate-800">{article.categoryName}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Difficulty:</span>
+                  <span className="font-semibold text-slate-800">{article.difficulty}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Estimated Read:</span>
+                  <span className="font-semibold text-slate-800">{article.readingTimeMinutes} minutes</span>
+                </div>
+              </div>
+            </div>
           </aside>
         </div>
       </div>
