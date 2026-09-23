@@ -231,17 +231,22 @@ async function main() {
       }
 
       // Find the next contentHtml closing backtick
-      const contentHtmlIndex = articlesSource.indexOf('contentHtml: `', slugIndex);
+      const contentHtmlPrefix = 'contentHtml: `';
+      const contentHtmlIndex = articlesSource.indexOf(contentHtmlPrefix, slugIndex);
       if (contentHtmlIndex === -1) {
         console.error(`contentHtml not found for ${task.slug}`);
         continue;
       }
 
-      const closingBacktickIndex = articlesSource.indexOf('`\n  },', contentHtmlIndex);
-      if (closingBacktickIndex === -1) {
+      const startIndex = contentHtmlIndex + contentHtmlPrefix.length;
+      const searchSub = articlesSource.substring(startIndex);
+      const match = searchSub.match(/`\s*\}\s*(?:,|\])/);
+      if (!match) {
         console.error(`Closing backtick not found for ${task.slug}`);
         continue;
       }
+
+      const closingBacktickIndex = startIndex + match.index;
 
       // Insert the new HTML content
       const before = articlesSource.substring(0, closingBacktickIndex);
