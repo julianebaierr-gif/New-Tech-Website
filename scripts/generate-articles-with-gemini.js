@@ -67,7 +67,7 @@ function sanitizeContent(html) {
   return cleaned;
 }
 
-async function getBestModel() {
+async function getAvailableModels() {
   const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
   const res = await fetch(url);
   if (!res.ok) {
@@ -76,41 +76,20 @@ async function getBestModel() {
   }
   const data = await res.json();
   const models = data.models || [];
+  
+  const genModels = models
+    .filter(m => m.supportedGenerationMethods?.includes('generateContent'))
+    .map(m => m.name);
 
-  // Preferred list prioritizing current available models
-  const preferred = [
-    'models/gemini-3.6-flash',
-    'models/gemini-2.0-flash',
-    'models/gemini-1.5-flash',
-    'models/gemini-2.5-flash-lite',
-    'models/gemini-1.5-pro'
-  ];
-
-  for (const p of preferred) {
-    const match = models.find(m => m.name === p && m.supportedGenerationMethods?.includes('generateContent'));
-    if (match) return match.name;
-  }
-
-  const anyFlash = models.find(m => m.supportedGenerationMethods?.includes('generateContent') && m.name.includes('flash'));
-  if (anyFlash) return anyFlash.name;
-
-  return 'models/gemini-3.6-flash';
+  appendSummary(`- Available generateContent models: ${genModels.map(m => m.replace('models/', '')).join(', ')}`);
+  return genModels;
 }
 
-async function callGemini(modelName, prompt) {
-  const modelsToTry = [
-    modelName,
-    'models/gemini-3.6-flash',
-    'models/gemini-2.0-flash',
-    'models/gemini-1.5-flash'
-  ];
-  const uniqueModels = [...new Set(modelsToTry)];
-  let lastErr = null;
-
-  for (const m of uniqueModels) {
+async function callWithRetry(model, prompt, retries = 4) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      appendSummary(`- Calling model ${m}...`);
-      const url = `https://generativelanguage.googleapis.com/v1beta/${m}:generateContent?key=${apiKey}`;
+      appendSummary(`- Calling ${model} (attempt ${attempt}/${retries})...`);
+      const url = `https://generativelanguage.googleapis.com/v1beta/${model}:generateContent?key=${apiKey}`;
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -120,17 +99,56 @@ async function callGemini(modelName, prompt) {
       });
 
       const body = await res.text();
+
+      if (res.status === 503 || res.status === 429) {
+        const waitSec = attempt * 5;
+        appendSummary(`  ⚠️ HTTP ${res.status} on ${model}. Retrying in ${waitSec}s...`);
+        await new Promise(r => setTimeout(r, waitSec * 1000));
+        continue;
+      }
+
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}: ${body.substring(0, 250)}`);
       }
 
       const parsed = JSON.parse(body);
       const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      appendSummary(`- Success with model ${m}! (${text.length} chars)`);
       return text;
     } catch (err) {
+      if (attempt === retries) throw err;
+      await new Promise(r => setTimeout(r, 3000));
+    }
+  }
+}
+
+async function callGemini(availableModels, prompt) {
+  // Sort priority: gemini-3.6-flash first, then any other 3.x, then flash-lite, then pro
+  const preferred = [
+    'models/gemini-3.6-flash',
+    'models/gemini-3.6-flash-lite',
+    'models/gemini-2.5-flash-lite',
+    'models/gemini-2.5-pro'
+  ];
+
+  const ordered = [];
+  for (const p of preferred) {
+    if (availableModels.includes(p)) ordered.push(p);
+  }
+  for (const m of availableModels) {
+    if (!ordered.includes(m)) ordered.push(m);
+  }
+
+  let lastErr = null;
+  for (const model of ordered) {
+    try {
+      const text = await callWithRetry(model, prompt);
+      if (text && text.trim().length > 0) {
+        appendSummary(`  ✅ Generated ${text.length} chars with ${model}`);
+        return text;
+      }
+    } catch (err) {
       lastErr = err;
-      appendSummary(`- Model ${m} error: ${err.message.substring(0, 100)}`);
+      appendSummary(`  ❌ Model ${model} failed: ${err.message.substring(0, 100)}`);
     }
   }
   throw lastErr;
@@ -236,8 +254,7 @@ async function main() {
   appendSummary("## TechOps Wire Content Generator (Gemini API)");
   appendSummary(`- Started at: ${new Date().toISOString()}`);
 
-  const activeModel = await getBestModel();
-  appendSummary(`- Selected Active Model: **${activeModel}**`);
+  const availableModels = await getAvailableModels();
 
   const articlesFilePath = path.join(__dirname, '..', 'src', 'data', 'articles.ts');
   let articlesSource = fs.readFileSync(articlesFilePath, 'utf8');
@@ -245,10 +262,8 @@ async function main() {
   for (const task of TASKS) {
     appendSummary(`\n### Article [${task.slug}]`);
     try {
-      appendSummary(`- Calling Gemini API for section: ${task.sectionId}...`);
-      const rawHtml = await callGemini(activeModel, task.prompt);
+      const rawHtml = await callGemini(availableModels, task.prompt);
       const cleanedHtml = cleanHtmlOutput(rawHtml);
-      appendSummary(`- Received ${cleanedHtml.length} characters of HTML`);
 
       // Find the article block
       const slugIndex = articlesSource.indexOf(`slug: "${task.slug}"`);
