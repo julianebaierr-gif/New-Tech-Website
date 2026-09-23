@@ -683,6 +683,239 @@ sudo chown deployer /opt/applications/api-server</code></pre>
         <li><strong>Missing Execute on Parent Directory:</strong> Even if a file is <code>644</code>, if any parent directory lacks <code>x</code> (execute) permission for the executing user, Linux cannot traverse into the directory to read the file.</li>
         <li><strong>SELinux or AppArmor Enforcing:</strong> On RHEL, CentOS, or Ubuntu with strict AppArmor profiles, filesystem permissions may be overridden by security context labels. Check audit logs with <code>ausearch -m avc -ts recent</code>.</li>
         <li><strong>Immutable Bit Set:</strong> If even root cannot edit a file, verify whether the immutable flag is set using <code>lsattr filename</code>, and remove it with <code>chattr -i filename</code>.</li>
+    `
+  },
+  {
+    slug: "excel-drop-down-list",
+    title: "How to Create and Edit Dynamic Drop-Down Lists in Excel",
+    headline: "How to Create and Edit Dynamic Drop-Down Lists in Excel",
+    excerpt: "Build bulletproof data entry workflows in Microsoft Excel. Complete tutorial covering Data Validation rules, dynamic spilled lists with UNIQUE and SORT, and dependent cascading menus.",
+    categorySlug: "data-excel-automation",
+    categoryName: "Data & Excel Automation",
+    authorId: "elena-rostova",
+    publishedAt: "2026-09-20T08:00:00Z",
+    updatedAt: "2026-09-23T12:00:00Z",
+    readingTimeMinutes: 7,
+    difficulty: "Beginner",
+    primaryKeyword: "excel drop down list",
+    primaryVolume: 13000,
+    secondaryKeywords: [
+      "how to create a drop down list in excel",
+      "how to add drop down list in excel",
+      "create drop down list in excel",
+      "excel drop down menu",
+    ],
+    combinedVolume: 102450,
+    featured: false,
+    coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=630&q=80",
+    tableOfContents: [
+      { id: "creating-basic-data-validation-list", title: "Creating a Standard List via Data Validation", level: 2 },
+      { id: "dynamic-lists-with-tables", title: "Auto-Expanding Lists with Excel Tables", level: 2 },
+      { id: "dependent-cascading-drop-downs", title: "Building Dependent Cascading Menus (=INDIRECT)", level: 2 },
+      { id: "troubleshooting-drop-down-glitches", title: "Troubleshooting Blank Entries and Error Alerts", level: 2 },
+      { id: "frequently-asked-questions", title: "Frequently Asked Questions", level: 2 },
+    ],
+    faqs: [
+      {
+        question: "How do I create a drop-down list in Excel from another sheet?",
+        answer: "Create an official Excel Table for your source list on the second sheet and name the range, or reference the range directly in Data Validation: '=Sheet2!$A$2:$A$50'. Excel modern versions fully support cross-sheet references.",
+      },
+      {
+        question: "How do I make drop-down lists automatically update when new items are added?",
+        answer: "Format your source data as an official Excel Table (press Ctrl+T). When new items are typed at the bottom of the table, Excel expands the table range automatically and updates every referencing drop-down list instantly.",
+      },
+    ],
+    contentHtml: `
+      <p class="text-slate-700 leading-relaxed mb-6 font-medium">
+        Standardizing inputs via drop-down lists eliminates typographical inconsistencies, prevents broken lookup formulas, and accelerates repetitive data collection across enterprise spreadsheets.
+      </p>
+
+      <h2 id="creating-basic-data-validation-list" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Creating a Standard List via Data Validation</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        To configure native validation rules on any cell or column range:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+        <li>Select the cells that should receive the drop-down selector.</li>
+        <li>Navigate to the ribbon: <strong>Data &gt; Data Tools &gt; Data Validation</strong>.</li>
+        <li>Under <strong>Allow</strong>, choose <strong>List</strong>.</li>
+        <li>In the <strong>Source</strong> input, select your source range or enter a comma-delimited string: <code>Pending, Approved, Rejected</code>.</li>
+      </ul>
+
+      <h2 id="dynamic-lists-with-tables" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Auto-Expanding Lists with Excel Tables</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Hardcoding fixed cell ranges like <code>=$A$2:$A$20</code> causes new entries to be silently omitted from menus. Avoid this by wrapping source items in an Excel Table (<code>Ctrl+T</code>) and creating a structured range name.
+      </p>
+
+      <h2 id="dependent-cascading-drop-downs" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Building Dependent Cascading Menus (=INDIRECT)</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        When selecting a Category (e.g., <em>Hardware</em>) should restrict the Subcategory menu to only hardware items, use named ranges with the <code>=INDIRECT($A2)</code> reference formula in the secondary validation prompt.
+      </p>
+    `
+  },
+  {
+    slug: "docker-container-architecture",
+    title: "Docker Container Architecture: Images, Volumes & Networks Explained",
+    headline: "Docker Container Architecture: Images, Volumes & Networks",
+    excerpt: "A production-first breakdown of container primitives. Learn how overlay filesystems, persistent volume drivers, and bridge networking operate under the hood in Linux.",
+    categorySlug: "cloud-infrastructure",
+    categoryName: "Cloud & Infrastructure",
+    authorId: "marcus-vance",
+    publishedAt: "2026-09-21T09:00:00Z",
+    updatedAt: "2026-09-23T13:00:00Z",
+    readingTimeMinutes: 10,
+    difficulty: "Intermediate",
+    primaryKeyword: "docker container architecture",
+    primaryVolume: 1200,
+    secondaryKeywords: [
+      "docker swarm vs kubernetes",
+      "docker overlay network",
+      "docker volume vs bind mount",
+    ],
+    combinedVolume: 6500,
+    featured: false,
+    coverImage: "https://images.unsplash.com/photo-1605745341112-85968b19335b?auto=format&fit=crop&w=1200&h=630&q=80",
+    tableOfContents: [
+      { id: "docker-engine-and-containerd", title: "The Runtime Hierarchy: dockerd, containerd & runc", level: 2 },
+      { id: "overlay2-filesystem-layers", title: "Overlay2 Storage: Copy-on-Write Layering", level: 2 },
+      { id: "storage-volumes-vs-bind-mounts", title: "Storage Drivers: Named Volumes vs Host Bind Mounts", level: 2 },
+      { id: "networking-bridge-host-overlay", title: "Container Networking: Bridge, Host and Overlay", level: 2 },
+      { id: "frequently-asked-questions", title: "Frequently Asked Questions", level: 2 },
+    ],
+    faqs: [
+      {
+        question: "What is the difference between a named volume and a bind mount?",
+        answer: "Named volumes are managed completely by Docker inside its storage directory (/var/lib/docker/volumes) with standardized backup drivers. Bind mounts attach an exact arbitrary directory from the host filesystem directly to the container.",
+      },
+      {
+        question: "Why should production containers avoid host networking mode?",
+        answer: "Host networking bypasses container network isolation, giving the process raw access to all host interfaces and network ports, eliminating port mapping security boundaries.",
+      },
+    ],
+    contentHtml: `
+      <p class="text-slate-700 leading-relaxed mb-6 font-medium">
+        Containers are not lightweight virtual machines; they are standard Linux processes isolated by kernel namespaces (pid, net, ipc, mnt, uts) and bounded by control groups (cgroups v2).
+      </p>
+
+      <h2 id="docker-engine-and-containerd" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">The Runtime Hierarchy: dockerd, containerd & runc</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        When you run <code>docker run -d nginx</code>, the daemon delegates container lifecycle execution through standardized OCI runtime boundaries:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+        <li><strong>dockerd:</strong> High-level REST API and client coordination daemon.</li>
+        <li><strong>containerd:</strong> Image management, network attachment, and container supervision.</li>
+        <li><strong>runc:</strong> Lightweight CLI tool that interacts directly with the Linux kernel to instantiate namespaces and cgroups.</li>
+      </ul>
+
+      <h2 id="overlay2-filesystem-layers" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Overlay2 Storage: Copy-on-Write Layering</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Docker stacks immutable image layers using the <code>overlay2</code> driver. Containers write modifications exclusively to a thin writable layer at the top, leaving underlying base images completely pristine and shared across containers.
+      </p>
+    `
+  },
+  {
+    slug: "chatgpt-file-upload-limits",
+    title: "ChatGPT File Upload Limits, Token Contexts & Large Document Handling",
+    headline: "ChatGPT File Upload Limits & Large Document Handling",
+    excerpt: "Deconstructing LLM context windows, file size thresholds, and tokenizer bottlenecks. How to chunk, parse, and upload enterprise datasets without context truncation.",
+    categorySlug: "ai-developer-tools",
+    categoryName: "AI & Developer Tools",
+    authorId: "elena-rostova",
+    publishedAt: "2026-09-22T08:30:00Z",
+    updatedAt: "2026-09-23T14:00:00Z",
+    readingTimeMinutes: 7,
+    difficulty: "Intermediate",
+    primaryKeyword: "chatgpt file upload limit",
+    primaryVolume: 2500,
+    secondaryKeywords: [
+      "chatgpt plus file upload limits",
+      "chatgpt pdf max size",
+      "chatgpt token limits explained",
+    ],
+    combinedVolume: 4850,
+    featured: false,
+    coverImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80",
+    tableOfContents: [
+      { id: "file-size-and-format-specifications", title: "File Size and Format Thresholds", level: 2 },
+      { id: "context-window-vs-file-storage", title: "Context Window Limits vs File Storage", level: 2 },
+      { id: "handling-large-documents", title: "Preprocessing Strategies for Large PDFs & Spreadsheets", level: 2 },
+      { id: "frequently-asked-questions", title: "Frequently Asked Questions", level: 2 },
+    ],
+    faqs: [
+      {
+        question: "What is the maximum file size for ChatGPT Plus uploads?",
+        answer: "For ChatGPT Plus and Enterprise accounts, individual file uploads are generally capped at 512 MB per file. However, spreadsheets and CSVs with over 2 million cells or excessive text tokens will trigger execution timeouts during Code Interpreter parsing.",
+      },
+      {
+        question: "How can I feed a 500-page PDF to ChatGPT without truncation?",
+        answer: "Extract plain text, remove duplicate headers, and summarize individual chapters or sections in sequential prompt windows, or leverage a vector retrieval-augmented generation (RAG) pipeline via API.",
+      },
+    ],
+    contentHtml: `
+      <p class="text-slate-700 leading-relaxed mb-6 font-medium">
+        Uploading raw enterprise documents to ChatGPT often results in silent truncation, missed tables, or timeout errors when document volume exceeds tokenizer parsing memory.
+      </p>
+
+      <h2 id="file-size-and-format-specifications" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">File Size and Format Thresholds</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        ChatGPT supports standard document, spreadsheet, and image formats, but enforces operational ceilings:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+        <li><strong>Single File Size:</strong> 512 MB hard ceiling per document.</li>
+        <li><strong>Spreadsheet Limits:</strong> Max ~2,000,000 cells before pandas memory limits trigger execution exceptions.</li>
+        <li><strong>Session Limit:</strong> Up to 10 files per conversation turn.</li>
+      </ul>
+    `
+  },
+  {
+    slug: "windows-server-2019-end-of-life",
+    title: "Windows Server 2019 End of Life: Upgrade Roadmap & Migration Guide",
+    headline: "Windows Server 2019 End of Life: Upgrade & Migration Guide",
+    excerpt: "Plan your enterprise infrastructure migration before Microsoft lifecycle support concludes. In-place upgrade pathways to Server 2022/2025 and Azure Arc onboarding.",
+    categorySlug: "os-systems",
+    categoryName: "OS & Systems",
+    authorId: "marcus-vance",
+    publishedAt: "2026-09-22T11:00:00Z",
+    updatedAt: "2026-09-23T15:00:00Z",
+    readingTimeMinutes: 9,
+    difficulty: "Advanced",
+    primaryKeyword: "server 2019 end of life",
+    primaryVolume: 2200,
+    secondaryKeywords: [
+      "windows server 2019 support lifecycle",
+      "server 2019 upgrade to 2022",
+      "windows server migration checklist",
+    ],
+    combinedVolume: 5100,
+    featured: false,
+    coverImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&h=630&q=80",
+    tableOfContents: [
+      { id: "official-lifecycle-timeline", title: "Official Microsoft Lifecycle Timeline", level: 2 },
+      { id: "in-place-upgrade-vs-clean-migration", title: "In-Place Upgrade vs Clean Side-by-Side Migration", level: 2 },
+      { id: "pre-upgrade-checklist", title: "Pre-Upgrade System Readiness Checklist", level: 2 },
+      { id: "frequently-asked-questions", title: "Frequently Asked Questions", level: 2 },
+    ],
+    faqs: [
+      {
+        question: "When is the official End of Life for Windows Server 2019?",
+        answer: "Mainstream support for Windows Server 2019 concluded in January 2024. Extended security support remains active until January 9, 2029, providing crucial security patches but no new operating system features.",
+      },
+      {
+        question: "Can I perform an in-place upgrade from Server 2019 to Server 2025 directly?",
+        answer: "No. Microsoft requires hopping through Server 2022 first for legacy role compatibility, or performing a clean OS install and migrating roles using Active Directory replication and Storage Migration Service.",
+      },
+    ],
+    contentHtml: `
+      <p class="text-slate-700 leading-relaxed mb-6 font-medium">
+        With Windows Server 2019 already in extended support, systems administrators must plan infrastructure upgrades to maintain hardware compatibility, TLS 1.3 protocol standards, and compliance certifications.
+      </p>
+
+      <h2 id="official-lifecycle-timeline" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Official Microsoft Lifecycle Timeline</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Understand the distinction between Mainstream and Extended support tiers:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+        <li><strong>Mainstream Support End:</strong> Ended January 9, 2024. No further feature updates or non-security bug fixes.</li>
+        <li><strong>Extended Support End:</strong> January 9, 2029. Security vulnerability patches continue until this date.</li>
       </ul>
     `
   }

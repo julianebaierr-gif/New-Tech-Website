@@ -142,29 +142,34 @@ export default function HomePage() {
       </div>
 
       {/* =========================================================================
-          CLEAN 3-COLUMN ARTICLE GRID (Stripe / GitHub Blog Standard)
-          Zero fake numbers, zero AI filler boxes, zero repetitive boilerplate
+          CLEAN 3-COLUMN ARTICLE GRID (9 Articles: Exactly 3x3 Balanced Grid)
          ========================================================================= */}
       <section className="mb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((art) => (
+          {articles.slice(0, 9).map((art) => (
             <article
               key={art.slug}
-              className="rounded-2xl border border-slate-200 bg-white hover:border-slate-300 publication-card shadow-xs overflow-hidden flex flex-col justify-between group"
+              className="rounded-2xl border border-slate-200/90 bg-white hover:border-slate-300 publication-card shadow-xs overflow-hidden flex flex-col justify-between group transition-all"
             >
               <div>
-                <div className="relative h-44 w-full overflow-hidden border-b border-slate-100">
+                <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-slate-100 bg-slate-100">
                   <img
                     src={art.coverImage}
                     alt={art.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
+                  <div className="absolute top-3 left-3">
+                    <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-white/95 text-slate-800 border border-slate-200 shadow-2xs backdrop-blur-xs">
+                      {art.categoryName}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="p-5 space-y-2">
-                  <span className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider block">
-                    {art.categoryName}
-                  </span>
+                <div className="p-5 space-y-2.5">
+                  <div className="flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>{art.readingTimeMinutes} min read</span>
+                    <span>{art.difficulty}</span>
+                  </div>
 
                   <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
                     <Link href={`/articles/${art.slug}`}>
@@ -179,15 +184,41 @@ export default function HomePage() {
               </div>
 
               <div className="p-5 pt-0">
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                  <span>
-                    By {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "SysOps Team"}
-                  </span>
-                  <span>{art.readingTimeMinutes} min read</span>
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-700 font-mono">
+                      {art.authorId === "elena-rostova" ? "ER" : "MV"}
+                    </span>
+                    <span className="text-slate-600 font-medium">
+                      {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "SysOps Team"}
+                    </span>
+                  </div>
+                  <Link
+                    href={`/articles/${art.slug}`}
+                    className="font-bold text-blue-600 hover:text-blue-700 text-xs inline-flex items-center gap-0.5"
+                  >
+                    Read Guide →
+                  </Link>
                 </div>
               </div>
             </article>
           ))}
+        </div>
+
+        {/* Learn More & Full Directory Action Button */}
+        <div className="mt-12 text-center pt-4">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-3">
+            <Link
+              href="/editorial-policy"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-white font-semibold text-xs transition-all shadow-xs group"
+            >
+              <span>Explore All Guides &amp; Verification Standards</span>
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </Link>
+          </div>
+          <p className="text-[11px] text-slate-500 mt-2.5">
+            Peer-reviewed tutorials across cloud architecture, spreadsheet automation &amp; Linux internals.
+          </p>
         </div>
       </section>
 
