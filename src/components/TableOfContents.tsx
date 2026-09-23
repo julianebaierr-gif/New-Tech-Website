@@ -33,10 +33,10 @@ export function TableOfContents({ items }: TableOfContentsProps) {
   if (!items || items.length === 0) return null;
 
   return (
-    <div className="bg-surface/80 border border-slate-800 rounded-xl p-5 sticky top-24 backdrop-blur-sm">
-      <div className="flex items-center gap-2 mb-3 pb-3 border-b border-slate-800/80">
-        <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-        <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-300">
+    <div className="bg-slate-50/90 border border-slate-200 rounded-xl p-5 sticky top-24">
+      <div className="flex items-center gap-2 mb-3 pb-3 border-b border-slate-200">
+        <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">
           Table of Contents
         </h4>
       </div>
@@ -49,8 +49,8 @@ export function TableOfContents({ items }: TableOfContentsProps) {
               href={`#${item.id}`}
               className={`block text-xs py-1.5 px-2.5 rounded transition-all leading-snug ${
                 isActive
-                  ? "bg-blue-600/15 text-blue-400 font-medium border-l-2 border-blue-500 pl-2"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/40"
+                  ? "bg-blue-100 text-blue-800 font-semibold border-l-2 border-blue-600 pl-2"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
               {item.title}

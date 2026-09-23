@@ -10,22 +10,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "#0B0F19",
-        surface: "#111827",
-        "surface-raised": "#1F2937",
-        border: "#1E293B",
+        background: "#FFFFFF",
+        surface: "#F8FAFC",
+        "surface-raised": "#F1F5F9",
+        border: "#E2E8F0",
         primary: {
           50: "#eff6ff",
           100: "#dbeafe",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
+          500: "#2563eb",
+          600: "#1d4ed8",
+          700: "#1e40af",
         },
-        accent: {
-          cyan: "#06b6d4",
-          emerald: "#10b981",
-          indigo: "#6366f1",
-        }
       },
       fontFamily: {
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],

@@ -97,12 +97,12 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="scroll-smooth bg-white text-slate-900">
       <head>
-        <meta name="theme-color" content="#0B0F19" />
+        <meta name="theme-color" content="#FFFFFF" />
         <SchemaJsonLd schema={globalSchema} />
       </head>
-      <body className="min-h-screen flex flex-col bg-background text-slate-100 selection:bg-blue-600 selection:text-white">
+      <body className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

@@ -7,40 +7,35 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-slate-800/80 bg-slate-950 text-slate-400 mt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <footer className="border-t border-slate-200 bg-slate-50 text-slate-600 mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand Column */}
-          <div className="md:col-span-1 space-y-4">
+          <div className="md:col-span-1 space-y-3">
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white font-mono font-bold text-sm">
                 SJ
               </div>
-              <span className="font-bold text-white tracking-tight text-base">
+              <span className="font-bold text-slate-900 tracking-tight text-base">
                 {siteConfig.name}
               </span>
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-500 leading-relaxed">
               {siteConfig.description}
             </p>
-            <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
-              <span>ISSN 2994-1802</span>
-              <span>•</span>
-              <span className="text-emerald-500">Peer-Reviewed</span>
-            </div>
           </div>
 
           {/* Core Silos */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-4 font-mono">
-              Knowledge Silos
+            <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
+              Categories
             </h4>
-            <ul className="space-y-2.5 text-sm">
+            <ul className="space-y-2 text-xs">
               {siteConfig.categories.map((cat) => (
                 <li key={cat.slug}>
                   <Link
                     href={`/category/${cat.slug}`}
-                    className="hover:text-blue-400 transition-colors"
+                    className="hover:text-blue-600 transition-colors"
                   >
                     {cat.name}
                   </Link>
@@ -51,64 +46,59 @@ export function Footer() {
 
           {/* Editorial & E-E-A-T */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-4 font-mono">
-              Editorial Governance
+            <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
+              Editorial Standards
             </h4>
-            <ul className="space-y-2.5 text-sm">
+            <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/editorial-policy" className="hover:text-blue-400 transition-colors">
+                <Link href="/editorial-policy" className="hover:text-blue-600 transition-colors">
                   Editorial & Fact-Checking Policy
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-blue-400 transition-colors">
-                  Staff Authors & Engineers
+                <Link href="/about" className="hover:text-blue-600 transition-colors">
+                  About Our Editorial Team
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-blue-400 transition-colors">
-                  Submit Technical Correction
+                <Link href="/contact" className="hover:text-blue-600 transition-colors">
+                  Contact Editorial Desk
                 </Link>
-              </li>
-              <li>
-                <span className="text-slate-600 cursor-not-allowed">
-                  Sponsored Post Guidelines (Closed)
-                </span>
               </li>
             </ul>
           </div>
 
-          {/* Trust Guarantee & Newsletter */}
+          {/* Newsletter / Updates */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-4 font-mono">
-              Engineering Dispatch
+            <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
+              Technical Updates
             </h4>
-            <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-              Get our weekly deep-dive into cloud cost regressions, Linux performance profiling, and enterprise automation scripts.
+            <p className="text-xs text-slate-500 mb-3 leading-relaxed">
+              Weekly articles on Linux, AWS, and enterprise data workflows. No spam.
             </p>
             <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
               <input
                 type="email"
-                placeholder="devops@company.com"
-                className="w-full bg-slate-900 border border-slate-800 rounded-md px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                placeholder="your.email@company.com"
+                className="w-full bg-white border border-slate-300 rounded-md px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600"
               />
               <button
                 type="button"
-                className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-xs py-2 rounded-md transition-colors"
+                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs py-2 rounded-md transition-colors"
               >
-                Subscribe to Dispatch
+                Subscribe
               </button>
             </form>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+        <div className="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
           <p>© {currentYear} {siteConfig.name}. All rights reserved.</p>
           <div className="flex space-x-6">
-            <Link href="/about" className="hover:text-slate-400">Privacy Policy</Link>
-            <Link href="/about" className="hover:text-slate-400">Terms of Service</Link>
-            <Link href="/sitemap.xml" className="hover:text-slate-400">XML Sitemap</Link>
+            <Link href="/about" className="hover:text-slate-800">Privacy Policy</Link>
+            <Link href="/about" className="hover:text-slate-800">Terms</Link>
+            <Link href="/sitemap.xml" className="hover:text-slate-800">XML Sitemap</Link>
           </div>
         </div>
       </div>

@@ -74,7 +74,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     .filter((a) => a.slug !== article.slug)
     .slice(0, 2);
 
-  // Advanced TechArticle JSON-LD Schema
   const techArticleSchema = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -107,7 +106,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     "keywords": [article.primaryKeyword, ...article.secondaryKeywords].join(", "),
   };
 
-  // FAQPage Schema for SERP Rich Snippets
   const faqSchema = article.faqs.length > 0 ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -126,8 +124,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <SchemaJsonLd schema={techArticleSchema} />
       {faqSchema && <SchemaJsonLd schema={faqSchema} />}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Breadcrumbs Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <Breadcrumbs
           crumbs={[
             { label: article.categoryName, href: `/category/${article.categorySlug}` },
@@ -136,70 +133,55 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         />
 
         {/* Article Header */}
-        <header className="max-w-4xl mb-10 space-y-4">
-          <div className="flex flex-wrap items-center gap-3">
+        <header className="max-w-4xl mb-8 space-y-4">
+          <div className="flex flex-wrap items-center gap-2.5">
             <Link
               href={`/category/${article.categorySlug}`}
-              className="text-xs font-mono font-semibold px-2.5 py-1 rounded bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-500/20 transition-colors"
+              className="text-xs font-semibold px-2.5 py-1 rounded bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors"
             >
               {article.categoryName}
             </Link>
-            <span className="text-xs text-slate-500">•</span>
-            <span className="text-xs font-mono text-slate-400">
+            <span className="text-xs text-slate-300">•</span>
+            <span className="text-xs text-slate-500">
               {article.readingTimeMinutes} min read
             </span>
-            <span className="text-xs text-slate-500">•</span>
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-emerald-400 border border-slate-700">
-              Verified {new Date(article.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+            <span className="text-xs text-slate-300">•</span>
+            <span className="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+              Updated {new Date(article.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
             {article.title}
           </h1>
 
-          <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
+          <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
             {article.excerpt}
           </p>
 
-          {/* Author Byline Box */}
-          <div className="pt-4 flex items-center justify-between border-t border-slate-800/80">
-            <div className="flex items-center gap-3.5">
+          {/* Author Byline */}
+          <div className="pt-4 flex items-center justify-between border-t border-slate-100">
+            <div className="flex items-center gap-3">
               <img
                 src={author.avatar}
                 alt={author.name}
-                className="w-11 h-11 rounded-full object-cover border border-slate-700"
+                className="w-10 h-10 rounded-full object-cover border border-slate-200"
               />
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-white">{author.name}</span>
-                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                    SME
-                  </span>
-                </div>
-                <p className="text-xs text-slate-400">{author.role}</p>
+                <p className="text-xs font-semibold text-slate-900">{author.name}</p>
+                <p className="text-[11px] text-slate-500">{author.role}</p>
               </div>
             </div>
 
-            <div className="hidden sm:flex items-center gap-3 text-xs font-mono text-slate-400">
+            <div className="hidden sm:flex items-center gap-3 text-xs text-slate-500">
               {author.socials.linkedin && (
                 <a
                   href={author.socials.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-blue-400 transition-colors"
+                  className="hover:text-blue-600 transition-colors"
                 >
-                  LinkedIn ↗
-                </a>
-              )}
-              {author.socials.github && (
-                <a
-                  href={author.socials.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  GitHub ↗
+                  LinkedIn Profile ↗
                 </a>
               )}
             </div>
@@ -207,19 +189,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </header>
 
         {/* Featured Cover Image */}
-        <div className="relative h-72 sm:h-96 w-full rounded-2xl overflow-hidden border border-slate-800 mb-12 shadow-2xl">
+        <div className="relative h-64 sm:h-96 w-full rounded-2xl overflow-hidden border border-slate-200 mb-12 shadow-sm">
           <img
             src={article.coverImage}
             alt={article.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
         </div>
 
         {/* Main Content Layout with Sticky TOC */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Article Body */}
-          <article className="lg:col-span-8 space-y-6 text-slate-300 leading-relaxed font-sans prose-invert">
+          <article className="lg:col-span-8 space-y-6 text-slate-700 leading-relaxed font-sans">
             <div
               className="article-content"
               dangerouslySetInnerHTML={{ __html: article.contentHtml }}
@@ -229,50 +210,50 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <FaqAccordion faqs={article.faqs} />
 
             {/* Author Profile Bio Footer */}
-            <div className="my-12 p-6 rounded-2xl border border-slate-800 bg-surface/80">
-              <div className="flex flex-col sm:flex-row gap-5 items-start">
+            <div className="my-10 p-6 rounded-2xl border border-slate-200 bg-slate-50">
+              <div className="flex flex-col sm:flex-row gap-4 items-start">
                 <img
                   src={author.avatar}
                   alt={author.name}
-                  className="w-16 h-16 rounded-xl object-cover border border-slate-700 shrink-0"
+                  className="w-14 h-14 rounded-xl object-cover border border-slate-200 shrink-0"
                 />
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-base font-bold text-white">{author.name}</h4>
-                    <span className="text-xs text-slate-500 font-mono">• {author.role}</span>
+                    <h4 className="text-sm font-bold text-slate-900">{author.name}</h4>
+                    <span className="text-xs text-slate-500">• {author.role}</span>
                   </div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
+                  <p className="text-xs text-slate-600 leading-relaxed">
                     {author.bio}
                   </p>
-                  <div className="pt-2 flex items-center gap-4 text-xs font-mono text-blue-400">
+                  <div className="pt-2 flex items-center gap-4 text-xs font-medium text-blue-600">
                     <a href={author.socials.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      Verified Identity Profile ↗
+                      LinkedIn Profile ↗
                     </a>
-                    <Link href="/editorial-policy" className="text-slate-400 hover:text-white">
-                      Editorial Fact-Checking Standards ↗
+                    <Link href="/editorial-policy" className="text-slate-500 hover:text-slate-900">
+                      Editorial Policy ↗
                     </Link>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Related Silo Articles (Internal Linking Architecture) */}
+            {/* Related Silo Articles */}
             {relatedArticles.length > 0 && (
-              <div className="mt-14 pt-8 border-t border-slate-800">
-                <h3 className="text-lg font-bold text-white mb-6">
-                  Recommended Technical Studies in this Silo
+              <div className="mt-12 pt-8 border-t border-slate-200">
+                <h3 className="text-lg font-bold text-slate-900 mb-4">
+                  Related Guides in this Category
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {relatedArticles.map((rel) => (
                     <Link
                       key={rel.slug}
                       href={`/articles/${rel.slug}`}
-                      className="p-4 rounded-xl border border-slate-800 bg-surface/60 hover:bg-surface hover:border-slate-700 transition-all block group"
+                      className="p-4 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm transition-all block group"
                     >
-                      <span className="text-[10px] font-mono text-blue-400 mb-1 block">
+                      <span className="text-[10px] text-blue-600 font-semibold mb-1 block">
                         {rel.readingTimeMinutes} min read
                       </span>
-                      <h4 className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors line-clamp-2">
+                      <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
                         {rel.headline}
                       </h4>
                     </Link>

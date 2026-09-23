@@ -9,27 +9,27 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <Breadcrumbs crumbs={[{ label: "Contact", href: "/contact" }]} />
 
-      <header className="mb-10 space-y-3">
-        <span className="text-xs font-mono px-2.5 py-1 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 inline-block">
-          Direct Line
+      <header className="mb-8 space-y-2">
+        <span className="text-xs font-semibold px-2.5 py-1 rounded bg-blue-50 text-blue-700 border border-blue-200 inline-block">
+          Contact
         </span>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
           Contact Editorial Desk
         </h1>
-        <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+        <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
           Reach our engineers regarding errata, benchmark verification, or technical feedback.
         </p>
       </header>
 
-      <div className="p-8 rounded-2xl border border-slate-800 bg-surface/70 space-y-6">
-        <div className="space-y-2">
-          <label className="text-xs font-mono text-slate-300 block">General Inquiries & Errata</label>
+      <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 space-y-6">
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-slate-500 block">General Inquiries & Errata</label>
           <a
             href={`mailto:${siteConfig.contactEmail}`}
-            className="text-lg font-bold text-blue-400 hover:text-blue-300 transition-colors font-mono"
+            className="text-lg font-bold text-blue-600 hover:text-blue-700 transition-colors font-mono"
           >
             {siteConfig.contactEmail}
           </a>
@@ -38,10 +38,10 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <div className="pt-6 border-t border-slate-800/80 space-y-3 text-xs text-slate-400 leading-relaxed">
-          <h4 className="font-semibold text-slate-200">Note to PR & Link Builders:</h4>
+        <div className="pt-6 border-t border-slate-200 space-y-2 text-xs text-slate-500 leading-relaxed">
+          <h4 className="font-semibold text-slate-800">Editorial Independence:</h4>
           <p>
-            SysOps Journal does not sell dofollow links, participate in link exchanges, or accept mass-generated guest articles. Unsolicited commercial link requests will be marked as spam.
+            SysOps Journal does not sell dofollow links, participate in private blog networks, or accept unsolicited marketing guest posts.
           </p>
         </div>
       </div>
