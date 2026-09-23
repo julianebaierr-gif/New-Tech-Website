@@ -2,6 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
+function appendSummary(text) {
+  console.log(text);
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, text + '\n');
+  }
+}
+
 // Read API key from env or .env.local
 let apiKey = process.env.GEMINI_API_KEY;
 
@@ -61,7 +68,7 @@ function sanitizeContent(html) {
   return cleaned;
 }
 
-async function callGemini(prompt) {
+async function callGeminiModel(model, prompt) {
   return new Promise((resolve, reject) => {
     const postData = JSON.stringify({
       contents: [
@@ -75,7 +82,7 @@ async function callGemini(prompt) {
       }
     });
 
-    const url = new URL(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`);
+    const url = new URL(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`);
 
     const options = {
       hostname: url.hostname,
@@ -97,10 +104,10 @@ async function callGemini(prompt) {
             const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
             resolve(text);
           } catch (e) {
-            reject(new Error(`JSON Parse Error: ${e.message} - Body: ${data}`));
+            reject(new Error(`JSON Parse Error: ${e.message} - Body: ${data.substring(0, 200)}`));
           }
         } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+          reject(new Error(`HTTP ${res.statusCode}: ${data.substring(0, 250)}`));
         }
       });
     });
@@ -109,6 +116,25 @@ async function callGemini(prompt) {
     req.write(postData);
     req.end();
   });
+}
+
+async function callGemini(prompt) {
+  // Try newer models first, fall back to robust production endpoints
+  const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.5-flash'];
+  let lastErr = null;
+
+  for (const model of models) {
+    try {
+      appendSummary(`- Calling model ${model}...`);
+      const text = await callGeminiModel(model, prompt);
+      appendSummary(`- Success with ${model} (length: ${text.length} chars)`);
+      return text;
+    } catch (err) {
+      lastErr = err;
+      appendSummary(`- Model ${model} failed (${err.message.substring(0, 120)}). Trying fallback...`);
+    }
+  }
+  throw lastErr;
 }
 
 function cleanHtmlOutput(raw) {
@@ -209,24 +235,23 @@ STRICT WRITING RULES:
 ];
 
 async function main() {
-  console.log("=== TechOps Wire Content Generator (Gemini 2.5 Flash API) ===");
-  console.log(`Using API Key: ${apiKey.substring(0, 4)}...${apiKey.substring(apiKey.length - 3)}`);
+  appendSummary("## TechOps Wire Content Generator (Gemini API)");
+  appendSummary(`- Started at: ${new Date().toISOString()}`);
 
   const articlesFilePath = path.join(__dirname, '..', 'src', 'data', 'articles.ts');
   let articlesSource = fs.readFileSync(articlesFilePath, 'utf8');
 
   for (const task of TASKS) {
-    console.log(`\nGenerating content for [${task.slug}] section [${task.sectionId}]...`);
+    appendSummary(`\n### Article [${task.slug}]`);
     try {
       const rawHtml = await callGemini(task.prompt);
       const cleanedHtml = cleanHtmlOutput(rawHtml);
-      console.log(`Generated ${cleanedHtml.length} characters of HTML for ${task.slug}`);
+      appendSummary(`- Generated ${cleanedHtml.length} characters of HTML`);
 
-      // Append the generated section before the closing backtick of contentHtml of the target article
       // Find the article block
       const slugIndex = articlesSource.indexOf(`slug: "${task.slug}"`);
       if (slugIndex === -1) {
-        console.error(`Slug ${task.slug} not found in articles.ts`);
+        appendSummary(`⚠️ Slug ${task.slug} not found in articles.ts`);
         continue;
       }
 
@@ -234,7 +259,7 @@ async function main() {
       const contentHtmlPrefix = 'contentHtml: `';
       const contentHtmlIndex = articlesSource.indexOf(contentHtmlPrefix, slugIndex);
       if (contentHtmlIndex === -1) {
-        console.error(`contentHtml not found for ${task.slug}`);
+        appendSummary(`⚠️ contentHtml not found for ${task.slug}`);
         continue;
       }
 
@@ -242,7 +267,7 @@ async function main() {
       const searchSub = articlesSource.substring(startIndex);
       const match = searchSub.match(/`\s*\}\s*(?:,|\])/);
       if (!match) {
-        console.error(`Closing backtick not found for ${task.slug}`);
+        appendSummary(`⚠️ Closing backtick not found for ${task.slug}`);
         continue;
       }
 
@@ -253,9 +278,10 @@ async function main() {
       const after = articlesSource.substring(closingBacktickIndex);
 
       articlesSource = before + "\n\n" + cleanedHtml + "\n    " + after;
-      console.log(`Successfully merged section into ${task.slug}`);
+      appendSummary(`✅ Successfully merged new content into ${task.slug}`);
     } catch (err) {
-      console.error(`Failed to generate for ${task.slug}:`, err.message);
+      appendSummary(`❌ Error generating for ${task.slug}: ${err.message}`);
+      throw err;
     }
   }
 
@@ -263,10 +289,11 @@ async function main() {
   articlesSource = sanitizeContent(articlesSource);
 
   fs.writeFileSync(articlesFilePath, articlesSource, 'utf8');
-  console.log("\nAll articles successfully updated in src/data/articles.ts!");
+  appendSummary("\n🎉 **All articles successfully written and updated in src/data/articles.ts!**");
 }
 
 main().catch(err => {
+  appendSummary(`\n🚨 **FATAL ERROR:** ${err.message}`);
   console.error("Fatal error:", err);
   process.exit(1);
 });
