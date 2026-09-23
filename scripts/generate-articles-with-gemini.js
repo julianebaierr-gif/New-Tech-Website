@@ -76,11 +76,13 @@ async function getBestModel() {
   }
   const data = await res.json();
   const models = data.models || [];
-  
+
+  // Preferred list prioritizing current available models
   const preferred = [
+    'models/gemini-3.6-flash',
     'models/gemini-2.0-flash',
     'models/gemini-1.5-flash',
-    'models/gemini-2.5-flash',
+    'models/gemini-2.5-flash-lite',
     'models/gemini-1.5-pro'
   ];
 
@@ -92,32 +94,46 @@ async function getBestModel() {
   const anyFlash = models.find(m => m.supportedGenerationMethods?.includes('generateContent') && m.name.includes('flash'));
   if (anyFlash) return anyFlash.name;
 
-  return 'models/gemini-1.5-flash';
+  return 'models/gemini-3.6-flash';
 }
 
 async function callGemini(modelName, prompt) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/${modelName}:generateContent?key=${apiKey}`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      contents: [
-        {
-          parts: [{ text: prompt }]
-        }
-      ]
-    })
-  });
+  const modelsToTry = [
+    modelName,
+    'models/gemini-3.6-flash',
+    'models/gemini-2.0-flash',
+    'models/gemini-1.5-flash'
+  ];
+  const uniqueModels = [...new Set(modelsToTry)];
+  let lastErr = null;
 
-  const body = await res.text();
-  if (!res.ok) {
-    throw new Error(`HTTP ${res.status}: ${body.substring(0, 300)}`);
+  for (const m of uniqueModels) {
+    try {
+      appendSummary(`- Calling model ${m}...`);
+      const url = `https://generativelanguage.googleapis.com/v1beta/${m}:generateContent?key=${apiKey}`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      });
+
+      const body = await res.text();
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${body.substring(0, 250)}`);
+      }
+
+      const parsed = JSON.parse(body);
+      const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      appendSummary(`- Success with model ${m}! (${text.length} chars)`);
+      return text;
+    } catch (err) {
+      lastErr = err;
+      appendSummary(`- Model ${m} error: ${err.message.substring(0, 100)}`);
+    }
   }
-
-  const parsed = JSON.parse(body);
-  return parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  throw lastErr;
 }
 
 function cleanHtmlOutput(raw) {
@@ -229,7 +245,7 @@ async function main() {
   for (const task of TASKS) {
     appendSummary(`\n### Article [${task.slug}]`);
     try {
-      appendSummary(`- Calling Gemini API (${activeModel}) for section: ${task.sectionId}...`);
+      appendSummary(`- Calling Gemini API for section: ${task.sectionId}...`);
       const rawHtml = await callGemini(activeModel, task.prompt);
       const cleanedHtml = cleanHtmlOutput(rawHtml);
       appendSummary(`- Received ${cleanedHtml.length} characters of HTML`);
