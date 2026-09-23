@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 
 function appendSummary(text) {
   console.log(text);
@@ -68,85 +67,68 @@ function sanitizeContent(html) {
   return cleaned;
 }
 
-async function callGeminiModel(model, prompt) {
-  return new Promise((resolve, reject) => {
-    const postData = JSON.stringify({
+async function getBestModel() {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`Failed to list models: HTTP ${res.status} - ${txt}`);
+  }
+  const data = await res.json();
+  const models = data.models || [];
+  
+  const preferred = [
+    'models/gemini-2.0-flash',
+    'models/gemini-1.5-flash',
+    'models/gemini-2.5-flash',
+    'models/gemini-1.5-pro'
+  ];
+
+  for (const p of preferred) {
+    const match = models.find(m => m.name === p && m.supportedGenerationMethods?.includes('generateContent'));
+    if (match) return match.name;
+  }
+
+  const anyFlash = models.find(m => m.supportedGenerationMethods?.includes('generateContent') && m.name.includes('flash'));
+  if (anyFlash) return anyFlash.name;
+
+  return 'models/gemini-1.5-flash';
+}
+
+async function callGemini(modelName, prompt) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/${modelName}:generateContent?key=${apiKey}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
       contents: [
         {
           parts: [{ text: prompt }]
         }
-      ],
-      generationConfig: {
-        temperature: 0.3,
-        maxOutputTokens: 2500
-      }
-    });
-
-    const url = new URL(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`);
-
-    const options = {
-      hostname: url.hostname,
-      path: url.pathname + url.search,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(postData)
-      }
-    };
-
-    const req = https.request(options, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode >= 200 && res.statusCode < 300) {
-          try {
-            const parsed = JSON.parse(data);
-            const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
-            resolve(text);
-          } catch (e) {
-            reject(new Error(`JSON Parse Error: ${e.message} - Body: ${data.substring(0, 200)}`));
-          }
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data.substring(0, 250)}`));
-        }
-      });
-    });
-
-    req.on('error', reject);
-    req.write(postData);
-    req.end();
+      ]
+    })
   });
-}
 
-async function callGemini(prompt) {
-  // Try newer models first, fall back to robust production endpoints
-  const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.5-flash'];
-  let lastErr = null;
-
-  for (const model of models) {
-    try {
-      appendSummary(`- Calling model ${model}...`);
-      const text = await callGeminiModel(model, prompt);
-      appendSummary(`- Success with ${model} (length: ${text.length} chars)`);
-      return text;
-    } catch (err) {
-      lastErr = err;
-      appendSummary(`- Model ${model} failed (${err.message.substring(0, 120)}). Trying fallback...`);
-    }
+  const body = await res.text();
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}: ${body.substring(0, 300)}`);
   }
-  throw lastErr;
+
+  const parsed = JSON.parse(body);
+  return parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
 function cleanHtmlOutput(raw) {
   let cleaned = raw.trim();
-  // Strip markdown code fences if model returned them
   cleaned = cleaned.replace(/^```html\s*/i, '');
   cleaned = cleaned.replace(/^```\s*/i, '');
   cleaned = cleaned.replace(/\s*```$/i, '');
   return sanitizeContent(cleaned);
 }
 
-// Articles and sections that need to be generated / completed
+// Articles and sections to enrich with high-value technical content
 const TASKS = [
   {
     slug: "excel-drop-down-list",
@@ -238,15 +220,19 @@ async function main() {
   appendSummary("## TechOps Wire Content Generator (Gemini API)");
   appendSummary(`- Started at: ${new Date().toISOString()}`);
 
+  const activeModel = await getBestModel();
+  appendSummary(`- Selected Active Model: **${activeModel}**`);
+
   const articlesFilePath = path.join(__dirname, '..', 'src', 'data', 'articles.ts');
   let articlesSource = fs.readFileSync(articlesFilePath, 'utf8');
 
   for (const task of TASKS) {
     appendSummary(`\n### Article [${task.slug}]`);
     try {
-      const rawHtml = await callGemini(task.prompt);
+      appendSummary(`- Calling Gemini API (${activeModel}) for section: ${task.sectionId}...`);
+      const rawHtml = await callGemini(activeModel, task.prompt);
       const cleanedHtml = cleanHtmlOutput(rawHtml);
-      appendSummary(`- Generated ${cleanedHtml.length} characters of HTML`);
+      appendSummary(`- Received ${cleanedHtml.length} characters of HTML`);
 
       // Find the article block
       const slugIndex = articlesSource.indexOf(`slug: "${task.slug}"`);
