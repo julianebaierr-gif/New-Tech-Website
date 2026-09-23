@@ -1,0 +1,51 @@
+name: Generate In-Depth Content with Gemini API
+
+on:
+  push:
+    paths:
+      - '.github/workflows/generate-content.yml'
+      - 'scripts/generate-articles-with-gemini.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    name: Call Gemini API & Enrich Articles
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Run Gemini API Generator Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        run: node scripts/generate-articles-with-gemini.js
+
+      - name: Verify Production Build
+        run: npm run build
+
+      - name: Commit and Push Enriched Articles
+        run: |
+          git config --global user.name "TechOps Wire Bot"
+          git config --global user.email "bot@techopswire.com"
+          git add src/data/articles.ts
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "feat: complete in-depth article content generated via Gemini API"
+            git push origin main
+          fi
