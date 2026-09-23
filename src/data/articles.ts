@@ -35,9 +35,9 @@ export interface Article {
 export const articles: Article[] = [
   {
     slug: "how-to-remove-duplicates-in-excel",
-    title: "How to Find, Highlight, and Remove Duplicates in Excel: Complete Enterprise Guide",
+    title: "How to Find, Highlight, and Remove Duplicates in Excel (Step-by-Step)",
     headline: "How to Find, Highlight, and Remove Duplicates in Excel",
-    excerpt: "Master data hygiene in Microsoft Excel. A battle-tested guide covering conditional formatting rules, native deduplication tools, advanced formula extraction, and automated VBA macros.",
+    excerpt: "Clean duplicate rows in Excel using conditional formatting to highlight duplicates, the built-in Remove Duplicates tool, or the non-destructive UNIQUE formula.",
     categorySlug: "data-excel-automation",
     categoryName: "Data & Excel Automation",
     authorId: "elena-rostova",
@@ -85,13 +85,13 @@ export const articles: Article[] = [
     ],
     contentHtml: `
       <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
-        Managing clean datasets is the foundational requirement of accurate financial reporting, database exports, and customer relationship records. In modern enterprise environments, duplicate records cause inflated invoice metrics, botched CRM automations, and skewed analytics models.
+        Duplicate rows happen all the time—whether two teammates entered the same customer, a database export glitched, or you merged two monthly sales sheets. Leaving duplicates in place can inflate your totals, break VLOOKUP formulas, and skew reports. Here is how to find duplicates, highlight them so you can review them, and delete them safely without losing important data.
       </p>
 
       <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-        <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Workflow Summary</h4>
+        <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Summary</h4>
         <p class="text-slate-700 text-sm">
-          To delete duplicates immediately: Select your data range, navigate to <strong>Data &gt; Remove Duplicates</strong> (shortcut: <kbd class="px-2 py-0.5 bg-white border border-slate-300 rounded text-xs text-slate-800 font-mono shadow-2xs">Alt + A + M</kbd>), check the key identifiers, and click <strong>OK</strong>. To keep original records safe, extract non-destructively using <code>=UNIQUE(A2:D500)</code>.
+          To delete duplicates immediately: Select your data range, click <strong>Data &gt; Remove Duplicates</strong> (shortcut: <kbd class="px-2 py-0.5 bg-white border border-slate-300 rounded text-xs text-slate-800 font-mono shadow-2xs">Alt + A + M</kbd>), pick your key columns, and click <strong>OK</strong>. To keep original records safe, extract non-destructively using <code>=UNIQUE(A2:D500)</code>.
         </p>
       </div>
 
@@ -174,9 +174,9 @@ End Sub</code></pre>
   },
   {
     slug: "aws-ec2-instance-types-explained",
-    title: "AWS EC2 Instance Types Explained: Sizing, Benchmarks & Cost Optimization Guide",
+    title: "AWS EC2 Instance Types Explained: Sizing, Families & Cost Differences",
     headline: "AWS EC2 Instance Types Explained: Sizing & Performance Guide",
-    excerpt: "Demystifying Amazon Web Services compute families. Learn how to navigate General Purpose, Compute Optimized, Memory Heavy, and Graviton processor tiers for optimal cloud performance.",
+    excerpt: "A practical breakdown of AWS EC2 instance families. Learn the difference between T4g, M6i, C7g, and R6i instances, and how to pick the right size for your budget and workload.",
     categorySlug: "cloud-infrastructure",
     categoryName: "Cloud & Infrastructure",
     authorId: "marcus-vance",
@@ -218,7 +218,7 @@ End Sub</code></pre>
     ],
     contentHtml: `
       <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
-        Navigating AWS compute options is one of the most consequential architectural choices cloud engineers make. With hundreds of instance configurations spanning diverse microarchitectures and memory configurations, selecting the wrong instance family results in runaway monthly AWS invoices or sudden production latency spikes.
+        Picking the wrong EC2 instance usually leads to one of two common headaches: you pay hundreds of dollars more than necessary every month for idle capacity, or your server runs out of memory and crashes when traffic spikes. With hundreds of instance sizes to choose from, here is a practical guide to the naming codes, processor families, and sizing rules so you can pick the right server for your needs.
       </p>
 
       <h2 id="ec2-naming-convention-decoded" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">The EC2 Naming Convention Decoded</h2>
@@ -305,9 +305,9 @@ End Sub</code></pre>
   },
   {
     slug: "why-is-chatgpt-so-slow",
-    title: "Why is ChatGPT So Slow? Technical Causes, Latency Bottlenecks & Fixes",
-    headline: "Why is ChatGPT So Slow? Technical Causes & Latency Fixes",
-    excerpt: "Deconstructing LLM inference latency. Learn why generative AI platforms throttle response speeds, diagnose WebSocket streaming bottlenecks, and bypass peak concurrency slowdowns.",
+    title: "Why is ChatGPT So Slow? Real Causes and Practical Fixes",
+    headline: "Why is ChatGPT So Slow? Real Causes & How to Fix It",
+    excerpt: "Why ChatGPT takes so long to respond, stops typing halfway, or buffers. Learn what causes the slowdowns and 5 practical fixes to get faster replies.",
     categorySlug: "ai-developer-tools",
     categoryName: "AI & Developer Tools",
     authorId: "marcus-vance",
@@ -326,11 +326,11 @@ End Sub</code></pre>
     featured: false,
     coverImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80",
     tableOfContents: [
-      { id: "anatomy-of-llm-latency", title: "The Anatomy of LLM Inference Latency", level: 2 },
-      { id: "reason-1-gpu-queue-saturation", title: "Server-side GPU Queue Saturation & Throttling", level: 2 },
-      { id: "reason-2-token-generation-speed", title: "Autoregressive Token Generation Constraints", level: 2 },
-      { id: "reason-3-websocket-network-delays", title: "WebSocket Streaming and Browser Extension Conflicts", level: 2 },
-      { id: "actionable-fixes", title: "Actionable Fixes to Restore Maximum Generation Speed", level: 2 },
+      { id: "anatomy-of-llm-latency", title: "How ChatGPT Generates Responses Behind the Scenes", level: 2 },
+      { id: "reason-1-gpu-queue-saturation", title: "High Server Traffic & Peak Hour Queue Delays", level: 2 },
+      { id: "reason-2-token-generation-speed", title: "Word-by-Word Generation Limits", level: 2 },
+      { id: "reason-3-websocket-network-delays", title: "Browser Extension Conflicts and Cache Glitches", level: 2 },
+      { id: "actionable-fixes", title: "5 Practical Fixes to Speed Up Responses", level: 2 },
       { id: "frequently-asked-questions", title: "Frequently Asked Questions", level: 2 },
     ],
     faqs: [
@@ -349,7 +349,7 @@ End Sub</code></pre>
     ],
     contentHtml: `
       <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
-        When an artificial intelligence assistant hesitates before producing a single token, engineering workflow grinds to a halt. While users often assume a slow AI response indicates a local internet outage, the underlying bottleneck involves deep GPU hardware contention and model inference physics.
+        Waiting 30 seconds for ChatGPT to start typing or watching it stop dead in the middle of a sentence is frustrating. While people often assume their home internet is acting up, the delay usually comes down to high server demand, bloated chat history, or browser extensions interfering with streaming. Here is what causes the slowdowns and what you can do to get fast answers again.
       </p>
 
       <h2 id="anatomy-of-llm-latency" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">The Anatomy of LLM Inference Latency</h2>
@@ -381,7 +381,7 @@ End Sub</code></pre>
         <li><strong>Archive Bloated Threads:</strong> Never conduct prolonged coding projects in a single chat thread. Start a clean chat whenever context exceeds 10 messages.</li>
         <li><strong>Disable Heavy Browser Extensions:</strong> Test the interface in an incognito window without script blockers to isolate local client buffering issues.</li>
         <li><strong>Specify Concise Output Constraints:</strong> Append <code>"Respond in concise bullet points with zero conversational filler"</code> to your system prompts.</li>
-        <li><strong>Leverage the Official Developer API:</strong> Dedicated API endpoints feature custom rate-limits and direct streaming connections that bypass consumer web interface queue congestion.</li>
+        <li><strong>Use the Official Developer API:</strong> Dedicated API endpoints feature custom rate-limits and direct streaming connections that bypass consumer web interface queue congestion.</li>
       </ol>
     `
   },
@@ -389,7 +389,7 @@ End Sub</code></pre>
     slug: "windows-11-pro-vs-home",
     title: "Windows 11 Pro vs Home: Feature Breakdown, BitLocker & Remote Desktop",
     headline: "Windows 11 Pro vs Home: Enterprise Feature Comparison",
-    excerpt: "Is upgrading to Windows 11 Pro worth the extra cost? An engineering breakdown of BitLocker drive encryption, Hyper-V virtualization, Remote Desktop host capabilities, and Group Policy editor.",
+    excerpt: "Should you upgrade to Windows 11 Pro or stick with Home? A straightforward comparison of BitLocker drive encryption, Hyper-V, Remote Desktop hosting, and whether the extra cost is worth it.",
     categorySlug: "os-systems",
     categoryName: "OS & Systems",
     authorId: "marcus-vance",
@@ -432,7 +432,7 @@ End Sub</code></pre>
     ],
     contentHtml: `
       <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
-        When provisioning developer workstations, remote office laptops, or enterprise administrative machines, deciding between Microsoft's Windows 11 Home and Windows 11 Pro tiers impacts daily security posture and IT management capabilities.
+        On the surface, Windows 11 Home and Windows 11 Pro look and feel almost identical. They run the same software, share the same Start menu, and deliver the same gaming performance. But under the hood, Pro adds essential tools like full BitLocker drive encryption, Hyper-V for virtual machines, and built-in Remote Desktop hosting. Here is how they compare so you can decide if the upgrade is worth it.
       </p>
 
       <h2 id="core-specifications-comparison" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Core Hardware Limits and Specifications</h2>
@@ -512,7 +512,7 @@ End Sub</code></pre>
     slug: "linux-file-permissions-chmod-chown",
     title: "Linux File Permissions Explained: chmod, chown & Octal Notation Guide",
     headline: "Linux File Permissions Explained: chmod, chown & Octal Notation",
-    excerpt: "Demystifying Linux security, user groups, and file access modes. A complete runbook covering rwx flags, octal calculation, recursive chown, and secure umask defaults.",
+    excerpt: "How to understand and fix Linux file permissions without running risky shortcuts like chmod 777. Explains read, write, and execute rights, octal numbers (755 vs 644), and how to use chown properly.",
     categorySlug: "cloud-infrastructure",
     categoryName: "Cloud & Infrastructure",
     authorId: "marcus-vance",
@@ -556,7 +556,7 @@ End Sub</code></pre>
     ],
     contentHtml: `
       <p class="text-slate-700 leading-relaxed mb-6 font-medium">
-        On Linux and Unix-like operating systems, the file permission model is the primary barrier defending your system binaries, configuration files, and web assets from unauthorized modification or execution.
+        Almost every Linux user has run into a stubborn "Permission denied" error and felt tempted to run <code>chmod 777</code> to make the warning disappear. While that might get an app working immediately, it exposes your server to serious security risks. Here is how Linux permissions actually work, what the octal numbers mean, and how to configure <code>chmod</code> and <code>chown</code> safely.
       </p>
 
       <h2 id="understanding-linux-permission-structure" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Understanding the rwx Permission Matrix</h2>
@@ -689,7 +689,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     slug: "excel-drop-down-list",
     title: "How to Create and Edit Dynamic Drop-Down Lists in Excel",
     headline: "How to Create and Edit Dynamic Drop-Down Lists in Excel",
-    excerpt: "Build bulletproof data entry workflows in Microsoft Excel. Complete tutorial covering Data Validation rules, dynamic spilled lists with UNIQUE and SORT, and dependent cascading menus.",
+    excerpt: "How to add drop-down lists in Excel to prevent typos and speed up data entry. Step-by-step instructions for simple lists, auto-updating lists, and dependent menus.",
     categorySlug: "data-excel-automation",
     categoryName: "Data & Excel Automation",
     authorId: "elena-rostova",
@@ -727,7 +727,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     ],
     contentHtml: `
       <p class="text-slate-700 leading-relaxed mb-6 font-medium">
-        Standardizing inputs via drop-down lists eliminates typographical inconsistencies, prevents broken lookup formulas, and accelerates repetitive data collection across enterprise spreadsheets.
+        When multiple people enter data into a shared Excel sheet, spelling mistakes and slight variations will quickly break your formulas and filters. Adding a drop-down list forces people to select from an approved list of options. Here is how to create one in under two minutes, and how to make it update automatically whenever you add new options.
       </p>
 
       <h2 id="creating-basic-data-validation-list" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Creating a Standard List via Data Validation</h2>
@@ -756,7 +756,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     slug: "docker-container-architecture",
     title: "Docker Container Architecture: Images, Volumes & Networks Explained",
     headline: "Docker Container Architecture: Images, Volumes & Networks",
-    excerpt: "A production-first breakdown of container primitives. Learn how overlay filesystems, persistent volume drivers, and bridge networking operate under the hood in Linux.",
+    excerpt: "What actually happens when you run a Docker container? A clear look at images, container filesystems, persistent volumes, and bridge networking on Linux.",
     categorySlug: "cloud-infrastructure",
     categoryName: "Cloud & Infrastructure",
     authorId: "marcus-vance",
@@ -793,7 +793,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     ],
     contentHtml: `
       <p class="text-slate-700 leading-relaxed mb-6 font-medium">
-        Containers are not lightweight virtual machines; they are standard Linux processes isolated by kernel namespaces (pid, net, ipc, mnt, uts) and bounded by control groups (cgroups v2).
+        People often call containers "lightweight virtual machines," but that description is misleading. A container doesn't emulate hardware or boot a separate operating system kernel. Instead, it is just a normal Linux process running inside isolated namespaces and resource limits. Here is how Docker manages images, filesystems, and networks behind the scenes.
       </p>
 
       <h2 id="docker-engine-and-containerd" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">The Runtime Hierarchy: dockerd, containerd & runc</h2>
@@ -816,7 +816,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     slug: "chatgpt-file-upload-limits",
     title: "ChatGPT File Upload Limits, Token Contexts & Large Document Handling",
     headline: "ChatGPT File Upload Limits & Large Document Handling",
-    excerpt: "Deconstructing LLM context windows, file size thresholds, and tokenizer bottlenecks. How to chunk, parse, and upload enterprise datasets without context truncation.",
+    excerpt: "How big of a file can you upload to ChatGPT? A practical breakdown of file size limits, row count limits for CSVs, and how to work with large PDFs without errors.",
     categorySlug: "ai-developer-tools",
     categoryName: "AI & Developer Tools",
     authorId: "elena-rostova",
@@ -847,12 +847,12 @@ sudo chown deployer /opt/applications/api-server</code></pre>
       },
       {
         question: "How can I feed a 500-page PDF to ChatGPT without truncation?",
-        answer: "Extract plain text, remove duplicate headers, and summarize individual chapters or sections in sequential prompt windows, or leverage a vector retrieval-augmented generation (RAG) pipeline via API.",
+        answer: "Extract plain text, remove duplicate headers, and summarize individual chapters or sections in sequential prompt windows, or set up a vector retrieval-augmented generation (RAG) pipeline via API.",
       },
     ],
     contentHtml: `
       <p class="text-slate-700 leading-relaxed mb-6 font-medium">
-        Uploading raw enterprise documents to ChatGPT often results in silent truncation, missed tables, or timeout errors when document volume exceeds tokenizer parsing memory.
+        If you have ever uploaded a spreadsheet or PDF to ChatGPT only to receive an "Error uploading file" message or missing answers, you have hit OpenAI's upload limits. Here are the exact file size and row caps, along with practical ways to get large documents analyzed without running into errors.
       </p>
 
       <h2 id="file-size-and-format-specifications" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">File Size and Format Thresholds</h2>
@@ -870,7 +870,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     slug: "windows-server-2019-end-of-life",
     title: "Windows Server 2019 End of Life: Upgrade Roadmap & Migration Guide",
     headline: "Windows Server 2019 End of Life: Upgrade & Migration Guide",
-    excerpt: "Plan your enterprise infrastructure migration before Microsoft lifecycle support concludes. In-place upgrade pathways to Server 2022/2025 and Azure Arc onboarding.",
+    excerpt: "What you need to know about the Windows Server 2019 end of life timeline. Important support dates, in-place upgrade steps to Server 2022, and a practical migration checklist.",
     categorySlug: "os-systems",
     categoryName: "OS & Systems",
     authorId: "marcus-vance",
@@ -897,7 +897,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     faqs: [
       {
         question: "When is the official End of Life for Windows Server 2019?",
-        answer: "Mainstream support for Windows Server 2019 concluded in January 2024. Extended security support remains active until January 9, 2029, providing crucial security patches but no new operating system features.",
+        answer: "Mainstream support for Windows Server 2019 concluded in January 2024. Extended security support remains active until January 9, 2029, providing essential security patches but no new operating system features.",
       },
       {
         question: "Can I perform an in-place upgrade from Server 2019 to Server 2025 directly?",
@@ -906,7 +906,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     ],
     contentHtml: `
       <p class="text-slate-700 leading-relaxed mb-6 font-medium">
-        With Windows Server 2019 already in extended support, systems administrators must plan infrastructure upgrades to maintain hardware compatibility, TLS 1.3 protocol standards, and compliance certifications.
+        Windows Server 2019 is now in its extended support phase. Running production workloads on aging operating systems creates security and compliance headaches down the road. Here is the official Microsoft roadmap, your upgrade options, and how to plan your migration before support expires completely.
       </p>
 
       <h2 id="official-lifecycle-timeline" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Official Microsoft Lifecycle Timeline</h2>

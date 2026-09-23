@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Editorial & Fact-Checking Policy — TechOps Wire",
-  description: "Our technical review process, live environment benchmarking methodology, and zero-compromise link integrity standards.",
+  title: "How We Write and Test Our Guides — TechOps Wire",
+  description: "Learn how we test code on real systems, keep tutorials up to date, and handle reader corrections.",
 };
 
 export default function EditorialPolicyPage() {
@@ -14,13 +14,13 @@ export default function EditorialPolicyPage() {
 
       <header className="mb-10 space-y-3 pb-8 border-b border-slate-200">
         <span className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider block">
-          Governance &amp; Verification
+          Editorial Standards &amp; Testing
         </span>
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
-          Editorial &amp; Verification Standards
+          How We Write and Test Our Guides
         </h1>
         <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
-          How TechOps Wire verifies code, tests server configurations, and maintains editorial independence.
+          A clear breakdown of how we test tutorials on real machines, verify commands, and keep our guides accurate.
         </p>
       </header>
 
@@ -28,54 +28,54 @@ export default function EditorialPolicyPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2.5">
             <h2 className="text-lg font-bold text-slate-900 tracking-tight">
-              Hands-on Sandbox Verification
+              Tested Before Publishing
             </h2>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Every command, CLI flag, and script published on TechOps Wire is tested in clean cloud environments (Ubuntu LTS, Debian, or AWS EC2) before editorial approval. We verify exit codes, error outputs, and rollback steps.
+              Every terminal command, script, and Excel formula is executed on real machines (clean Windows 11 installs, Ubuntu servers, or AWS instances). If a command requires root access or can overwrite files, we state it clearly.
             </p>
           </div>
 
           <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2.5">
             <h2 className="text-lg font-bold text-slate-900 tracking-tight">
-              Practical Value &amp; Depth
+              Straightforward Steps
             </h2>
             <p className="text-xs text-slate-600 leading-relaxed">
-              We prioritize tutorials that solve real engineering bottlenecks: non-destructive data cleaning, memory-to-vCPU allocation formulas, and security compliance configurations that save hours of engineering time.
+              We focus on solving common problems quickly: removing duplicate rows without breaking formulas, choosing the right server size to save money, and fixing permission errors without creating security risks.
             </p>
           </div>
 
           <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2.5">
             <h2 className="text-lg font-bold text-slate-900 tracking-tight">
-              Strict Link Integrity
+              No Sponsored Bias or Paid Links
             </h2>
             <p className="text-xs text-slate-600 leading-relaxed">
-              TechOps Wire does not sell paid dofollow links or accept commercial guest placements. Outbound citations exist exclusively to reference authoritative technical documentation (RFC standards, official AWS/Microsoft manuals, Python PEPs).
+              We do not accept payment to rank tools higher or include commercial backlinks. Links to external sites go directly to official documentation, open-source repositories, or trusted standards manuals.
             </p>
           </div>
 
           <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2.5">
             <h2 className="text-lg font-bold text-slate-900 tracking-tight">
-              Errata &amp; Continuous Maintenance
+              Kept Up to Date
             </h2>
             <p className="text-xs text-slate-600 leading-relaxed">
-              When operating systems deprecate flags or cloud providers update their CLI syntax, guides are promptly audited. Any modified content is marked with a clear &quot;Last Updated&quot; date for transparency.
+              Software evolves. When an operating system update changes a command or an app updates its interface, we revise our guides and note the last updated date directly at the top of the article.
             </p>
           </div>
         </div>
 
-        {/* Contact Desk for Errata */}
+        {/* Contact Desk for Corrections */}
         <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <h3 className="text-sm font-bold text-slate-900">Found a Bug or Outdated Flag?</h3>
+            <h3 className="text-sm font-bold text-slate-900">Spotted an Error or Changed Setting?</h3>
             <p className="text-xs text-slate-500">
-              Submit corrections directly to our editorial engineering team.
+              Let us know and our team will test the fix and update the guide promptly.
             </p>
           </div>
           <Link
             href="/contact"
             className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-colors shrink-0 text-center"
           >
-            Submit Technical Errata →
+            Suggest a Correction →
           </Link>
         </div>
       </div>

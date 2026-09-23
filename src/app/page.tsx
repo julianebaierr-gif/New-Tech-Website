@@ -206,12 +206,12 @@ export default function HomePage() {
               href="/editorial-policy"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-white font-semibold text-xs transition-all shadow-xs group"
             >
-              <span>Explore All Guides &amp; Verification Standards</span>
+              <span>Read Our Testing &amp; Editorial Standards</span>
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </Link>
           </div>
           <p className="text-[11px] text-slate-500 mt-2.5">
-            Peer-reviewed tutorials across cloud architecture, spreadsheet automation &amp; Linux internals.
+            Practical tutorials for spreadsheets, Linux, AWS infrastructure, and developer tools.
           </p>
         </div>
       </section>

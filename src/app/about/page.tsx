@@ -4,8 +4,8 @@ import { siteConfig } from "@/lib/siteConfig";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "About TechOps Wire — Engineering Staff & Mission",
-  description: "Learn about TechOps Wire, our technical editorial staff, and our commitment to peer-reviewed, reproducible cloud infrastructure, data automation, and developer tutorials.",
+  title: "About TechOps Wire — Editorial Team & Mission",
+  description: "Learn about TechOps Wire, our editorial background, and why we build clear, tested guides for spreadsheets, cloud setups, and operating systems.",
 };
 
 export default function AboutPage() {
@@ -15,13 +15,13 @@ export default function AboutPage() {
 
       <header className="mb-10 space-y-3 pb-8 border-b border-slate-200">
         <span className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider block">
-          Publication Staff &amp; Mission
+          Editorial Team &amp; Background
         </span>
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
           About TechOps Wire
         </h1>
         <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
-          An independent technical publication covering cloud architecture, modern developer tools, and enterprise data automation.
+          A practical tech publication covering spreadsheet formulas, cloud setups, developer tools, and everyday computer systems.
         </p>
       </header>
 
@@ -29,34 +29,34 @@ export default function AboutPage() {
         {/* Mission Statement */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Our Editorial Purpose
+            Why We Started
           </h2>
           <p>
-            Modern infrastructure changes rapidly. Engineering teams regularly lose productive hours deciphering outdated blog posts, conflicting stack overflow answers, and half-baked tutorials that fail on real servers.
+            Finding reliable technical answers on the internet has become surprisingly hard. Most search results today are either bloated with popups or copied from outdated manuals that fail when you try them on your computer.
           </p>
           <p>
-            TechOps Wire was founded to provide reliable, non-destructive, and battle-tested guides. Every command, script, and configuration tutorial is validated in isolated environments before release.
+            We started TechOps Wire with a straightforward standard: write down the exact steps that solve the problem, test them on real machines first, and skip the unnecessary filler. Whether you are trying to fix a broken Excel formula before a deadline or launch an AWS server without overpaying, our goal is to save you time.
           </p>
         </section>
 
-        {/* 3 Core Editorial Principles */}
+        {/* 3 Core Principles */}
         <section className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-2">
           <div className="p-5 rounded-2xl border border-slate-200 bg-slate-50 space-y-2">
-            <h3 className="font-bold text-slate-900 text-sm">Tested in Sandboxes</h3>
+            <h3 className="font-bold text-slate-900 text-sm">Tested on Real Machines</h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Every terminal snippet is executed on fresh Ubuntu, Debian, or AWS cloud environments.
+              Every command and spreadsheet formula is run on clean Windows, Linux, or AWS setups before publishing.
             </p>
           </div>
           <div className="p-5 rounded-2xl border border-slate-200 bg-slate-50 space-y-2">
-            <h3 className="font-bold text-slate-900 text-sm">Reproducible Value</h3>
+            <h3 className="font-bold text-slate-900 text-sm">Safe &amp; Non-Destructive</h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              We focus on non-destructive commands, step-by-step procedures, and explicit rollback options.
+              We always point out what will happen to your files before you press Enter, with clear backup steps.
             </p>
           </div>
           <div className="p-5 rounded-2xl border border-slate-200 bg-slate-50 space-y-2">
-            <h3 className="font-bold text-slate-900 text-sm">Maintained Content</h3>
+            <h3 className="font-bold text-slate-900 text-sm">Regularly Updated</h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Articles are audited when tools update flags or cloud interfaces undergo breaking changes.
+              When software updates change menus or flags, we update our tutorials so they keep working.
             </p>
           </div>
         </section>
@@ -68,7 +68,7 @@ export default function AboutPage() {
               Editorial Staff
             </h2>
             <p className="text-xs text-slate-500 mt-1">
-              Practicing systems engineers with production background in large-scale deployments.
+              Systems administrators, data analysts, and practicing developers who use these tools every day.
             </p>
           </div>
 
@@ -110,10 +110,10 @@ export default function AboutPage() {
         <section className="p-6 rounded-2xl border border-slate-200 bg-slate-50/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h3 className="text-sm font-bold text-slate-900">
-              Review Our Fact-Checking &amp; Verification Policy
+              Read How We Test and Verify Our Content
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Read how we test code, manage errata, and maintain strict link integrity.
+              Learn how we check commands, keep guides up to date, and handle reader feedback.
             </p>
           </div>
           <Link

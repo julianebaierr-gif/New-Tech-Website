@@ -21,8 +21,8 @@ export interface AuthorConfig {
 
 export const siteConfig = {
   name: "TechOps Wire",
-  tagline: "Cloud Architecture, Spreadsheets & Modern Systems",
-  description: "Peer-reviewed technical guides, cloud infrastructure comparisons, spreadsheet automation, and modern developer workflows.",
+  tagline: "Practical Guides for Cloud, Spreadsheets & Operating Systems",
+  description: "Clear tutorials, spreadsheet formulas, cloud comparisons, and operating system guides written and tested by working technicians.",
   // When deploying on Vercel preview, set isStaging to true. 
   // Set to false when custom domain is connected to enable full production indexing!
   isStaging: false, // Set to true if testing on .vercel.app, false for production
@@ -37,33 +37,33 @@ export const siteConfig = {
   contactEmail: "editorial@techopswire.com",
   foundedYear: 2026,
 
-  // 4 Core High-Authority Silos
+  // 4 Core Technical Categories
   categories: [
     {
       name: "Data & Excel Automation",
       slug: "data-excel-automation",
-      description: "Enterprise spreadsheet formulas, data cleaning pipelines, and automated reporting workflows.",
+      description: "Excel formulas, drop-down lists, formatting tricks, and practical data cleaning steps.",
       badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
       iconName: "Table",
     },
     {
       name: "Cloud & Infrastructure",
       slug: "cloud-infrastructure",
-      description: "AWS architecture, Linux server administration, Docker containerization, and enterprise DevOps.",
+      description: "Linux commands, AWS server setups, Docker tips, and network troubleshooting.",
       badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
       iconName: "Cloud",
     },
     {
       name: "AI & Developer Tools",
       slug: "ai-developer-tools",
-      description: "Autonomous agent workflows, LLM latency optimization, API integrations, and developer toolchains.",
+      description: "ChatGPT troubleshooting, developer utilities, file handling tips, and daily productivity fixes.",
       badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/20",
       iconName: "Cpu",
     },
     {
       name: "OS & Systems",
       slug: "os-systems",
-      description: "Windows 11 Enterprise, macOS power workflows, BIOS hardware virtualization, and system diagnostics.",
+      description: "Windows 11 settings, Linux file permissions, server migration roadmaps, and maintenance tips.",
       badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/20",
       iconName: "Terminal",
     },
