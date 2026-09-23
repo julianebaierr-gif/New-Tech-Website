@@ -750,6 +750,16 @@ sudo chown deployer /opt/applications/api-server</code></pre>
       <p class="text-slate-700 leading-relaxed mb-4">
         When selecting a Category (e.g., <em>Hardware</em>) should restrict the Subcategory menu to only hardware items, use named ranges with the <code>=INDIRECT($A2)</code> reference formula in the secondary validation prompt.
       </p>
+
+      <h2 id="troubleshooting-drop-down-glitches" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Troubleshooting Blank Entries and Error Alerts</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Even after configuring data validation, spreadsheets can show strange behavior. Here is how to fix the three most common problems:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+        <li><strong>Blank items at the bottom of the menu:</strong> This happens when your source range includes empty rows at the bottom (e.g. <code>=$A$2:$A$100</code> when only 15 rows have text). Always convert your list into an official Excel Table (<code>Ctrl+T</code>) so the menu matches the exact number of filled rows.</li>
+        <li><strong>Allowing custom typing without error alerts:</strong> By default, Excel blocks any input that doesn't match the list with a strict "Stop" dialog. If you want the drop-down to be a helpful suggestion rather than a hard restriction, open <strong>Data Validation &gt; Error Alert</strong> tab, and change the style from <strong>Stop</strong> to <strong>Warning</strong> or <strong>Information</strong>.</li>
+        <li><strong>Finding all cells with drop-down menus:</strong> On large worksheets, press <kbd class="px-2 py-0.5 bg-white border border-slate-300 rounded text-xs text-slate-800 font-mono shadow-2xs">F5</kbd>, click <strong>Special</strong>, choose <strong>Data validation</strong>, and click <strong>OK</strong>. Excel will instantly highlight every cell that contains a validation rule so you can audit or clear them in bulk.</li>
+      </ul>
     `
   },
   {
@@ -810,6 +820,25 @@ sudo chown deployer /opt/applications/api-server</code></pre>
       <p class="text-slate-700 leading-relaxed mb-4">
         Docker stacks immutable image layers using the <code>overlay2</code> driver. Containers write modifications exclusively to a thin writable layer at the top, leaving underlying base images completely pristine and shared across containers.
       </p>
+
+      <h2 id="storage-volumes-vs-bind-mounts" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Storage Drivers: Named Volumes vs Host Bind Mounts</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Because container filesystems are ephemeral by default, any data written inside a container disappears when that container is removed. Docker provides two primary mechanisms to persist data:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+        <li><strong>Named Volumes:</strong> Docker creates and manages a dedicated folder inside <code>/var/lib/docker/volumes/</code>. These are fully managed by Docker, deliver native filesystem performance on Linux, and are safe for production databases like PostgreSQL and MySQL. Example: <code>docker run -v db_data:/var/lib/postgresql/data postgres</code>.</li>
+        <li><strong>Bind Mounts:</strong> You map an exact host directory directly into the container (e.g., <code>-v /home/user/app:/app</code>). This is ideal for local development where code changes on your host should appear instantly inside the container, but requires managing user permissions (UID/GID) carefully on Linux hosts.</li>
+      </ul>
+
+      <h2 id="networking-bridge-host-overlay" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Container Networking: Bridge, Host and Overlay</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Docker provides isolated virtual networks using Linux network namespaces and virtual ethernet adapters:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+        <li><strong>Bridge Network (Default):</strong> Each container connects to an internal virtual bridge (usually <code>docker0</code>) and receives a private IP in the <code>172.17.0.0/16</code> range. Docker configures <code>iptables</code> NAT rules so outbound internet traffic works automatically, and exposes ports to the host via <code>-p 8080:80</code>.</li>
+        <li><strong>User-Defined Bridges:</strong> Creating custom bridges (<code>docker network create app-net</code>) provides automatic internal DNS name resolution. Containers on the same custom bridge can connect to each other by container name without hardcoding internal IP addresses.</li>
+        <li><strong>Host Networking:</strong> Using <code>--network host</code> removes container network isolation entirely. The container shares the host's network interfaces directly, which improves throughput for high-traffic network proxies but removes port isolation.</li>
+      </ul>
     `
   },
   {
@@ -864,6 +893,28 @@ sudo chown deployer /opt/applications/api-server</code></pre>
         <li><strong>Spreadsheet Limits:</strong> Max ~2,000,000 cells before pandas memory limits trigger execution exceptions.</li>
         <li><strong>Session Limit:</strong> Up to 10 files per conversation turn.</li>
       </ul>
+
+      <h2 id="context-window-vs-file-storage" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Context Window Limits vs File Storage</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        A common point of confusion is the difference between file storage and model context tokens. When you upload a 50 MB PDF or CSV to ChatGPT, it does not stuff all 50 MB into the language model's active attention window at once.
+      </p>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Instead, ChatGPT saves the file into an isolated Linux virtual container (the Advanced Data Analysis sandbox). When you ask a question, ChatGPT writes short Python scripts in the background using libraries like <code>pandas</code>, <code>pdfplumber</code>, or <code>sqlite3</code> to search, slice, and extract only the relevant portions of the document. Only those extracted snippets are passed into the model's token context.
+      </p>
+      <p class="text-slate-700 leading-relaxed mb-6">
+        However, if your spreadsheet exceeds roughly 2,000,000 cells or requires heavy in-memory transformations, the sandbox environment will hit its RAM ceiling (typically around 1 GB of memory) and return a Python memory error or timeout.
+      </p>
+
+      <h2 id="handling-large-documents" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Preprocessing Strategies for Large PDFs &amp; Spreadsheets</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        If you work with large datasets or long reports that trigger upload errors or incomplete summaries, use these practical preprocessing steps:
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
+        <li><strong>Split PDFs into logical chapters:</strong> Instead of uploading a 600-page manual, split it into 50-page sections using free utilities like <code>pdftk</code> or Python's <code>pypdf</code>. This ensures the model reads every paragraph without skipping tables.</li>
+        <li><strong>Convert spreadsheets from XLSX to CSV:</strong> Excel <code>.xlsx</code> files carry heavy XML metadata, cell styles, and conditional formatting rules that consume memory. Saving as plain comma-separated values (<code>.csv</code>) typically reduces file size by 70% to 80% and loads faster in Python.</li>
+        <li><strong>Strip unnecessary columns before uploading:</strong> If your export contains 60 columns but you only need to analyze sales revenue by state, delete the unneeded columns first. Reducing the cell count keeps your data well under the sandbox memory limit.</li>
+        <li><strong>Ask targeted questions:</strong> Rather than typing generic prompts like <em>"analyze this whole document,"</em> ask specific questions such as <em>"calculate the total sum of column D grouped by column A."</em> This guides the Python code interpreter to run direct aggregations instead of printing giant raw tables.</li>
+      </ul>
     `
   },
   {
@@ -917,6 +968,28 @@ sudo chown deployer /opt/applications/api-server</code></pre>
         <li><strong>Mainstream Support End:</strong> Ended January 9, 2024. No further feature updates or non-security bug fixes.</li>
         <li><strong>Extended Support End:</strong> January 9, 2029. Security vulnerability patches continue until this date.</li>
       </ul>
+
+      <h2 id="in-place-upgrade-vs-clean-migration" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">In-Place Upgrade vs Clean Side-by-Side Migration</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        When transitioning from Server 2019 to Windows Server 2022, infrastructure administrators have two primary strategies:
+      </p>
+      <ul class="list-disc pl-6 space-y-3 text-slate-700 mb-6">
+        <li><strong>In-Place Upgrade:</strong> You mount the Server 2022 installation ISO on the existing running machine and execute <code>setup.exe</code>. This keeps installed business applications, active network bindings, and server identity intact. However, in-place upgrades carry over years of accumulated registry bloat, legacy driver conflicts, and potential rollback issues if setup encounters unexpected hardware errors.</li>
+        <li><strong>Side-by-Side Clean Migration:</strong> You deploy a brand-new virtual machine running Server 2022 from a clean image, configure required roles, and migrate workloads using network replication. This is the safest approach because your production 2019 server remains untouched and fully functional as an instant fallback during testing.</li>
+        <li><strong>Active Directory Domain Controllers:</strong> Never perform in-place upgrades on production Domain Controllers. The supported Microsoft procedure is to promote a new Server 2022 instance into your existing domain, allow replication to finish, transfer the five FSMO roles via PowerShell, and cleanly demote the retiring Server 2019 box.</li>
+      </ul>
+
+      <h2 id="pre-upgrade-checklist" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Pre-Upgrade System Readiness Checklist</h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Before beginning an upgrade or decommissioning legacy servers, complete this essential verification runbook:
+      </p>
+      <ol class="list-decimal pl-6 space-y-2 text-slate-700 mb-6">
+        <li><strong>Create a Full Hypervisor Checkpoint &amp; VSS Backup:</strong> Take an offline VM snapshot and verify that your system state backup (Veeam, Windows Server Backup, or Azure Backup) completed with zero shadow copy errors.</li>
+        <li><strong>Verify Free Disk Space on System Drive:</strong> Ensure the system drive (<code>C:\</code>) has at least 32 GB of unallocated free space. Windows setup requires this buffer to store the <code>Windows.old</code> rollback directory during installation.</li>
+        <li><strong>Uninstall Third-Party Antivirus &amp; Filter Drivers:</strong> Endpoint security agents, kernel-level monitoring drivers, and third-party disk encryption filters frequently intercept boot drivers during setup, triggering blue screens (BSOD) on first reboot.</li>
+        <li><strong>Verify Active Directory Health:</strong> Run <code>dcdiag /v /c /e</code> and <code>repadmin /replsummary</code> from an administrative command prompt. Confirm zero replication errors before modifying domain functional levels.</li>
+        <li><strong>Use Storage Migration Service (SMS):</strong> For file servers, use Windows Admin Center's Storage Migration Service to inventory files, transfer data with NTFS permissions intact, and automatically cut over IP addresses without user downtime.</li>
+      </ol>
     `
   }
 ];
