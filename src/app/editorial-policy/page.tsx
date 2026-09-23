@@ -5,20 +5,20 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
-  title: "Editorial Policy & Testing Standards — TechOps Wire",
+  title: "Editorial Policy & Testing Standards | TechOps Wire",
   description: "Learn how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/editorial-policy`,
   },
   openGraph: {
-    title: "Editorial Policy & Testing Standards — TechOps Wire",
+    title: "Editorial Policy & Testing Standards | TechOps Wire",
     description: "Learn how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
     url: `${siteConfig.baseUrl}/editorial-policy`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Editorial Policy & Testing Standards — TechOps Wire",
+    title: "Editorial Policy & Testing Standards | TechOps Wire",
     description: "Learn how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
   },
 };
@@ -27,7 +27,7 @@ export default function EditorialPolicyPage() {
   const policySchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Editorial Policy & Testing Standards — TechOps Wire",
+    "name": "Editorial Policy & Testing Standards | TechOps Wire",
     "url": `${siteConfig.baseUrl}/editorial-policy`,
     "description": "How TechOps Wire tests commands, maintains factual accuracy, verifies code snippets, and handles reader corrections.",
     "publisher": {

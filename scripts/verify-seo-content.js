@@ -28,14 +28,23 @@ if (!foundAny) {
   console.log('[PASS] Zero AI buzzwords found in articles.ts!');
 }
 
+// Check em-dash in articles.ts
+if (raw.includes('—')) {
+  console.log('[ALERT] Found em-dash (—) in articles.ts!');
+} else {
+  console.log('[PASS] Zero em-dashes (—) found in articles.ts!');
+}
+
 // Check routes
 console.log('\n--- 2. Checking Static Pages & Word Counts ---');
 const pages = [
+  '../src/app/layout.tsx',
   '../src/app/about/page.tsx',
   '../src/app/editorial-policy/page.tsx',
   '../src/app/contact/page.tsx',
   '../src/app/privacy/page.tsx',
   '../src/app/terms/page.tsx',
+  '../src/app/category/[slug]/page.tsx',
 ];
 
 pages.forEach(p => {
@@ -44,6 +53,16 @@ pages.forEach(p => {
   const words = content.replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
   console.log(`${p}: ~${words} words`);
   
+  // Check em-dash
+  if (content.includes('—')) {
+    console.log(`  [ALERT] Found em-dash (—) in ${p}!`);
+  }
+
+  // Check old date
+  if (content.includes('January 1, 2026')) {
+    console.log(`  [ALERT] Found old date (January 1, 2026) in ${p}!`);
+  }
+
   // Check banned words
   bannedWords.forEach(word => {
     const regex = new RegExp(`\\b${word}\\b`, 'gi');

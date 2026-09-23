@@ -5,20 +5,20 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
-  title: "About TechOps Wire — Editorial Team, Testing Standards & Mission",
+  title: "About TechOps Wire | Editorial Team, Testing Standards & Mission",
   description: "Learn about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/about`,
   },
   openGraph: {
-    title: "About TechOps Wire — Editorial Team, Testing Standards & Mission",
+    title: "About TechOps Wire | Editorial Team, Testing Standards & Mission",
     description: "Learn about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
     url: `${siteConfig.baseUrl}/about`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "About TechOps Wire — Editorial Team, Testing Standards & Mission",
+    title: "About TechOps Wire | Editorial Team, Testing Standards & Mission",
     description: "Learn about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
   },
 };
@@ -79,7 +79,7 @@ export default function AboutPage() {
             If you have spent any time searching the web for technical troubleshooting steps, you have likely run into the same frustrations we did: bloated pages with dozens of intrusive ads, copied-and-pasted articles that do not explain what the commands actually do, and outdated tutorials that fail the moment you paste them into your terminal or spreadsheet.
           </p>
           <p>
-            Worse still, many websites give risky advice without warning you of the consequences—such as telling people to run dangerous file permission commands like <code>chmod 777</code> to solve a minor web server issue, or advising users to clean duplicate rows in Excel without explaining how to preserve their historical data.
+            Worse still, many websites give risky advice without warning you of the consequences, such as telling people to run dangerous file permission commands like <code>chmod 777</code> to solve a minor web server issue, or advising users to clean duplicate rows in Excel without explaining how to preserve their historical data.
           </p>
           <p>
             We founded <strong>TechOps Wire</strong> in 2026 to offer a straightforward alternative: honest, practical guides written by experienced technicians. Every tutorial on this site focuses on solving real problems without wasting your time, without sales pitches, and without confusing jargon.

@@ -27,20 +27,20 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const url = `${siteConfig.baseUrl}/category/${category.slug}`;
 
   return {
-    title: `${category.name} Guides & Articles — ${siteConfig.name}`,
+    title: `${category.name} Guides & Articles | ${siteConfig.name}`,
     description: category.description,
     alternates: {
       canonical: url,
     },
     openGraph: {
-      title: `${category.name} Guides & Articles — ${siteConfig.name}`,
+      title: `${category.name} Guides & Articles | ${siteConfig.name}`,
       description: category.description,
       url: url,
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${category.name} Guides & Articles — ${siteConfig.name}`,
+      title: `${category.name} Guides & Articles | ${siteConfig.name}`,
       description: category.description,
     },
   };

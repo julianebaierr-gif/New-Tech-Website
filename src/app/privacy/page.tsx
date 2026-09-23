@@ -4,20 +4,20 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — TechOps Wire",
+  title: "Privacy Policy | TechOps Wire",
   description: "TechOps Wire privacy policy regarding server logs, cookies, third-party analytics, user rights, and data protection.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/privacy`,
   },
   openGraph: {
-    title: "Privacy Policy — TechOps Wire",
+    title: "Privacy Policy | TechOps Wire",
     description: "TechOps Wire privacy policy regarding server logs, cookies, third-party analytics, user rights, and data protection.",
     url: `${siteConfig.baseUrl}/privacy`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Privacy Policy — TechOps Wire",
+    title: "Privacy Policy | TechOps Wire",
     description: "TechOps Wire privacy policy regarding server logs, cookies, third-party analytics, user rights, and data protection.",
   },
 };
@@ -26,7 +26,7 @@ export default function PrivacyPage() {
   const privacySchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Privacy Policy — TechOps Wire",
+    "name": "Privacy Policy | TechOps Wire",
     "url": `${siteConfig.baseUrl}/privacy`,
     "description": "TechOps Wire privacy, cookies, and data protection disclosures.",
     "publisher": {
@@ -49,7 +49,7 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
-          Effective Date: January 1, 2026. This policy explains what information is collected when you visit TechOps Wire and how that data is protected.
+          Effective Date: September 23, 2026. This policy explains what information is collected when you visit TechOps Wire and how that data is protected.
         </p>
       </header>
 

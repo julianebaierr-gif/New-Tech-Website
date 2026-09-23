@@ -4,20 +4,20 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
-  title: "Terms of Use — TechOps Wire",
+  title: "Terms of Use | TechOps Wire",
   description: "Terms of use, code licensing terms, technical disclaimers, and intellectual property guidelines for TechOps Wire.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/terms`,
   },
   openGraph: {
-    title: "Terms of Use — TechOps Wire",
+    title: "Terms of Use | TechOps Wire",
     description: "Terms of use, code licensing terms, technical disclaimers, and intellectual property guidelines for TechOps Wire.",
     url: `${siteConfig.baseUrl}/terms`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Terms of Use — TechOps Wire",
+    title: "Terms of Use | TechOps Wire",
     description: "Terms of use, code licensing terms, technical disclaimers, and intellectual property guidelines for TechOps Wire.",
   },
 };
@@ -26,7 +26,7 @@ export default function TermsPage() {
   const termsSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Terms of Use — TechOps Wire",
+    "name": "Terms of Use | TechOps Wire",
     "url": `${siteConfig.baseUrl}/terms`,
     "description": "Terms of use, code licenses, and technical disclaimers for TechOps Wire.",
     "publisher": {
@@ -49,7 +49,7 @@ export default function TermsPage() {
           Terms of Use
         </h1>
         <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
-          Last revised: January 1, 2026. Please review these terms governing the use of tutorials, code snippets, and technical information on TechOps Wire.
+          Last revised: September 23, 2026. Please review these terms governing the use of tutorials, code snippets, and technical information on TechOps Wire.
         </p>
       </header>
 
@@ -60,7 +60,7 @@ export default function TermsPage() {
             1. Acceptance of Terms &amp; Educational Purpose
           </h2>
           <p>
-            By accessing or reading TechOps Wire, you agree to comply with and be bound by these Terms of Use. All content published on TechOps Wire—including technical tutorials, configuration snippets, spreadsheet formulas, and infrastructure comparisons—is provided strictly for educational and informational purposes.
+            By accessing or reading TechOps Wire, you agree to comply with and be bound by these Terms of Use. All content published on TechOps Wire (including technical tutorials, configuration snippets, spreadsheet formulas, and infrastructure comparisons) is provided strictly for educational and informational purposes.
           </p>
         </section>
 

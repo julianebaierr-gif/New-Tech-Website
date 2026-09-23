@@ -5,20 +5,20 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
-  title: "Contact Our Editorial Desk — TechOps Wire",
+  title: "Contact Our Editorial Desk | TechOps Wire",
   description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, technical suggestions, or licensing inquiries.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/contact`,
   },
   openGraph: {
-    title: "Contact Our Editorial Desk — TechOps Wire",
+    title: "Contact Our Editorial Desk | TechOps Wire",
     description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, technical suggestions, or licensing inquiries.",
     url: `${siteConfig.baseUrl}/contact`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact Our Editorial Desk — TechOps Wire",
+    title: "Contact Our Editorial Desk | TechOps Wire",
     description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, technical suggestions, or licensing inquiries.",
   },
 };

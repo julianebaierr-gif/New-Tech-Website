@@ -42,7 +42,7 @@ export const articles: Article[] = [
     categoryName: "Data & Excel Automation",
     authorId: "elena-rostova",
     publishedAt: "2026-09-15T08:00:00Z",
-    updatedAt: "2026-09-22T14:30:00Z",
+    updatedAt: "2026-09-23T18:00:00Z",
     readingTimeMinutes: 9,
     difficulty: "Beginner",
     primaryKeyword: "how to remove duplicates in excel",
@@ -85,7 +85,7 @@ export const articles: Article[] = [
     ],
     contentHtml: `
       <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
-        Duplicate rows happen all the time—whether two teammates entered the same customer, a database export glitched, or you merged two monthly sales sheets. Leaving duplicates in place can inflate your totals, break VLOOKUP formulas, and skew reports. Here is how to find duplicates, highlight them so you can review them, and delete them safely without losing important data.
+        Duplicate rows happen frequently, whether two teammates entered the same customer, a database export glitched, or you merged two monthly sales sheets. Leaving duplicates in place can inflate your totals, break VLOOKUP formulas, and skew reports. Here is how to find duplicates, highlight them so you can review them, and delete them safely without losing important data.
       </p>
 
       <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
@@ -181,7 +181,7 @@ End Sub</code></pre>
     categoryName: "Cloud & Infrastructure",
     authorId: "marcus-vance",
     publishedAt: "2026-09-12T10:00:00Z",
-    updatedAt: "2026-09-20T16:00:00Z",
+    updatedAt: "2026-09-23T18:00:00Z",
     readingTimeMinutes: 11,
     difficulty: "Intermediate",
     primaryKeyword: "aws ec2 instance types",
@@ -312,7 +312,7 @@ End Sub</code></pre>
     categoryName: "AI & Developer Tools",
     authorId: "marcus-vance",
     publishedAt: "2026-09-18T11:00:00Z",
-    updatedAt: "2026-09-21T09:15:00Z",
+    updatedAt: "2026-09-23T18:00:00Z",
     readingTimeMinutes: 8,
     difficulty: "Beginner",
     primaryKeyword: "why is chatgpt so slow",
@@ -394,7 +394,7 @@ End Sub</code></pre>
     categoryName: "OS & Systems",
     authorId: "marcus-vance",
     publishedAt: "2026-09-10T12:00:00Z",
-    updatedAt: "2026-09-19T17:00:00Z",
+    updatedAt: "2026-09-23T18:00:00Z",
     readingTimeMinutes: 10,
     difficulty: "Beginner",
     primaryKeyword: "windows 11 pro vs home",
