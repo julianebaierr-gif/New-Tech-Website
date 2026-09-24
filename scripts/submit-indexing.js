@@ -30,6 +30,11 @@ if (process.argv[2]) {
     const url = parts.find(p => p.startsWith('https://techopswire.com/articles/'));
     if (url) targetUrls.push(url.trim());
   }
+
+  // Include Author Profile URLs for Google E-E-A-T indexing
+  targetUrls.push('https://techopswire.com/authors/evan-mitchell');
+  targetUrls.push('https://techopswire.com/authors/sarah-blake');
+  targetUrls.push('https://techopswire.com/about');
 }
 
 console.log(`\n======================================================`);
