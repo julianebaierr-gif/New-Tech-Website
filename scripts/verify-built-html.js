@@ -23,6 +23,7 @@ const filesToCheck = [
   { path: '.next/server/app/articles/docker-container-architecture.html', name: 'Article: docker-architecture' },
   { path: '.next/server/app/articles/chatgpt-file-upload-limits.html', name: 'Article: chatgpt-file-limits' },
   { path: '.next/server/app/articles/windows-server-2019-end-of-life.html', name: 'Article: win-server-2019' },
+  { path: '.next/server/app/articles/how-to-add-bullet-points-in-excel.html', name: 'Article: bullet-points-excel' },
 ];
 
 console.log("=== INSPECTING PRODUCTION BUILT HTML FILES ===");

@@ -549,10 +549,14 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
     tableOfContents: ${JSON.stringify(tocItems, null, 6)},
     faqs: ${JSON.stringify(faqItems, null, 6)},
     contentHtml: \`${articleHtml.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`
-  },
-];`;
+  },`;
 
-  const updatedArticlesTs = articlesTs.replace(/\n\s*\];\s*$/, ',\n' + newArticleObject);
+  const lastClosing = articlesTs.lastIndexOf('];');
+  if (lastClosing === -1) {
+    console.error('[ERROR] Closing bracket not found in articles.ts!');
+    return;
+  }
+  const updatedArticlesTs = articlesTs.slice(0, lastClosing) + ',\n' + newArticleObject + '\n];' + articlesTs.slice(lastClosing + 2);
   fs.writeFileSync(articlesTsPath, updatedArticlesTs, 'utf8');
   console.log(`[SUCCESS] Article appended to src/data/articles.ts!`);
 
