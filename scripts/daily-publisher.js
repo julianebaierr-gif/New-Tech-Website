@@ -105,9 +105,9 @@ async function run() {
   const lastArticle = existingArticles[existingArticles.length - 1];
   console.log(`[STATUS] Last article: [${lastArticle?.slug}] | Category: ${lastArticle?.categorySlug} | Author: ${lastArticle?.authorId}`);
 
-  // 2. Author Alternation: Elena -> Marcus -> Elena -> Marcus
-  const nextAuthorId = (lastArticle?.authorId === 'elena-rostova') ? 'marcus-vance' : 'elena-rostova';
-  const nextAuthorName = (nextAuthorId === 'elena-rostova') ? 'Elena Rostova' : 'Marcus Vance';
+  // 2. Author Alternation: Sarah -> Evan -> Sarah -> Evan
+  const nextAuthorId = (lastArticle?.authorId === 'sarah-blake') ? 'evan-mitchell' : 'sarah-blake';
+  const nextAuthorName = (nextAuthorId === 'sarah-blake') ? 'Sarah Blake' : 'Evan Mitchell';
   console.log(`[AUTHOR ROTATION] Today's Author: ${nextAuthorName} (${nextAuthorId})`);
 
   // 3. Category Round-Robin: Data -> Cloud -> AI -> OS -> Data...

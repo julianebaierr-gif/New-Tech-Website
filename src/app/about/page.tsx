@@ -196,32 +196,53 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {siteConfig.authors.map((author) => (
-              <div key={author.id} className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-4">
-                <div className="flex items-center gap-4">
-                  <img
-                    src={author.avatar}
-                    alt={author.name}
-                    className="w-14 h-14 rounded-full object-cover border border-slate-200"
-                  />
-                  <div>
-                    <h3 className="text-base font-bold text-slate-900">{author.name}</h3>
-                    <p className="text-xs text-blue-700 font-semibold">{author.role}</p>
+              <div key={author.id} className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-slate-300 transition-colors shadow-xs space-y-4 flex flex-col justify-between group">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <Link href={`/authors/${author.id}`} className="shrink-0">
+                      <img
+                        src={author.avatar}
+                        alt={author.name}
+                        className="w-16 h-16 rounded-full object-cover border-2 border-slate-200 group-hover:border-blue-500 transition-all shadow-xs"
+                      />
+                    </Link>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Link href={`/authors/${author.id}`} className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                          {author.name}
+                        </Link>
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                          {author.experienceYears}
+                        </span>
+                      </div>
+                      <p className="text-xs text-blue-700 font-semibold">{author.role}</p>
+                      <p className="text-[11px] text-slate-400 mt-0.5">📍 {author.location}</p>
+                    </div>
                   </div>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    {author.bio}
+                  </p>
                 </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {author.bio}
-                </p>
-                <div className="flex items-center gap-4 text-xs font-semibold text-blue-600 pt-3 border-t border-slate-100">
-                  {author.socials.linkedin && (
-                    <a href={author.socials.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      LinkedIn Profile ↗
-                    </a>
-                  )}
-                  {author.socials.github && (
-                    <a href={author.socials.github} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      GitHub Profile ↗
-                    </a>
-                  )}
+
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-3 font-medium text-blue-600">
+                    {author.socials.linkedin && (
+                      <a href={author.socials.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                        LinkedIn ↗
+                      </a>
+                    )}
+                    {author.socials.github && (
+                      <a href={author.socials.github} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                        GitHub ↗
+                      </a>
+                    )}
+                  </div>
+                  <Link
+                    href={`/authors/${author.id}`}
+                    className="font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-0.5"
+                  >
+                    View Profile &amp; Guides →
+                  </Link>
                 </div>
               </div>
             ))}

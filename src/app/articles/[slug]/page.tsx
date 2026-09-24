@@ -156,8 +156,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       "@type": "Person",
       "name": author.name,
       "jobTitle": author.role,
-      "url": author.socials.linkedin,
-      "sameAs": Object.values(author.socials),
+      "url": `${siteConfig.baseUrl}/authors/${author.id}`,
+      "image": `${siteConfig.baseUrl}${author.avatar}`,
+      "sameAs": Object.values(author.socials).filter(Boolean),
     },
     "publisher": {
       "@type": "Organization",
@@ -230,29 +231,28 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           {/* Author Byline */}
           <div className="pt-4 flex items-center justify-between border-t border-slate-100">
-            <div className="flex items-center gap-3">
+            <Link href={`/authors/${author.id}`} className="flex items-center gap-3 group">
               <img
                 src={author.avatar}
                 alt={author.name}
-                className="w-10 h-10 rounded-full object-cover border border-slate-200"
+                className="w-10 h-10 rounded-full object-cover border-2 border-slate-200 group-hover:border-blue-500 transition-all shadow-xs"
               />
               <div>
-                <p className="text-xs font-bold text-slate-900">{author.name}</p>
+                <p className="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition-colors flex items-center gap-1">
+                  {author.name}
+                  <span className="text-[10px] text-slate-400 group-hover:text-blue-500 font-normal">↗</span>
+                </p>
                 <p className="text-[11px] text-slate-500">{author.role}</p>
               </div>
-            </div>
+            </Link>
 
             <div className="hidden sm:flex items-center gap-3 text-xs text-slate-500">
-              {author.socials.linkedin && (
-                <a
-                  href={author.socials.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-blue-600 transition-colors font-medium"
-                >
-                  LinkedIn Profile ↗
-                </a>
-              )}
+              <Link
+                href={`/authors/${author.id}`}
+                className="text-blue-600 hover:text-blue-700 font-semibold"
+              >
+                Author Profile →
+              </Link>
             </div>
           </div>
 
@@ -327,25 +327,37 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <FaqAccordion faqs={article.faqs} />
 
             {/* Author Profile Bio Footer */}
-            <div className="my-10 p-6 rounded-2xl border border-slate-200 bg-slate-50">
-              <div className="flex flex-col sm:flex-row gap-4 items-start">
-                <img
-                  src={author.avatar}
-                  alt={author.name}
-                  className="w-14 h-14 rounded-xl object-cover border border-slate-200 shrink-0"
-                />
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-bold text-slate-900">{author.name}</h4>
+            <div className="my-10 p-6 rounded-2xl border border-slate-200 bg-slate-50 hover:border-slate-300 transition-colors shadow-xs">
+              <div className="flex flex-col sm:flex-row gap-5 items-start">
+                <Link href={`/authors/${author.id}`} className="shrink-0">
+                  <img
+                    src={author.avatar}
+                    alt={author.name}
+                    className="w-16 h-16 rounded-2xl object-cover border-2 border-slate-200 hover:border-blue-500 transition-all shadow-xs"
+                  />
+                </Link>
+                <div className="space-y-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Link href={`/authors/${author.id}`} className="text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors">
+                      {author.name}
+                    </Link>
                     <span className="text-xs text-slate-500">• {author.role}</span>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                      {author.experienceYears}
+                    </span>
                   </div>
                   <p className="text-xs text-slate-600 leading-relaxed">
                     {author.bio}
                   </p>
-                  <div className="pt-2 flex items-center gap-4 text-xs font-medium text-blue-600">
-                    <a href={author.socials.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      LinkedIn Profile ↗
-                    </a>
+                  <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-medium text-blue-600">
+                    <Link href={`/authors/${author.id}`} className="font-bold hover:underline flex items-center gap-1">
+                      View Full Profile &amp; All Articles by {author.name} →
+                    </Link>
+                    {author.socials.linkedin && (
+                      <a href={author.socials.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                        LinkedIn ↗
+                      </a>
+                    )}
                     <Link href="/editorial-policy" className="text-slate-500 hover:text-slate-900">
                       Editorial Policy ↗
                     </Link>

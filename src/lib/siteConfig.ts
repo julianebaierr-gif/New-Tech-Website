@@ -12,6 +12,11 @@ export interface AuthorConfig {
   role: string;
   avatar: string;
   bio: string;
+  fullBio: string;
+  experienceYears: string;
+  location: string;
+  certifications: string[];
+  skills: string[];
   socials: {
     linkedin?: string;
     github?: string;
@@ -69,29 +74,40 @@ export const siteConfig = {
     },
   ] as CategoryConfig[],
 
-  // Contributing Authors for E-E-A-T
+  // Contributing Authors for Google E-E-A-T
   authors: [
     {
-      id: "marcus-vance",
-      name: "Marcus Vance",
-      role: "Lead Cloud Architect & Systems Specialist",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&h=256&q=80",
-      bio: "Former Principal Systems Engineer with 14+ years designing high-availability Linux infrastructure and cloud automation systems.",
+      id: "evan-mitchell",
+      name: "Evan Mitchell",
+      role: "Cloud Infrastructure Specialist & Systems Administrator",
+      avatar: "/authors/evan-mitchell.jpg",
+      bio: "Systems administrator with 3+ years managing enterprise Linux servers, AWS EC2 instances, and Docker containers. Evan focuses on practical bash scripting and secure network configurations.",
+      fullBio: "Evan Mitchell is a cloud infrastructure technician and systems administrator based in Austin, Texas. Over 3+ years of hands-on operations experience, Evan has deployed and maintained Linux server clusters, architected cost-effective AWS EC2 configurations, and containerized internal applications with Docker. He tests all commands on clean Ubuntu LTS and Debian virtual machines before publishing, ensuring tutorials are accurate and safe for production environments.",
+      experienceYears: "3+ Years Industry Experience",
+      location: "Austin, Texas, United States",
+      certifications: ["AWS Certified Solutions Architect (Associate)", "CompTIA Linux+", "Docker Certified Associate"],
+      skills: ["Linux Server Administration (Ubuntu/Debian)", "AWS EC2, VPC & S3", "Docker Networking & Volumes", "Bash Shell Scripting", "Windows Server 2019/2022"],
       socials: {
-        linkedin: "https://www.linkedin.com/in/marcus-vance-cloud",
-        github: "https://github.com/marcus-vance",
-        twitter: "https://twitter.com/marcus_vance_ops",
+        linkedin: "https://www.linkedin.com/in/evan-mitchell-ops",
+        github: "https://github.com/evan-mitchell-ops",
+        twitter: "https://twitter.com/evanmitchellops",
       },
     },
     {
-      id: "elena-rostova",
-      name: "Elena Rostova",
-      role: "Senior Data Operations Engineer",
-      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=256&h=256&q=80",
-      bio: "Specializes in enterprise financial modeling, data hygiene workflows, and high-volume Excel and SQL analytics workflows.",
+      id: "sarah-blake",
+      name: "Sarah Blake",
+      role: "Senior Data Operations & Spreadsheet Analyst",
+      avatar: "/authors/sarah-blake.jpg",
+      bio: "Data analyst with 3+ years designing automated reporting engines, dynamic financial spreadsheets, and clean data workflows in Microsoft Excel and Google Sheets.",
+      fullBio: "Sarah Blake is a data operations analyst and business intelligence specialist based in Chicago, Illinois. With 3+ years of professional experience in operational analytics and financial modeling, Sarah helps teams eliminate data discrepancies, build dynamic Excel workbooks with XLOOKUP and dynamic arrays, and establish clean spreadsheet validation rules. She focuses on non-destructive data cleaning and reliable formula architecture.",
+      experienceYears: "3+ Years Industry Experience",
+      location: "Chicago, Illinois, United States",
+      certifications: ["Microsoft Office Specialist: Excel Expert", "Google Data Analytics Professional", "Power BI Data Analyst Associate"],
+      skills: ["Advanced Excel Formulas (XLOOKUP, FILTER, UNIQUE)", "Data Hygiene & De-duplication", "Data Validation & Dynamic Drop-Down Lists", "Google Sheets Automation", "SQL & Power Query"],
       socials: {
-        linkedin: "https://www.linkedin.com/in/elena-rostova-data",
-        github: "https://github.com/elena-rostova",
+        linkedin: "https://www.linkedin.com/in/sarah-blake-data",
+        github: "https://github.com/sarah-blake-data",
+        twitter: "https://twitter.com/sarahblakedata",
       },
     },
   ] as AuthorConfig[],

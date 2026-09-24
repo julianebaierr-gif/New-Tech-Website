@@ -53,7 +53,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
-  // 3. Articles (High Priority)
+  // 3. Author Profiles (E-E-A-T)
+  const authorRoutes: MetadataRoute.Sitemap = siteConfig.authors.map((auth) => ({
+    url: `${baseUrl}/authors/${auth.id}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  // 4. Articles (High Priority)
   const articleRoutes: MetadataRoute.Sitemap = articles.map((art) => ({
     url: `${baseUrl}/articles/${art.slug}`,
     lastModified: new Date(art.updatedAt),
@@ -61,5 +69,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  return [...staticRoutes, ...categoryRoutes, ...articleRoutes];
+  return [...staticRoutes, ...categoryRoutes, ...authorRoutes, ...articleRoutes];
 }

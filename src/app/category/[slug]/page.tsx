@@ -176,14 +176,19 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
               <div className="p-5 pt-0">
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-700 font-mono">
-                      {art.authorId === "elena-rostova" ? "ER" : "MV"}
-                    </span>
-                    <span className="text-slate-600 font-medium">
+                  <Link
+                    href={`/authors/${art.authorId}`}
+                    className="flex items-center gap-2 group/author hover:text-blue-600 transition-colors"
+                  >
+                    <img
+                      src={siteConfig.authors.find((a) => a.id === art.authorId)?.avatar}
+                      alt={siteConfig.authors.find((a) => a.id === art.authorId)?.name || "Author"}
+                      className="w-5 h-5 rounded-full object-cover border border-slate-200"
+                    />
+                    <span className="text-slate-600 font-medium group-hover/author:text-blue-600 transition-colors">
                       {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "TechOps Team"}
                     </span>
-                  </div>
+                  </Link>
                   <Link
                     href={`/articles/${art.slug}`}
                     className="font-bold text-blue-600 hover:text-blue-700 text-xs inline-flex items-center gap-0.5"

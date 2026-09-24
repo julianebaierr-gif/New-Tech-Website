@@ -36,7 +36,9 @@ export default function HomePage() {
                   <span className="text-slate-400">•</span>
                   <span className="text-slate-300">{leadArticle.readingTimeMinutes} min read</span>
                   <span className="text-slate-400">•</span>
-                  <span className="text-slate-300">Elena Rostova</span>
+                  <Link href={`/authors/${leadArticle.authorId}`} className="text-slate-300 hover:text-white transition-colors underline-offset-2 hover:underline">
+                    {siteConfig.authors.find((a) => a.id === leadArticle.authorId)?.name || "Staff Writer"}
+                  </Link>
                 </div>
 
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight group-hover:text-blue-300 transition-colors">
@@ -179,14 +181,19 @@ export default function HomePage() {
 
               <div className="p-5 pt-0">
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-700 font-mono">
-                      {art.authorId === "elena-rostova" ? "ER" : "MV"}
-                    </span>
-                    <span className="text-slate-600 font-medium">
+                  <Link
+                    href={`/authors/${art.authorId}`}
+                    className="flex items-center gap-2 group/author hover:text-blue-600 transition-colors"
+                  >
+                    <img
+                      src={siteConfig.authors.find((a) => a.id === art.authorId)?.avatar}
+                      alt={siteConfig.authors.find((a) => a.id === art.authorId)?.name || "Author"}
+                      className="w-5 h-5 rounded-full object-cover border border-slate-200"
+                    />
+                    <span className="text-slate-600 font-medium group-hover/author:text-blue-600 transition-colors">
                       {siteConfig.authors.find((a) => a.id === art.authorId)?.name || "TechOps Team"}
                     </span>
-                  </div>
+                  </Link>
                   <Link
                     href={`/articles/${art.slug}`}
                     className="font-bold text-blue-600 hover:text-blue-700 text-xs inline-flex items-center gap-0.5"
