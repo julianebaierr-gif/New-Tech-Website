@@ -27,20 +27,20 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const url = `${siteConfig.baseUrl}/category/${category.slug}`;
 
   return {
-    title: `${category.name} Guides & Articles | ${siteConfig.name}`,
+    title: `${category.name} Articles | ${siteConfig.name}`,
     description: category.description,
     alternates: {
       canonical: url,
     },
     openGraph: {
-      title: `${category.name} Guides & Articles | ${siteConfig.name}`,
+      title: `${category.name} Articles | ${siteConfig.name}`,
       description: category.description,
       url: url,
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${category.name} Guides & Articles | ${siteConfig.name}`,
+      title: `${category.name} Articles | ${siteConfig.name}`,
       description: category.description,
     },
   };
@@ -60,7 +60,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": `${category.name} Guides & Articles`,
+    "name": `${category.name} Articles`,
     "description": category.description,
     "url": categoryUrl,
     "publisher": {
@@ -91,11 +91,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <div className="max-w-3xl space-y-3">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-              Technical Category
+              Category Archive
             </span>
             <span className="text-xs text-slate-400">•</span>
             <span className="text-xs font-mono text-slate-500">
-              {categoryArticles.length} {categoryArticles.length === 1 ? "guide" : "guides"} available
+              {categoryArticles.length} {categoryArticles.length === 1 ? "article" : "articles"} available
             </span>
           </div>
 
@@ -188,7 +188,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     href={`/articles/${art.slug}`}
                     className="font-bold text-blue-600 hover:text-blue-700 text-xs inline-flex items-center gap-0.5"
                   >
-                    Read Guide →
+                    Read Article →
                   </Link>
                 </div>
               </div>

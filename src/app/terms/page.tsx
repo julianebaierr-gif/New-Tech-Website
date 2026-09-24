@@ -5,20 +5,20 @@ import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
   title: "Terms of Use | TechOps Wire",
-  description: "Terms of use, code licensing terms, technical disclaimers, and intellectual property guidelines for TechOps Wire.",
+  description: "Terms of use, code licensing terms, disclaimers, and intellectual property guidelines for TechOps Wire.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/terms`,
   },
   openGraph: {
     title: "Terms of Use | TechOps Wire",
-    description: "Terms of use, code licensing terms, technical disclaimers, and intellectual property guidelines for TechOps Wire.",
+    description: "Terms of use, code licensing terms, disclaimers, and intellectual property guidelines for TechOps Wire.",
     url: `${siteConfig.baseUrl}/terms`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Terms of Use | TechOps Wire",
-    description: "Terms of use, code licensing terms, technical disclaimers, and intellectual property guidelines for TechOps Wire.",
+    description: "Terms of use, code licensing terms, disclaimers, and intellectual property guidelines for TechOps Wire.",
   },
 };
 
@@ -28,7 +28,7 @@ export default function TermsPage() {
     "@type": "WebPage",
     "name": "Terms of Use | TechOps Wire",
     "url": `${siteConfig.baseUrl}/terms`,
-    "description": "Terms of use, code licenses, and technical disclaimers for TechOps Wire.",
+    "description": "Terms of use, code licenses, and disclaimers for TechOps Wire.",
     "publisher": {
       "@type": "Organization",
       "name": siteConfig.name,
@@ -49,7 +49,7 @@ export default function TermsPage() {
           Terms of Use
         </h1>
         <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
-          Last revised: September 23, 2026. Please review these terms governing the use of tutorials, code snippets, and technical information on TechOps Wire.
+          Last revised: September 24, 2026. Please review these terms governing the use of tutorials, code snippets, and system documentation on TechOps Wire.
         </p>
       </header>
 
@@ -60,11 +60,11 @@ export default function TermsPage() {
             1. Acceptance of Terms &amp; Educational Purpose
           </h2>
           <p>
-            By accessing or reading TechOps Wire, you agree to comply with and be bound by these Terms of Use. All content published on TechOps Wire (including technical tutorials, configuration snippets, spreadsheet formulas, and infrastructure comparisons) is provided strictly for educational and informational purposes.
+            By accessing or reading TechOps Wire, you agree to comply with and be bound by these Terms of Use. All content published on TechOps Wire (including tutorials, configuration snippets, spreadsheet formulas, and infrastructure comparisons) is provided strictly for educational and informational purposes.
           </p>
         </section>
 
-        {/* 2. Technical Code Snippets License */}
+        {/* 2. Code Snippets License */}
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-slate-900 tracking-tight">
             2. Permissive Code Snippet Usage
@@ -77,7 +77,7 @@ export default function TermsPage() {
           </p>
         </section>
 
-        {/* 3. Disclaimer of Technical Liability */}
+        {/* 3. Disclaimer of Liability */}
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-slate-900 tracking-tight">
             3. Disclaimer of Warranties and Liability
@@ -99,10 +99,10 @@ export default function TermsPage() {
             4. Editorial Copyright &amp; Prohibited Scraping
           </h2>
           <p>
-            The original explanatory prose, article structure, analytical comparisons, and editorial guides published on TechOps Wire are protected under international copyright law.
+            The original explanatory prose, article structure, analytical comparisons, and editorial tutorials published on TechOps Wire are protected under international copyright law.
           </p>
           <p>
-            You may not republish, syndicate, mirror, or bulk-scrape our full article texts or guides on other websites or publications without explicit prior written authorization from TechOps Wire. Brief quotations with clear attribution and a direct link to the original article are permitted.
+            You may not republish, syndicate, mirror, or bulk-scrape our full article texts or tutorials on other websites or publications without explicit prior written authorization from TechOps Wire. Brief quotations with clear attribution and a direct link to the original article are permitted.
           </p>
         </section>
 
@@ -115,7 +115,7 @@ export default function TermsPage() {
             Amazon Web Services (AWS), Microsoft, Windows, Excel, Linux, Docker, OpenAI, ChatGPT, and all other third-party product names, logos, and brands mentioned on this website are trademarks or registered trademarks of their respective owners.
           </p>
           <p>
-            Their use on TechOps Wire is strictly nominative and for technical identification and informational purposes only. Such use does not imply any affiliation with, endorsement by, or sponsorship from the respective trademark holders.
+            Their use on TechOps Wire is strictly nominative and for identification and informational purposes only. Such use does not imply any affiliation with, endorsement by, or sponsorship from the respective trademark holders.
           </p>
         </section>
 

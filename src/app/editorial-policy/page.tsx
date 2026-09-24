@@ -6,20 +6,20 @@ import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
   title: "Editorial Policy & Testing Standards | TechOps Wire",
-  description: "Learn how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
+  description: "See how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/editorial-policy`,
   },
   openGraph: {
     title: "Editorial Policy & Testing Standards | TechOps Wire",
-    description: "Learn how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
+    description: "See how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
     url: `${siteConfig.baseUrl}/editorial-policy`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Editorial Policy & Testing Standards | TechOps Wire",
-    description: "Learn how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
+    description: "See how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
   },
 };
 
@@ -51,7 +51,7 @@ export default function EditorialPolicyPage() {
           Editorial Policy &amp; Testing Standards
         </h1>
         <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
-          Technical tutorials should never be guesswork. We outline our exact testing procedures, environment specifications, safety rules, and correction policies below.
+          Tutorials should never be guesswork. We outline our exact testing procedures, environment specifications, safety rules, and correction policies below.
         </p>
       </header>
 
@@ -119,7 +119,7 @@ export default function EditorialPolicyPage() {
             3. Author Qualifications and Review
           </h2>
           <p>
-            Guides on TechOps Wire are authored by professionals who work directly with systems engineering, cloud architecture, and data pipelines. We do not use anonymous bylines.
+            Guides on TechOps Wire are authored by professionals who work directly with systems engineering, cloud architecture, and data operations. We do not use anonymous bylines.
           </p>
           <p>
             Before an article goes live, an independent editor reviews the draft to check:
@@ -132,7 +132,7 @@ export default function EditorialPolicyPage() {
               <strong>Clarity Check:</strong> Are all flags, parameters, and formula arguments defined in plain English without unnecessary jargon?
             </div>
             <div className="p-3.5 rounded-xl border border-slate-200 bg-slate-50 text-xs text-slate-700">
-              <strong>Source Verification:</strong> Do all references point directly to primary vendor documentation (Microsoft Learn, AWS Knowledge Center, Docker Documentation, or official man pages)?
+              <strong>Source Verification:</strong> Do all references point directly to primary vendor documentation (Microsoft Docs, AWS Knowledge Center, Docker Documentation, or official man pages)?
             </div>
           </div>
         </section>
@@ -166,7 +166,7 @@ export default function EditorialPolicyPage() {
           <ol className="list-decimal pl-6 space-y-2 text-slate-700">
             <li>A reader submits feedback to <a href={`mailto:${siteConfig.contactEmail}`} className="text-blue-600 font-mono hover:underline">{siteConfig.contactEmail}</a>.</li>
             <li>A staff engineer replicates the reported behavior in our test environment within 24 business hours.</li>
-            <li>If a syntax change or step adjustment is verified, we update the article and record the updated date at the top of the guide.</li>
+            <li>If a syntax change or step adjustment is confirmed, we update the article and record the updated date at the top of the article.</li>
           </ol>
         </section>
 

@@ -6,20 +6,20 @@ import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
   title: "About TechOps Wire | Editorial Team, Testing Standards & Mission",
-  description: "Learn about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
+  description: "Read about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/about`,
   },
   openGraph: {
     title: "About TechOps Wire | Editorial Team, Testing Standards & Mission",
-    description: "Learn about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
+    description: "Read about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
     url: `${siteConfig.baseUrl}/about`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "About TechOps Wire | Editorial Team, Testing Standards & Mission",
-    description: "Learn about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
+    description: "Read about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
   },
 };
 
@@ -65,7 +65,7 @@ export default function AboutPage() {
           About TechOps Wire
         </h1>
         <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
-          An independent technical publication providing clear, tested tutorials on spreadsheets, cloud servers, developer tools, and everyday computer operating systems.
+          An independent publication providing clear, tested tutorials on spreadsheets, cloud servers, developer tools, and everyday computer operating systems.
         </p>
       </header>
 
@@ -76,7 +76,7 @@ export default function AboutPage() {
             Why We Started TechOps Wire
           </h2>
           <p>
-            If you have spent any time searching the web for technical troubleshooting steps, you have likely run into the same frustrations we did: bloated pages with dozens of intrusive ads, copied-and-pasted articles that do not explain what the commands actually do, and outdated tutorials that fail the moment you paste them into your terminal or spreadsheet.
+            If you have spent any time searching the web for troubleshooting steps, you have likely run into the same frustrations we did: bloated pages with dozens of intrusive ads, copied-and-pasted articles that do not explain what the commands actually do, and outdated tutorials that fail the moment you paste them into your terminal or spreadsheet.
           </p>
           <p>
             Worse still, many websites give risky advice without warning you of the consequences, such as telling people to run dangerous file permission commands like <code>chmod 777</code> to solve a minor web server issue, or advising users to clean duplicate rows in Excel without explaining how to preserve their historical data.
@@ -113,10 +113,10 @@ export default function AboutPage() {
             </div>
 
             <div className="p-5 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2">
-              <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">03. Modern Workflows</span>
+              <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">03. Developer Workflows</span>
               <h3 className="font-bold text-slate-900 text-base">AI &amp; Developer Tools</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Practical breakdowns of modern tools like ChatGPT, including token context limits, file upload restrictions for large PDFs and spreadsheets, and developer utilities that speed up day-to-day coding.
+                Practical breakdowns of tools like ChatGPT, including token context limits, file upload restrictions for large PDFs and spreadsheets, and developer utilities that speed up day-to-day coding.
               </p>
             </div>
 
@@ -133,10 +133,10 @@ export default function AboutPage() {
         {/* How We Test and Verify */}
         <section className="space-y-4 pt-2">
           <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-            How We Test Our Guides
+            How We Test Our Tutorials
           </h2>
           <p>
-            We take accuracy seriously. Before any guide is approved and published on TechOps Wire, it goes through a hands-on verification process:
+            We take accuracy seriously. Before any tutorial is approved and published on TechOps Wire, it goes through a hands-on verification process:
           </p>
 
           <div className="space-y-3 pt-2">
@@ -157,7 +157,7 @@ export default function AboutPage() {
             <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1">
               <h3 className="text-sm font-bold text-slate-900">3. Plain English Explanations</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                We believe that good technical writing is easy to follow. We explain what each flag or argument means (such as why <code>chmod 755</code> gives read and execute rights to others while keeping write access restricted to the owner).
+                We believe that good practical writing is easy to follow. We explain what each flag or argument means (such as why <code>chmod 755</code> gives read and execute rights to others while keeping write access restricted to the owner).
               </p>
             </div>
 
@@ -179,7 +179,7 @@ export default function AboutPage() {
             TechOps Wire is completely editorially independent. We do not sell paid search rankings, we do not accept sponsored guest articles designed solely to insert backlink advertisements, and we do not let commercial sponsors influence our recommendations.
           </p>
           <p>
-            When we recommend a tool, operating system setting, or software utility, it is because we have tested it and found it genuinely helpful for solving technical problems. When our articles link to external websites, those links lead directly to official software documentation, open-source repositories, or vendor knowledge bases.
+            When we recommend a tool, operating system setting, or software utility, it is because we have tested it and found it genuinely helpful for solving computer problems. When our articles link to external websites, those links lead directly to official software documentation, open-source repositories, or vendor knowledge bases.
           </p>
         </section>
 
@@ -190,7 +190,7 @@ export default function AboutPage() {
               Our Editorial Team
             </h2>
             <p className="text-xs text-slate-500 mt-1">
-              The writers and editors responsible for testing and maintaining our guides.
+              The writers and editors responsible for testing and maintaining our tutorials.
             </p>
           </div>
 
@@ -235,7 +235,7 @@ export default function AboutPage() {
               Have Questions or Feedback for Our Team?
             </h3>
             <p className="text-xs text-slate-500">
-              Spotted a command syntax change or want to request a guide? Send a note to our desk.
+              Spotted a command syntax change or want to request a tutorial? Send a note to our desk.
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">

@@ -57,7 +57,7 @@ export default function HomePage() {
                     href={`/articles/${leadArticle.slug}`}
                     className="font-bold text-white bg-blue-600 hover:bg-blue-500 px-3.5 py-1.5 rounded-lg transition-colors inline-flex items-center gap-1"
                   >
-                    Read Guide <span>→</span>
+                    Read Tutorial <span>→</span>
                   </Link>
                 </div>
               </div>
@@ -191,7 +191,7 @@ export default function HomePage() {
                     href={`/articles/${art.slug}`}
                     className="font-bold text-blue-600 hover:text-blue-700 text-xs inline-flex items-center gap-0.5"
                   >
-                    Read Guide →
+                    Read Tutorial →
                   </Link>
                 </div>
               </div>
@@ -199,7 +199,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Learn More & Full Directory Action Button */}
+        {/* Testing Standards Action Button */}
         <div className="mt-12 text-center pt-4">
           <div className="inline-flex flex-col sm:flex-row items-center gap-3">
             <Link
@@ -217,15 +217,15 @@ export default function HomePage() {
       </section>
 
       {/* =========================================================================
-          EXPLORE BY TOPIC (Clean, Functional Categories)
+          BROWSE BY TOPIC (Clean, Functional Categories)
          ========================================================================= */}
       <section className="mb-14">
         <div className="mb-6">
           <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-            Explore by Category
+            Browse by Category
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Browse our core areas of technical coverage.
+            Browse our core areas of system coverage.
           </p>
         </div>
 

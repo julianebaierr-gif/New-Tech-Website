@@ -6,20 +6,20 @@ import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
   title: "Contact Our Editorial Desk | TechOps Wire",
-  description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, technical suggestions, or licensing inquiries.",
+  description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, suggestions, or licensing inquiries.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/contact`,
   },
   openGraph: {
     title: "Contact Our Editorial Desk | TechOps Wire",
-    description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, technical suggestions, or licensing inquiries.",
+    description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, suggestions, or licensing inquiries.",
     url: `${siteConfig.baseUrl}/contact`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Contact Our Editorial Desk | TechOps Wire",
-    description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, technical suggestions, or licensing inquiries.",
+    description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, suggestions, or licensing inquiries.",
   },
 };
 
@@ -76,7 +76,7 @@ export default function ContactPage() {
                 {siteConfig.contactEmail}
               </a>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Direct channel to our editorial review desk. Use this email address for corrections, technical feedback, tutorial suggestions, and licensing questions.
+                Direct channel to our editorial review desk. Use this email address for corrections, feedback, tutorial suggestions, and licensing questions.
               </p>
             </div>
 
@@ -119,7 +119,7 @@ export default function ContactPage() {
             Topics We Welcome Reader Questions About
           </h2>
           <p className="text-xs text-slate-600 leading-relaxed">
-            Our editorial staff prioritizes answering practical, hands-on technical questions that help systems engineers, developers, and data workers:
+            Our editorial staff prioritizes answering practical, hands-on questions that help systems engineers, developers, and data workers:
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 text-xs">
             <div className="p-4 rounded-xl border border-slate-100 bg-slate-50 space-y-1">

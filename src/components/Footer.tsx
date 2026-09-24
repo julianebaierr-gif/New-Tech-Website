@@ -71,7 +71,7 @@ export function Footer() {
           {/* Newsletter / Updates */}
           <div>
             <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
-              Technical Updates
+              System Updates
             </h4>
             <p className="text-xs text-slate-500 mb-3 leading-relaxed">
               Weekly articles on Linux, AWS, and enterprise data workflows. No spam.

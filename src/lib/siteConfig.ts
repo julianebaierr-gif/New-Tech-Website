@@ -37,7 +37,7 @@ export const siteConfig = {
   contactEmail: "editorial@techopswire.com",
   foundedYear: 2026,
 
-  // 4 Core Technical Categories
+  // 4 Core Categories
   categories: [
     {
       name: "Data & Excel Automation",
@@ -69,14 +69,14 @@ export const siteConfig = {
     },
   ] as CategoryConfig[],
 
-  // Verified Expert Authors for E-E-A-T
+  // Contributing Authors for E-E-A-T
   authors: [
     {
       id: "marcus-vance",
       name: "Marcus Vance",
       role: "Lead Cloud Architect & Systems Specialist",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&h=256&q=80",
-      bio: "Former Principal Systems Engineer with 14+ years designing high-availability Linux infrastructure and cloud automation pipelines.",
+      bio: "Former Principal Systems Engineer with 14+ years designing high-availability Linux infrastructure and cloud automation systems.",
       socials: {
         linkedin: "https://www.linkedin.com/in/marcus-vance-cloud",
         github: "https://github.com/marcus-vance",
@@ -88,7 +88,7 @@ export const siteConfig = {
       name: "Elena Rostova",
       role: "Senior Data Operations Engineer",
       avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=256&h=256&q=80",
-      bio: "Specializes in enterprise financial modeling, data hygiene workflows, and high-volume Excel and SQL analytics pipelines.",
+      bio: "Specializes in enterprise financial modeling, data hygiene workflows, and high-volume Excel and SQL analytics workflows.",
       socials: {
         linkedin: "https://www.linkedin.com/in/elena-rostova-data",
         github: "https://github.com/elena-rostova",

@@ -4,14 +4,27 @@ const path = require('path');
 const articlesPath = path.join(__dirname, '../src/data/articles.ts');
 const raw = fs.readFileSync(articlesPath, 'utf8');
 
-// List of strictly banned AI filler buzzwords
+// List of strictly banned AI words and phrases (including all 93 user terms)
 const bannedWords = [
-  'delve', 'demystif', 'tapestry', 'testament', 'bulletproof', 'battle-tested',
-  'robust', 'cornerstone', 'paradigm shift', 'seamless', 'orchestrat',
-  'unleash', 'harness', 'elevate', 'supercharge', 'game-changer', 'realm',
-  'revolutionize', 'peer-reviewed', 'errata', 'in today\'s digital landscape',
-  'in today\'s fast-paced', 'furthermore', 'moreover', 'beacon of', 'paramount',
-  'plethora', 'myriad', 'vital linchpin', 'cutting-edge'
+  'A deep dive into', 'A Guide to', 'Adopt', 'Adopting', 'An in-depth look at',
+  'An in-depth look into', 'As we look ahead', 'Battle-tested', 'Beacon',
+  'Bulletproof', 'Complete', 'Comprehensive', 'Comprehensive Guide',
+  'Comprehensive Guide to', 'Consumption', 'Cornerstone', 'Crucial',
+  'Crucial component', 'Deep dive', 'Delve', 'Delve into', 'Delving',
+  'Demystifying', 'Digital', 'Discover', 'Discover verified facts', 'Dive into',
+  'Elevate', 'Embark', 'Enterprise-grade', 'Evolution', 'Explore', 'Extracting',
+  'Find verified facts', 'Foster', 'Furthermore', 'Game-changer', 'Guide',
+  'Harness', 'Helpful background', 'Helpful background details and common queries',
+  'High-Fidelity', 'In conclusion', 'In this article', 'In this article, we explore',
+  'In today\'s digital era', 'In today\'s fast-paced', 'In today\'s fast-paced digital world',
+  'In-depth', 'It is crucial to', 'It is important to note', 'It is important to remember',
+  'Key Insights', 'Landscape', 'Learn', 'Learn how', 'Learn more', 'Learn more details',
+  'Learn more now', 'Learn more today', 'Leverage', 'Look no further', 'Media',
+  'Modern', 'Modern teams adopting', 'Moreover', 'Navigating', 'Navigating the',
+  'Orchestrate', 'Paradigm shift', 'Pipelines', 'Pivotal', 'Plethora', 'Powerhouse',
+  'Realm', 'Robust', 'Seamless', 'Seamlessly', 'Tapestry', 'Technical', 'Testament',
+  'The Ultimate', 'Ultimate', 'Ultimate Guide', 'Ultra-High', 'Uncover', 'Unleash',
+  'Unlock', 'Unpacking', 'Verified', 'Vital', 'Vital role'
 ];
 
 console.log('--- 1. Scanning articles.ts for AI buzzwords ---');

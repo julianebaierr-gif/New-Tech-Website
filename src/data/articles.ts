@@ -35,14 +35,14 @@ export interface Article {
 export const articles: Article[] = [
   {
     slug: "how-to-remove-duplicates-in-excel",
-    title: "How to Find, Highlight, and Remove Duplicates in Excel (Step-by-Step)",
-    headline: "How to Find, Highlight, and Remove Duplicates in Excel",
+    title: "How to Highlight and Remove Duplicates in Excel (Step-by-Step)",
+    headline: "How to Highlight and Remove Duplicates in Excel",
     excerpt: "Clean duplicate rows in Excel using conditional formatting to highlight duplicates, the built-in Remove Duplicates tool, or the non-destructive UNIQUE formula.",
     categorySlug: "data-excel-automation",
     categoryName: "Data & Excel Automation",
     authorId: "elena-rostova",
     publishedAt: "2026-09-15T08:00:00Z",
-    updatedAt: "2026-09-23T18:00:00Z",
+    updatedAt: "2026-09-24T10:00:00Z",
     readingTimeMinutes: 9,
     difficulty: "Beginner",
     primaryKeyword: "how to remove duplicates in excel",
@@ -60,7 +60,7 @@ export const articles: Article[] = [
       { id: "understanding-duplicate-types", title: "Exact Matches vs Partial Match Duplicates", level: 2 },
       { id: "method-1-conditional-formatting", title: "Visual Auditing with Conditional Formatting", level: 2 },
       { id: "method-2-remove-duplicates-tool", title: "Permanent Removal Using Built-in Tools", level: 2 },
-      { id: "method-3-unique-formula", title: "Extracting Unique Records Dynamically (=UNIQUE)", level: 2 },
+      { id: "method-3-unique-formula", title: "Filtering Unique Records Dynamically (=UNIQUE)", level: 2 },
       { id: "method-4-vba-macro", title: "Automating Deduplication with VBA Scripts", level: 2 },
       { id: "troubleshooting-duplicate-errors", title: "Troubleshooting Hidden Whitespace & Formatting Mismatches", level: 2 },
       { id: "frequently-asked-questions", title: "Frequently Asked Questions", level: 2 },
@@ -85,7 +85,7 @@ export const articles: Article[] = [
     ],
     contentHtml: `
       <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
-        Duplicate rows happen frequently, whether two teammates entered the same customer, a database export glitched, or you merged two monthly sales sheets. Leaving duplicates in place can inflate your totals, break VLOOKUP formulas, and skew reports. Here is how to find duplicates, highlight them so you can review them, and delete them safely without losing important data.
+        Duplicate rows happen frequently, whether two teammates entered the same customer, a database export glitched, or you merged two monthly sales sheets. Leaving duplicates in place can inflate your totals, break VLOOKUP formulas, and skew reports. Here is how to locate duplicates, highlight them for review, and remove them safely without losing important data.
       </p>
 
       <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
@@ -132,9 +132,9 @@ export const articles: Article[] = [
         <li>Click <strong>OK</strong>. Excel will report the exact count of duplicate records eliminated and unique records retained.</li>
       </ol>
 
-      <h2 id="method-3-unique-formula" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Extracting Unique Records Dynamically (=UNIQUE)</h2>
+      <h2 id="method-3-unique-formula" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Filtering Unique Records Dynamically (=UNIQUE)</h2>
       <p class="text-slate-700 leading-relaxed mb-4">
-        In modern Excel (Excel 365, Excel 2021, and Excel for the Web), dynamic arrays allow you to stream deduplicated data to a clean report without altering the source records:
+        In current Excel releases (Excel 365, Excel 2021, and Excel for the Web), dynamic arrays allow you to stream deduplicated data to a clean report without altering the source records:
       </p>
       <pre><code>=UNIQUE(SORT(FILTER(A2:D1000, A2:A1000<>"")))</code></pre>
       <p class="text-slate-700 leading-relaxed mb-6">
@@ -158,7 +158,7 @@ export const articles: Article[] = [
     If lastRow > 1 Then
         Set targetRange = ws.Range(ws.Cells(1, 1), ws.Cells(lastRow, lastCol))
         targetRange.RemoveDuplicates Columns:=Array(1), Header:=xlYes
-        MsgBox "Deduplication complete. Retained " & ws.Cells(ws.Rows.Count, "A").End(xlUp).Row - 1 & " records.", vbInformation
+        MsgBox "Deduplication finished. Retained " & ws.Cells(ws.Rows.Count, "A").End(xlUp).Row - 1 & " records.", vbInformation
     End If
 End Sub</code></pre>
 
@@ -175,13 +175,13 @@ End Sub</code></pre>
   {
     slug: "aws-ec2-instance-types-explained",
     title: "AWS EC2 Instance Types Explained: Sizing, Families & Cost Differences",
-    headline: "AWS EC2 Instance Types Explained: Sizing & Performance Guide",
-    excerpt: "A practical breakdown of AWS EC2 instance families. Learn the difference between T4g, M6i, C7g, and R6i instances, and how to pick the right size for your budget and workload.",
+    headline: "AWS EC2 Instance Types Explained: Sizing & Performance Analysis",
+    excerpt: "A practical breakdown of AWS EC2 instance families. Understand the difference between T4g, M6i, C7g, and R6i instances, and how to pick the right size for your budget and workload.",
     categorySlug: "cloud-infrastructure",
     categoryName: "Cloud & Infrastructure",
     authorId: "marcus-vance",
     publishedAt: "2026-09-12T10:00:00Z",
-    updatedAt: "2026-09-23T18:00:00Z",
+    updatedAt: "2026-09-24T10:00:00Z",
     readingTimeMinutes: 11,
     difficulty: "Intermediate",
     primaryKeyword: "aws ec2 instance types",
@@ -218,7 +218,7 @@ End Sub</code></pre>
     ],
     contentHtml: `
       <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
-        Picking the wrong EC2 instance usually leads to one of two common headaches: you pay hundreds of dollars more than necessary every month for idle capacity, or your server runs out of memory and crashes when traffic spikes. With hundreds of instance sizes to choose from, here is a practical guide to the naming codes, processor families, and sizing rules so you can pick the right server for your needs.
+        Picking the wrong EC2 instance usually leads to one of two common headaches: you pay hundreds of dollars more than necessary every month for idle capacity, or your server runs out of memory and crashes when traffic spikes. With hundreds of instance sizes to choose from, here is a practical walkthrough of the naming codes, processor families, and sizing rules so you can pick the right server for your needs.
       </p>
 
       <h2 id="ec2-naming-convention-decoded" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">The EC2 Naming Convention Decoded</h2>
@@ -259,7 +259,7 @@ End Sub</code></pre>
             <tr>
               <td><strong>C-Series (Compute Optimized)</strong></td>
               <td>1:2</td>
-              <td>High-load web servers, media encoding, batch computing</td>
+              <td>High-load web servers, video encoding, batch computing</td>
               <td><code>c7g / c7i</code></td>
             </tr>
             <tr>
@@ -293,7 +293,7 @@ End Sub</code></pre>
 
       <h2 id="aws-cli-inspection" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Automating Instance Discovery via AWS CLI</h2>
       <p class="text-slate-700 leading-relaxed mb-4">
-        Query instance attributes programmatically using the AWS CLI and jq to discover available instance configurations in your region:
+        Query instance attributes programmatically using the AWS CLI and jq to inspect available instance configurations in your region:
       </p>
       <pre><code>aws ec2 describe-instance-types \
   --filters "Name=current-generation,Values=true" \
@@ -307,12 +307,12 @@ End Sub</code></pre>
     slug: "why-is-chatgpt-so-slow",
     title: "Why is ChatGPT So Slow? Real Causes and Practical Fixes",
     headline: "Why is ChatGPT So Slow? Real Causes & How to Fix It",
-    excerpt: "Why ChatGPT takes so long to respond, stops typing halfway, or buffers. Learn what causes the slowdowns and 5 practical fixes to get faster replies.",
+    excerpt: "Why ChatGPT takes so long to respond, stops typing halfway, or buffers. Understand what causes the slowdowns and 5 practical fixes to get faster replies.",
     categorySlug: "ai-developer-tools",
     categoryName: "AI & Developer Tools",
     authorId: "marcus-vance",
     publishedAt: "2026-09-18T11:00:00Z",
-    updatedAt: "2026-09-23T18:00:00Z",
+    updatedAt: "2026-09-24T10:00:00Z",
     readingTimeMinutes: 8,
     difficulty: "Beginner",
     primaryKeyword: "why is chatgpt so slow",
@@ -394,7 +394,7 @@ End Sub</code></pre>
     categoryName: "OS & Systems",
     authorId: "marcus-vance",
     publishedAt: "2026-09-10T12:00:00Z",
-    updatedAt: "2026-09-23T18:00:00Z",
+    updatedAt: "2026-09-24T10:00:00Z",
     readingTimeMinutes: 10,
     difficulty: "Beginner",
     primaryKeyword: "windows 11 pro vs home",
@@ -437,7 +437,7 @@ End Sub</code></pre>
 
       <h2 id="core-specifications-comparison" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Core Hardware Limits and Specifications</h2>
       <p class="text-slate-700 leading-relaxed mb-4">
-        While both editions share identical gaming performance, DirectX 12 Ultimate support, and desktop aesthetics, their underlying hardware allocation limits differ dramatically:
+        While both editions share identical gaming performance, DirectX 12 graphics features, and desktop aesthetics, their underlying hardware allocation limits differ dramatically:
       </p>
       <div class="overflow-x-auto my-6">
         <table>
@@ -510,14 +510,14 @@ End Sub</code></pre>
   },
   {
     slug: "linux-file-permissions-chmod-chown",
-    title: "Linux File Permissions Explained: chmod, chown & Octal Notation Guide",
+    title: "Linux File Permissions Explained: chmod, chown & Octal Notation Reference",
     headline: "Linux File Permissions Explained: chmod, chown & Octal Notation",
     excerpt: "How to understand and fix Linux file permissions without running risky shortcuts like chmod 777. Explains read, write, and execute rights, octal numbers (755 vs 644), and how to use chown properly.",
     categorySlug: "cloud-infrastructure",
     categoryName: "Cloud & Infrastructure",
     authorId: "marcus-vance",
     publishedAt: "2026-09-19T10:00:00Z",
-    updatedAt: "2026-09-23T11:00:00Z",
+    updatedAt: "2026-09-24T10:00:00Z",
     readingTimeMinutes: 8,
     difficulty: "Intermediate",
     primaryKeyword: "linux file permissions",
@@ -547,7 +547,7 @@ End Sub</code></pre>
       },
       {
         question: "How do I change permissions recursively on directories only?",
-        answer: "To avoid making your files accidentally executable while fixing directory traversal, use find: 'find /var/www -type d -exec chmod 755 {} +'. For files, use 'find /var/www -type f -exec chmod 644 {} +'.",
+        answer: "To avoid making your files accidentally executable while fixing directory traversal, use the Linux find command: 'find /var/www -type d -exec chmod 755 {} +'. For files, use 'find /var/www -type f -exec chmod 644 {} +'.",
       },
       {
         question: "What does 'chown -R www-data:www-data' do on Linux servers?",
@@ -694,7 +694,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     categoryName: "Data & Excel Automation",
     authorId: "elena-rostova",
     publishedAt: "2026-09-20T08:00:00Z",
-    updatedAt: "2026-09-23T12:00:00Z",
+    updatedAt: "2026-09-24T10:00:00Z",
     readingTimeMinutes: 7,
     difficulty: "Beginner",
     primaryKeyword: "excel drop down list",
@@ -718,7 +718,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     faqs: [
       {
         question: "How do I create a drop-down list in Excel from another sheet?",
-        answer: "Create an official Excel Table for your source list on the second sheet and name the range, or reference the range directly in Data Validation: '=Sheet2!$A$2:$A$50'. Excel modern versions fully support cross-sheet references.",
+        answer: "Create an official Excel Table for your source list on the second sheet and name the range, or reference the range directly in Data Validation: '=Sheet2!$A$2:$A$50'. Current Excel versions fully support cross-sheet references.",
       },
       {
         question: "How do I make drop-down lists automatically update when new items are added?",
@@ -771,7 +771,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     categoryName: "Cloud & Infrastructure",
     authorId: "marcus-vance",
     publishedAt: "2026-09-21T09:00:00Z",
-    updatedAt: "2026-09-23T13:00:00Z",
+    updatedAt: "2026-09-24T10:00:00Z",
     readingTimeMinutes: 10,
     difficulty: "Intermediate",
     primaryKeyword: "docker container architecture",
@@ -850,7 +850,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     categoryName: "AI & Developer Tools",
     authorId: "elena-rostova",
     publishedAt: "2026-09-22T08:30:00Z",
-    updatedAt: "2026-09-23T14:00:00Z",
+    updatedAt: "2026-09-24T10:00:00Z",
     readingTimeMinutes: 7,
     difficulty: "Intermediate",
     primaryKeyword: "chatgpt file upload limit",
@@ -919,14 +919,14 @@ sudo chown deployer /opt/applications/api-server</code></pre>
   },
   {
     slug: "windows-server-2019-end-of-life",
-    title: "Windows Server 2019 End of Life: Upgrade Roadmap & Migration Guide",
-    headline: "Windows Server 2019 End of Life: Upgrade & Migration Guide",
+    title: "Windows Server 2019 End of Life: Upgrade Roadmap & Migration Strategy",
+    headline: "Windows Server 2019 End of Life: Upgrade & Migration Strategy",
     excerpt: "What you need to know about the Windows Server 2019 end of life timeline. Important support dates, in-place upgrade steps to Server 2022, and a practical migration checklist.",
     categorySlug: "os-systems",
     categoryName: "OS & Systems",
     authorId: "marcus-vance",
     publishedAt: "2026-09-22T11:00:00Z",
-    updatedAt: "2026-09-23T15:00:00Z",
+    updatedAt: "2026-09-24T10:00:00Z",
     readingTimeMinutes: 9,
     difficulty: "Advanced",
     primaryKeyword: "server 2019 end of life",
@@ -981,7 +981,7 @@ sudo chown deployer /opt/applications/api-server</code></pre>
 
       <h2 id="pre-upgrade-checklist" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Pre-Upgrade System Readiness Checklist</h2>
       <p class="text-slate-700 leading-relaxed mb-4">
-        Before beginning an upgrade or decommissioning legacy servers, complete this essential verification runbook:
+        Before beginning an upgrade or decommissioning legacy servers, verify this essential readiness checklist:
       </p>
       <ol class="list-decimal pl-6 space-y-2 text-slate-700 mb-6">
         <li><strong>Create a Full Hypervisor Checkpoint &amp; VSS Backup:</strong> Take an offline VM snapshot and verify that your system state backup (Veeam, Windows Server Backup, or Azure Backup) completed with zero shadow copy errors.</li>
