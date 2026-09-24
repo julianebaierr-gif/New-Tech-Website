@@ -69,6 +69,42 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   };
 }
 
+function splitContentAtHeading(html: string, targetHeadingNumber: number = 3) {
+  const h2Regex = /<h2\b/gi;
+  let count = 0;
+  let match: RegExpExecArray | null;
+  let splitIndex = -1;
+
+  while ((match = h2Regex.exec(html)) !== null) {
+    count++;
+    if (count === targetHeadingNumber) {
+      splitIndex = match.index;
+      break;
+    }
+  }
+
+  if (splitIndex === -1 && count >= 2) {
+    h2Regex.lastIndex = 0;
+    let fallbackCount = 0;
+    while ((match = h2Regex.exec(html)) !== null) {
+      fallbackCount++;
+      if (fallbackCount === 2) {
+        splitIndex = match.index;
+        break;
+      }
+    }
+  }
+
+  if (splitIndex === -1) {
+    return { before: html, after: "" };
+  }
+
+  return {
+    before: html.slice(0, splitIndex),
+    after: html.slice(splitIndex),
+  };
+}
+
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
@@ -83,6 +119,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     .slice(0, 2);
 
   const articleUrl = `${siteConfig.baseUrl}/articles/${article.slug}`;
+
+  const splitContent = article.secondaryImage
+    ? splitContentAtHeading(article.contentHtml, 3)
+    : null;
 
   const techArticleSchema = {
     "@context": "https://schema.org",
@@ -213,25 +253,53 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Article Body */}
           <article className="lg:col-span-8 space-y-6 text-slate-700 leading-relaxed font-sans">
-            {/* Injected Article HTML */}
-            <div
-              className="article-content"
-              dangerouslySetInnerHTML={{ __html: article.contentHtml }}
-            />
-
-            {/* Secondary Illustrated Figure */}
-            {article.secondaryImage && (
-              <figure className="my-10 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-xs">
-                <img
-                  src={article.secondaryImage.url}
-                  alt={article.secondaryImage.alt}
-                  className="w-full h-72 sm:h-96 object-cover"
-                  loading="lazy"
+            {/* Injected Article HTML with Mid-Article Illustrated Figure at 3rd Heading */}
+            {splitContent && splitContent.after ? (
+              <>
+                <div
+                  className="article-content"
+                  dangerouslySetInnerHTML={{ __html: splitContent.before }}
                 />
-                <figcaption className="p-3.5 text-xs text-slate-600 text-center border-t border-slate-200 bg-white">
-                  {article.secondaryImage.caption}
-                </figcaption>
-              </figure>
+
+                {article.secondaryImage && (
+                  <figure className="my-10 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-xs">
+                    <img
+                      src={article.secondaryImage.url}
+                      alt={article.secondaryImage.alt}
+                      className="w-full h-72 sm:h-96 object-cover"
+                      loading="lazy"
+                    />
+                    <figcaption className="p-3.5 text-xs text-slate-600 text-center border-t border-slate-200 bg-white">
+                      {article.secondaryImage.caption}
+                    </figcaption>
+                  </figure>
+                )}
+
+                <div
+                  className="article-content"
+                  dangerouslySetInnerHTML={{ __html: splitContent.after }}
+                />
+              </>
+            ) : (
+              <>
+                <div
+                  className="article-content"
+                  dangerouslySetInnerHTML={{ __html: article.contentHtml }}
+                />
+                {article.secondaryImage && (
+                  <figure className="my-10 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-xs">
+                    <img
+                      src={article.secondaryImage.url}
+                      alt={article.secondaryImage.alt}
+                      className="w-full h-72 sm:h-96 object-cover"
+                      loading="lazy"
+                    />
+                    <figcaption className="p-3.5 text-xs text-slate-600 text-center border-t border-slate-200 bg-white">
+                      {article.secondaryImage.caption}
+                    </figcaption>
+                  </figure>
+                )}
+              </>
             )}
 
             {/* Zero-Click AEO FAQ Accordion */}
