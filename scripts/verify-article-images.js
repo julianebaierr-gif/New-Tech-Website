@@ -22,7 +22,7 @@ const bannedWords = [
   'Unlock', 'Unpacking', 'Verified', 'Vital', 'Vital role'
 ];
 
-console.log('=== ARTICLE IMAGES VERIFICATION ===');
+console.log('=== ARTICLE IMAGES VERIFICATION (3 IMAGES PER ARTICLE) ===');
 console.log(`Checking ${articles.length} articles for image requirements...`);
 
 const ids = [];
@@ -39,19 +39,18 @@ articles.forEach((a, i) => {
   } else {
     ids.push(a.coverImageId);
     urls.push(a.coverImage);
-    console.log(`  📸 Image 1 (Cover): [${a.coverImageId}]`);
+    console.log(`  📸 Image 1 (Cover):    [${a.coverImageId}]`);
   }
 
-  // 2. Secondary Image Check
+  // 2. Secondary Image Check (Middle / Heading 3)
   if (!a.secondaryImage || !a.secondaryImage.id || !a.secondaryImage.url || !a.secondaryImage.alt || !a.secondaryImage.caption) {
     console.error(`  ❌ Missing secondaryImage details`);
     errorCount++;
   } else {
     ids.push(a.secondaryImage.id);
     urls.push(a.secondaryImage.url);
-    console.log(`  📸 Image 2 (Body):  [${a.secondaryImage.id}]`);
+    console.log(`  📸 Image 2 (Heading 3): [${a.secondaryImage.id}]`);
     console.log(`     Alt: "${a.secondaryImage.alt}"`);
-    console.log(`     Caption: "${a.secondaryImage.caption}"`);
 
     // Check for banned AI words in alt & caption
     const textToCheck = `${a.secondaryImage.alt} ${a.secondaryImage.caption}`;
@@ -65,11 +64,34 @@ articles.forEach((a, i) => {
       }
     }
   }
+
+  // 3. Tertiary Image Check (Lower / Heading 6 or 7)
+  if (!a.tertiaryImage || !a.tertiaryImage.id || !a.tertiaryImage.url || !a.tertiaryImage.alt || !a.tertiaryImage.caption) {
+    console.error(`  ❌ Missing tertiaryImage details`);
+    errorCount++;
+  } else {
+    ids.push(a.tertiaryImage.id);
+    urls.push(a.tertiaryImage.url);
+    console.log(`  📸 Image 3 (Heading 6): [${a.tertiaryImage.id}]`);
+    console.log(`     Alt: "${a.tertiaryImage.alt}"`);
+
+    // Check for banned AI words in alt & caption
+    const textToCheck = `${a.tertiaryImage.alt} ${a.tertiaryImage.caption}`;
+    for (const term of bannedWords) {
+      const isPhrase = term.includes(' ');
+      const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = isPhrase ? new RegExp(escaped, 'gi') : new RegExp('\\b' + escaped + '\\b', 'gi');
+      if (regex.test(textToCheck)) {
+        console.error(`  ❌ BANNED WORD "${term}" found in tertiary image metadata!`);
+        errorCount++;
+      }
+    }
+  }
 });
 
 // Check uniqueness
 console.log('\n--- UNIQUENESS AUDIT ---');
-console.log(`Total image instances: ${ids.length} (Expected: ${articles.length * 2})`);
+console.log(`Total image instances: ${ids.length} (Expected: ${articles.length * 3})`);
 const uniqueIds = new Set(ids);
 const uniqueUrls = new Set(urls);
 
@@ -99,12 +121,14 @@ Promise.all(urls.map(url =>
 )).then(results => {
   const failed = results.filter(r => r.status !== 200);
   if (failed.length > 0) {
-    console.error(`❌ Some image URLs failed:`, failed);
+    console.error(`❌ ${failed.length} images returned non-200 HTTP status:`);
+    failed.forEach(f => console.error(`  - ${f.url} (${f.status})`));
     process.exit(1);
+  } else {
+    console.log(`✅ All ${results.length} live image URLs returned HTTP 200 OK!`);
+    console.log('\n🎉 ALL CHECKS PASSED: 100% UNIQUE, RELEVANT, 3 IMAGES PER ARTICLE WITH EXACT IDS!');
   }
-  console.log(`✅ All ${results.length} live image URLs returned HTTP 200 OK!`);
-  console.log('\n🎉 ALL CHECKS PASSED: 100% UNIQUE, RELEVANT, 2 IMAGES PER ARTICLE WITH EXACT IDS!');
 }).catch(err => {
-  console.error('Fetch error:', err);
+  console.error('Network check error:', err);
   process.exit(1);
 });

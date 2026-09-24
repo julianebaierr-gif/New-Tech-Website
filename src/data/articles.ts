@@ -36,6 +36,7 @@ export interface Article {
   coverImage: string;
   coverImageId: string;
   secondaryImage: ArticleImage;
+  tertiaryImage: ArticleImage;
   tableOfContents: TocItem[];
   faqs: FaqItem[];
   contentHtml: string;
@@ -71,6 +72,12 @@ export const articles: Article[] = [
       "url": "https://images.unsplash.com/photo-1663124178632-488f399d5763?auto=format&fit=crop&w=1200&h=630&q=80",
       "alt": "Cleaned Excel worksheet showing filtered unique records in tabular format",
       "caption": "Auditing spreadsheet records to isolate unique rows before permanent removal."
+},
+    tertiaryImage: {
+      "id": "photo-1454165804606-c3d57bc86b40",
+      "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&h=630&q=80",
+      "alt": "Financial data spreadsheet audit showing deduplicated row counts",
+      "caption": "Validating spreadsheet calculations following formula-based row deduplication."
 },
     tableOfContents: [
       {
@@ -137,6 +144,7 @@ export const articles: Article[] = [
       }
 ],
     contentHtml: `
+
 <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
   Duplicate records appear inside workbooks through manual data entry, overlapping software imports, and combined departmental exports. When identical rows linger inside inventory sheets, payroll summaries, or customer contact books, report summaries calculate inaccurate figures, VLOOKUP functions pull wrong targets, and accounting balances fall out of alignment. Cleaning spreadsheets correctly requires understanding when to highlight values for human review, when to filter rows non-destructively, and when to execute permanent row deletions.
 </p>
@@ -320,6 +328,7 @@ End Sub</code></pre>
 <p class="text-slate-700 leading-relaxed mb-6">
   The <code>EXACT</code> function checks character case strictly, while the double unary operator (<code>--</code>) converts TRUE and FALSE evaluations into 1 and 0 for accurate mathematical counting.
 </p>
+    
     `
   },
   {
@@ -350,6 +359,12 @@ End Sub</code></pre>
       "url": "https://images.unsplash.com/photo-1652189977368-e9d033e7d3e7?auto=format&fit=crop&w=1200&h=630&q=80",
       "alt": "Datacenter server hardware racks providing EC2 compute instances",
       "caption": "Server racks housing multicore Graviton and Xeon processors across cloud zones."
+},
+    tertiaryImage: {
+      "id": "photo-1518770660439-4636190af475",
+      "url": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&h=630&q=80",
+      "alt": "Silicon microchip architecture representing cloud server processor silicon",
+      "caption": "Processor microarchitecture powers high-throughput cloud compute instances."
 },
     tableOfContents: [
       {
@@ -416,6 +431,7 @@ End Sub</code></pre>
       }
 ],
     contentHtml: `
+
 <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
   Selecting cloud server capacity on Amazon Web Services often turns into an expensive guessing game. Engineers frequently overprovision oversized instances to avoid mid-day outages, inflating monthly cloud spend by thousands of dollars. Conversely, choosing an underpowered instance leads to sudden memory exhaustion, dropped network packets, and sluggish API responses during peak traffic. Understanding the architectural differences between EC2 families allows infrastructure teams to optimize both uptime and compute costs.
 </p>
@@ -568,6 +584,7 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
   <li><strong>Spot Instances:</strong> AWS sells surplus datacenter capacity at discounts reaching 70% to 90% below on-demand rates. Because AWS can reclaim Spot instances with a two-minute warning, deploy them exclusively for stateless worker queues, CI/CD runners, and fault-tolerant batch processors.</li>
   <li><strong>Graviton Migration:</strong> Converting existing x86 workloads to Graviton ARM64 instances immediately trims 20% off server compute costs without requiring long-term contractual commitments.</li>
 </ul>
+    
     `
   },
   {
@@ -598,6 +615,12 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
       "url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80",
       "alt": "Neural network token streaming data paths and GPU memory bandwidth",
       "caption": "Large language model inference processes streaming output tokens sequentially."
+},
+    tertiaryImage: {
+      "id": "photo-1555066931-4365d14bab8c",
+      "url": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&h=630&q=80",
+      "alt": "Software programming terminal code interface for streaming API responses",
+      "caption": "Developer API connections bypass consumer browser interface queuing bottlenecks."
 },
     tableOfContents: [
       {
@@ -659,6 +682,7 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
       }
 ],
     contentHtml: `
+
 <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
   Waiting thirty seconds for an AI assistant to acknowledge a prompt or watching words sputter across the screen one agonizing syllable at a time disrupts creative flow. When a system that usually generates entire functions in five seconds suddenly freezes mid-sentence, developers often suspect local Wi-Fi glitches or ISP routing failures. In reality, large language model latency stems from a combination of distributed server queuing, hardware memory bandwidth bottlenecks, and browser-level streaming buffers.
 </p>
@@ -814,6 +838,7 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
 <p class="text-slate-700 leading-relaxed mb-6">
   Using desktop API clients or command-line wrappers like <code>aichat</code> or custom scripts allows engineering teams to experience instant responses without waiting for browser tabs to catch up.
 </p>
+    
     `
   },
   {
@@ -844,6 +869,12 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
       "url": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=630&q=80",
       "alt": "Hardware volume encryption lock representing Windows 11 BitLocker protection",
       "caption": "BitLocker drive encryption safeguards local disks with hardware TPM keys."
+},
+    tertiaryImage: {
+      "id": "photo-1587831990711-23ca6441447b",
+      "url": "https://images.unsplash.com/photo-1587831990711-23ca6441447b?auto=format&fit=crop&w=1200&h=630&q=80",
+      "alt": "High performance workstation PC setup running multiple operating system screens",
+      "caption": "Workstation environments utilize dual-socket CPUs and inbound remote access."
 },
     tableOfContents: [
       {
@@ -910,6 +941,7 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
       }
 ],
     contentHtml: `
+
 <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
   When setting up a new PC or configuring business workstations, choosing between Windows 11 Home and Windows 11 Pro represents a classic crossroads. Both editions share the centered taskbar, fluent design visual aesthetics, DirectX 12 gaming support, and core Windows security protections. However, beneath the desktop interface sits a divergent set of hardware limits, encryption capabilities, virtualization tools, and centralized management protocols that dictate whether your computer can function as an enterprise asset.
 </p>
@@ -1073,6 +1105,7 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
   <li><strong>Stick with Windows 11 Home:</strong> If you are a student, everyday home user, or dedicated gamer whose machine never leaves the home desk, Windows 11 Home provides everything you require. You save money without sacrificing any gaming frame rates or daily computing performance.</li>
   <li><strong>Upgrade to Windows 11 Pro:</strong> If you operate a mobile laptop holding commercial data, require BitLocker drive and USB protection, need inbound Remote Desktop connections to work from outside the office, or rely on Hyper-V and Windows Sandbox for software testing, Windows 11 Pro easily justifies its price tag.</li>
 </ul>
+    
     `
   },
   {
@@ -1104,6 +1137,12 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
       "url": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1200&h=630&q=80",
       "alt": "System administrator executing chmod and chown commands on keyboard",
       "caption": "Configuring chmod numeric modes and chown ownership directly in the shell."
+},
+    tertiaryImage: {
+      "id": "photo-1562813733-b31f71025d54",
+      "url": "https://images.unsplash.com/photo-1562813733-b31f71025d54?auto=format&fit=crop&w=1200&h=630&q=80",
+      "alt": "Command line terminal showing file access control configurations",
+      "caption": "Configuring filesystem security bits protects root services from unauthorized access."
 },
     tableOfContents: [
       {
@@ -1170,6 +1209,7 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
       }
 ],
     contentHtml: `
+
 <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
   Encountering a stubborn <code>"EACCES: permission denied"</code> message inside a terminal window frequently tempts junior administrators to run <code>chmod -R 777</code> to force their code to execute. While making an entire tree world-readable and world-writable eliminates the immediate error, it exposes the operating system to severe vulnerabilities. A compromised background daemon or unprivileged user account can overwrite configuration files, inject backdoors into binaries, or wipe databases. Configuring POSIX permissions correctly preserves both uptime and security posture.
 </p>
@@ -1420,6 +1460,7 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
 <p class="text-slate-700 leading-relaxed mb-6">
   On distributions like RHEL, CentOS, AlmaLinux, or Ubuntu, mandatory access control systems can block file operations despite valid POSIX permissions. Check audit logs with <code>sudo ausearch -m avc -ts recent</code> or temporarily check SELinux mode with <code>getenforce</code>. Restore default file contexts using <code>restorecon -Rv /var/www/html</code>.
 </p>
+    
     `
   },
   {
@@ -1451,6 +1492,12 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
       "url": "https://images.unsplash.com/photo-1543286386-713bdd548da4?auto=format&fit=crop&w=1200&h=630&q=80",
       "alt": "Business spreadsheet analysis report driven by configured drop down selectors",
       "caption": "Data validation menus standardize user choices across shared workbooks."
+},
+    tertiaryImage: {
+      "id": "photo-1512758017271-d7b84c2113f1",
+      "url": "https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?auto=format&fit=crop&w=1200&h=630&q=80",
+      "alt": "Organized checklist and data validation entry form on spreadsheet clipboard",
+      "caption": "Restricting cell inputs to approved entries eliminates human transcription errors."
 },
     tableOfContents: [
       {
@@ -1507,6 +1554,7 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
       }
 ],
     contentHtml: `
+
 <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
   When multiple team members collaborate on sales tracking sheets, project trackers, or operational schedules, mismatched text entries quickly cause havoc. One analyst types <code>"In Progress"</code>, another writes <code>"in-progress"</code>, and a third enters <code>"Working"</code>. These minor variations shatter PivotTable groupings, disrupt SUMIFS calculations, and distort dashboard charts. Adding an in-cell drop-down list forces contributors to choose from a standardized set of values, eliminating typos at the point of entry.
 </p>
@@ -1713,6 +1761,7 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
 <p class="text-slate-700 leading-relaxed mb-6">
   To strip validation rules without deleting existing cell contents, select the cells, press <kbd class="px-2 py-0.5 bg-white border border-slate-300 rounded text-xs text-slate-800 font-mono shadow-2xs">Alt + A + V + V</kbd>, click the <strong>Clear All</strong> button in the lower-left corner of the window, and click <strong>OK</strong>. Existing text remains intact while the restriction and arrow icon disappear.
 </p>
+    
     `
   },
   {
@@ -1743,6 +1792,12 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
       "url": "https://images.unsplash.com/photo-1484557052118-f32bd25b45b5?auto=format&fit=crop&w=1200&h=630&q=80",
       "alt": "Datacenter network patch cords representing Docker bridge networking",
       "caption": "Virtual bridge networks route internal packet traffic between container endpoints."
+},
+    tertiaryImage: {
+      "id": "photo-1544716278-ca5e3f4abd8c",
+      "url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&h=630&q=80",
+      "alt": "Organized container stacking structure representing isolated software units",
+      "caption": "Process isolation confines container filesystems inside dedicated namespaces."
 },
     tableOfContents: [
       {
@@ -1804,6 +1859,7 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
       }
 ],
     contentHtml: `
+
 <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
   Describing software containers as "lightweight virtual machines" is an enduring mischaracterization that leads developers down erroneous debugging paths. A container does not boot a guest operating system, emulate motherboard chipsets, or run an independent kernel hypervisor. In reality, a container is simply an ordinary Linux host process confined by kernel namespaces, restricted by control groups, and backed by a layered union filesystem. Peeling back these runtime abstractions reveals how Docker isolates code securely and executes workloads with bare-metal speed.
 </p>
@@ -1969,6 +2025,7 @@ docker run -d --name web-api --network internal-app-net -p 3000:3000 my-api</cod
 <p class="text-slate-700 leading-relaxed mb-6">
   If launching a container errors with <em>"bind: address already in use"</em>, identify which host service occupies the port using <code>sudo ss -tulpn | grep :8080</code>. Either stop the host daemon or bind the container to an alternative host port such as <code>-p 8081:80</code>.
 </p>
+    
     `
   },
   {
@@ -1999,6 +2056,12 @@ docker run -d --name web-api --network internal-app-net -p 3000:3000 my-api</cod
       "url": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&h=630&q=80",
       "alt": "Code execution matrix representing Python pandas analysis in AI sandbox",
       "caption": "Python sandboxes process uploaded document slices using automated code execution."
+},
+    tertiaryImage: {
+      "id": "photo-1456513080510-7bf3a84b82f8",
+      "url": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&h=630&q=80",
+      "alt": "Archive library collection representing large document files and vector records",
+      "caption": "Vector retrieval systems query document chunks across extensive corporate archives."
 },
     tableOfContents: [
       {
@@ -2055,6 +2118,7 @@ docker run -d --name web-api --network internal-app-net -p 3000:3000 my-api</cod
       }
 ],
     contentHtml: `
+
 <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
   Uploading spreadsheets, corporate PDF handbooks, and database dumps directly into an AI prompt feels like having an on-demand data analyst on your team. Yet nothing stalls workflow momentum faster than greeting an opaque <code>"Error uploading file"</code> banner or watching the assistant hallucinate summaries because your document exceeded hidden processing boundaries. Understanding the exact mechanical thresholds governing file uploads, Python sandbox containers, and token attention contexts prevents costly analysis errors.
 </p>
@@ -2217,6 +2281,7 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
 <p class="text-slate-700 leading-relaxed mb-6">
   Uploading a 400 MB file over an unstable wireless connection frequently triggers silent HTTP chunk dropouts. If an upload hangs at 99%, compress the document into a standard ZIP archive before uploading, or switch to an Ethernet connection.
 </p>
+    
     `
   },
   {
@@ -2247,6 +2312,12 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
       "url": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&h=630&q=80",
       "alt": "Server racks and storage arrays ready for Windows Server 2022 migration",
       "caption": "Side-by-side migration keeps legacy servers running while staging Server 2022."
+},
+    tertiaryImage: {
+      "id": "photo-1542751371-adc38448a05e",
+      "url": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&h=630&q=80",
+      "alt": "Enterprise IT infrastructure workstation managing server cluster lifecycle migration",
+      "caption": "Structured migration planning ensures continuous enterprise services during operating system updates."
 },
     tableOfContents: [
       {
@@ -2308,6 +2379,7 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
       }
 ],
     contentHtml: `
+
 <p class="lead text-lg text-slate-700 leading-relaxed mb-6">
   Operating legacy server infrastructure past official lifecycle milestones introduces serious operational and regulatory risks. While Windows Server 2019 remains widespread across enterprise datacenters and branch offices, the operating system entered its Extended Support phase in early 2024. As the final cutoff deadline approaches, IT engineering teams must evaluate upgrade paths to Windows Server 2022 and Windows Server 2025, weigh in-place upgrades against clean side-by-side migrations, and decommission aging host servers without business interruption.
 </p>
@@ -2457,6 +2529,7 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
 <p class="text-slate-700 leading-relaxed mb-6">
   Organizations can connect their on-premise servers to <strong>Azure Arc</strong> to purchase ESUs on a flexible monthly subscription model, or migrate workloads into Azure virtual machines where Extended Security Updates are provided without additional licensing surcharges. Planning migrations today avoids these expensive bridge fees.
 </p>
+    
     `
   }
 ];

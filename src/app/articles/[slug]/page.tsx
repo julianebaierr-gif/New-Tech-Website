@@ -58,50 +58,68 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
           height: 630,
           alt: article.secondaryImage.alt,
         },
+        ...(article.tertiaryImage ? [{
+          url: article.tertiaryImage.url,
+          width: 1200,
+          height: 630,
+          alt: article.tertiaryImage.alt,
+        }] : []),
       ],
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description: article.excerpt,
-      images: [article.coverImage, article.secondaryImage.url],
+      images: [
+        article.coverImage,
+        article.secondaryImage.url,
+        ...(article.tertiaryImage ? [article.tertiaryImage.url] : []),
+      ],
     },
   };
 }
 
-function splitContentAtHeading(html: string, targetHeadingNumber: number = 3) {
+interface SplitSections {
+  part1: string;
+  part2: string;
+  part3: string;
+}
+
+function splitContentForImages(html: string, img2Heading: number = 3, img3Heading: number = 6): SplitSections {
   const h2Regex = /<h2\b/gi;
-  let count = 0;
+  const indices: number[] = [];
   let match: RegExpExecArray | null;
-  let splitIndex = -1;
 
   while ((match = h2Regex.exec(html)) !== null) {
-    count++;
-    if (count === targetHeadingNumber) {
-      splitIndex = match.index;
-      break;
-    }
+    indices.push(match.index);
   }
 
-  if (splitIndex === -1 && count >= 2) {
-    h2Regex.lastIndex = 0;
-    let fallbackCount = 0;
-    while ((match = h2Regex.exec(html)) !== null) {
-      fallbackCount++;
-      if (fallbackCount === 2) {
-        splitIndex = match.index;
-        break;
-      }
-    }
+  if (indices.length < 2) {
+    return { part1: html, part2: "", part3: "" };
   }
 
-  if (splitIndex === -1) {
-    return { before: html, after: "" };
+  // Heading position for Image 2 (default 3rd H2, or 2nd if fewer)
+  const idx2 = indices.length >= img2Heading ? indices[img2Heading - 1] : indices[1];
+
+  // Heading position for Image 3 (default 6th H2, or 5th/last available if fewer)
+  let target3 = img3Heading;
+  if (indices.length < target3) {
+    target3 = Math.max(3, indices.length);
+  }
+  const idx3 = indices.length >= target3 && target3 > 2 ? indices[target3 - 1] : -1;
+
+  if (idx3 === -1 || idx3 <= idx2) {
+    return {
+      part1: html.slice(0, idx2),
+      part2: html.slice(idx2),
+      part3: "",
+    };
   }
 
   return {
-    before: html.slice(0, splitIndex),
-    after: html.slice(splitIndex),
+    part1: html.slice(0, idx2),
+    part2: html.slice(idx2, idx3),
+    part3: html.slice(idx3),
   };
 }
 
@@ -120,16 +138,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   const articleUrl = `${siteConfig.baseUrl}/articles/${article.slug}`;
 
-  const splitContent = article.secondaryImage
-    ? splitContentAtHeading(article.contentHtml, 3)
-    : null;
+  const sections = splitContentForImages(article.contentHtml, 3, 6);
 
   const techArticleSchema = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": article.title,
     "description": article.excerpt,
-    "image": [article.coverImage, article.secondaryImage.url],
+    "image": [
+      article.coverImage,
+      article.secondaryImage.url,
+      ...(article.tertiaryImage ? [article.tertiaryImage.url] : []),
+    ],
     "datePublished": article.publishedAt,
     "dateModified": article.updatedAt,
     "author": {
@@ -253,53 +273,54 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Article Body */}
           <article className="lg:col-span-8 space-y-6 text-slate-700 leading-relaxed font-sans">
-            {/* Injected Article HTML with Mid-Article Illustrated Figure at 3rd Heading */}
-            {splitContent && splitContent.after ? (
-              <>
-                <div
-                  className="article-content"
-                  dangerouslySetInnerHTML={{ __html: splitContent.before }}
-                />
+            {/* Injected Article HTML with Integrated Mid-Article and Lower-Article Images */}
+            {sections.part1 && (
+              <div
+                className="article-content"
+                dangerouslySetInnerHTML={{ __html: sections.part1 }}
+              />
+            )}
 
-                {article.secondaryImage && (
-                  <figure className="my-10 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-xs">
-                    <img
-                      src={article.secondaryImage.url}
-                      alt={article.secondaryImage.alt}
-                      className="w-full h-72 sm:h-96 object-cover"
-                      loading="lazy"
-                    />
-                    <figcaption className="p-3.5 text-xs text-slate-600 text-center border-t border-slate-200 bg-white">
-                      {article.secondaryImage.caption}
-                    </figcaption>
-                  </figure>
-                )}
+            {article.secondaryImage && (
+              <figure className="my-10 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-xs">
+                <img
+                  src={article.secondaryImage.url}
+                  alt={article.secondaryImage.alt}
+                  className="w-full h-72 sm:h-96 object-cover"
+                  loading="lazy"
+                />
+                <figcaption className="p-3.5 text-xs text-slate-600 text-center border-t border-slate-200 bg-white">
+                  {article.secondaryImage.caption}
+                </figcaption>
+              </figure>
+            )}
 
-                <div
-                  className="article-content"
-                  dangerouslySetInnerHTML={{ __html: splitContent.after }}
+            {sections.part2 && (
+              <div
+                className="article-content"
+                dangerouslySetInnerHTML={{ __html: sections.part2 }}
+              />
+            )}
+
+            {article.tertiaryImage && sections.part3 && (
+              <figure className="my-10 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-xs">
+                <img
+                  src={article.tertiaryImage.url}
+                  alt={article.tertiaryImage.alt}
+                  className="w-full h-72 sm:h-96 object-cover"
+                  loading="lazy"
                 />
-              </>
-            ) : (
-              <>
-                <div
-                  className="article-content"
-                  dangerouslySetInnerHTML={{ __html: article.contentHtml }}
-                />
-                {article.secondaryImage && (
-                  <figure className="my-10 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-xs">
-                    <img
-                      src={article.secondaryImage.url}
-                      alt={article.secondaryImage.alt}
-                      className="w-full h-72 sm:h-96 object-cover"
-                      loading="lazy"
-                    />
-                    <figcaption className="p-3.5 text-xs text-slate-600 text-center border-t border-slate-200 bg-white">
-                      {article.secondaryImage.caption}
-                    </figcaption>
-                  </figure>
-                )}
-              </>
+                <figcaption className="p-3.5 text-xs text-slate-600 text-center border-t border-slate-200 bg-white">
+                  {article.tertiaryImage.caption}
+                </figcaption>
+              </figure>
+            )}
+
+            {sections.part3 && (
+              <div
+                className="article-content"
+                dangerouslySetInnerHTML={{ __html: sections.part3 }}
+              />
             )}
 
             {/* Zero-Click AEO FAQ Accordion */}
