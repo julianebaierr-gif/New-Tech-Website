@@ -53,19 +53,27 @@ function parseCSV(text) {
   return rows;
 }
 
+// 4 Core Category Silos in Round-Robin Rotation Order
+const SILO_ROTATION = [
+  { prefix: "1. Data", name: "Data & Excel Automation", slug: "data-excel-automation" },
+  { prefix: "2. Cloud", name: "Cloud & Infrastructure", slug: "cloud-infrastructure" },
+  { prefix: "3. AI", name: "AI & Developer Tools", slug: "ai-developer-tools" },
+  { prefix: "4. OS", name: "OS & Systems", slug: "os-systems" }
+];
+
 // Map Sheet2 Silo name to project category
 function mapCategory(silo) {
   const s = (silo || '').toLowerCase();
   if (s.includes('excel') || s.includes('data')) {
-    return { name: "Data & Excel Automation", slug: "data-excel-automation", authorId: "elena-rostova" };
+    return { name: "Data & Excel Automation", slug: "data-excel-automation" };
   }
   if (s.includes('cloud') || s.includes('infra') || s.includes('linux')) {
-    return { name: "Cloud & Infrastructure", slug: "cloud-infrastructure", authorId: "marcus-vance" };
+    return { name: "Cloud & Infrastructure", slug: "cloud-infrastructure" };
   }
   if (s.includes('ai') || s.includes('developer') || s.includes('chatgpt')) {
-    return { name: "AI & Developer Tools", slug: "ai-developer-tools", authorId: "marcus-vance" };
+    return { name: "AI & Developer Tools", slug: "ai-developer-tools" };
   }
-  return { name: "OS & Systems", slug: "os-systems", authorId: "marcus-vance" };
+  return { name: "OS & Systems", slug: "os-systems" };
 }
 
 // Generate URL slug from title/keyword
@@ -81,21 +89,65 @@ function slugify(text) {
 async function run() {
   console.log('=== [DAILY AUTO-PUBLISHER] Starting Daily Publishing Run ===');
   
-  // 1. Read Sheet2
+  // 1. Inspect existing articles to find the last published category and author
+  const articlesTsPath = path.join(__dirname, '../src/data/articles.ts');
+  const articlesTs = fs.readFileSync(articlesTsPath, 'utf8');
+  const articleBlocks = articlesTs.split(/\{\s*slug:\s*["']/);
+  const existingArticles = [];
+  for (let i = 1; i < articleBlocks.length; i++) {
+    const block = articleBlocks[i];
+    const slug = block.match(/^([^"']+)/)?.[1];
+    const categorySlug = block.match(/categorySlug:\s*["']([^"']+)["']/)?.[1];
+    const authorId = block.match(/authorId:\s*["']([^"']+)["']/)?.[1];
+    if (slug) existingArticles.push({ slug, categorySlug, authorId });
+  }
+
+  const lastArticle = existingArticles[existingArticles.length - 1];
+  console.log(`[STATUS] Last article: [${lastArticle?.slug}] | Category: ${lastArticle?.categorySlug} | Author: ${lastArticle?.authorId}`);
+
+  // 2. Author Alternation: Elena -> Marcus -> Elena -> Marcus
+  const nextAuthorId = (lastArticle?.authorId === 'elena-rostova') ? 'marcus-vance' : 'elena-rostova';
+  const nextAuthorName = (nextAuthorId === 'elena-rostova') ? 'Elena Rostova' : 'Marcus Vance';
+  console.log(`[AUTHOR ROTATION] Today's Author: ${nextAuthorName} (${nextAuthorId})`);
+
+  // 3. Category Round-Robin: Data -> Cloud -> AI -> OS -> Data...
+  let lastCatIndex = -1;
+  if (lastArticle?.categorySlug) {
+    lastCatIndex = SILO_ROTATION.findIndex(s => s.slug === lastArticle.categorySlug);
+  }
+  const nextCatIndex = (lastCatIndex + 1) % SILO_ROTATION.length;
+  const targetSilo = SILO_ROTATION[nextCatIndex];
+  console.log(`[CATEGORY ROTATION] Today's Target Category: ${targetSilo.name} (${targetSilo.prefix})`);
+
+  // 4. Read Sheet2 and find the first 'Pending' topic in targetSilo
   const sheet2Path = path.join(__dirname, 'sheet2_updated.csv');
   const sourcePath = fs.existsSync(sheet2Path) ? sheet2Path : path.join(__dirname, 'sheet2.csv');
   const sheet2Content = fs.readFileSync(sourcePath, 'utf8');
   const rows = parseCSV(sheet2Content);
   
-  // Find first Pending row
   let targetRowIndex = -1;
   let targetRow = null;
+
   for (let r = 1; r < rows.length; r++) {
+    const rowSilo = (rows[r][0] || '').toLowerCase();
     const status = (rows[r][9] || '').trim().toLowerCase();
-    if (status === 'pending' || status === '') {
+    if (rowSilo.includes(targetSilo.prefix.toLowerCase()) && (status === 'pending' || status === '')) {
       targetRowIndex = r;
       targetRow = rows[r];
       break;
+    }
+  }
+
+  // Fallback if target category has no pending topics left
+  if (!targetRow) {
+    console.log(`[FALLBACK] No pending topics in ${targetSilo.name}. Searching other categories...`);
+    for (let r = 1; r < rows.length; r++) {
+      const status = (rows[r][9] || '').trim().toLowerCase();
+      if (status === 'pending' || status === '') {
+        targetRowIndex = r;
+        targetRow = rows[r];
+        break;
+      }
     }
   }
 
@@ -111,10 +163,11 @@ async function run() {
   const milteJulteKws = targetRow[4] || '';
   const combinedVolume = parseInt(targetRow[6] || mainVolume.toString(), 10);
 
-  console.log(`[TARGET TOPIC] Row ${targetRowIndex + 1}:`);
+  console.log(`\n[TARGET TOPIC SELECTED] Row ${targetRowIndex + 1} in Sheet2:`);
   console.log(`  Silo: ${categorySilo}`);
   console.log(`  Title: ${proposedTitle}`);
   console.log(`  Target Keyword: ${mainKeyword}`);
+  console.log(`  Author: ${nextAuthorName} (${nextAuthorId})`);
   console.log(`  Supporting Keywords: ${milteJulteKws.slice(0, 100)}...`);
 
   const category = mapCategory(categorySilo);
@@ -134,8 +187,6 @@ async function run() {
   console.log(`[TAGS]: ${tags.join(', ')}`);
 
   // Check if article already exists in articles.ts
-  const articlesTsPath = path.join(__dirname, '../src/data/articles.ts');
-  const articlesTs = fs.readFileSync(articlesTsPath, 'utf8');
   if (articlesTs.includes(`slug: "${slug}"`)) {
     console.log(`[NOTICE] Article with slug "${slug}" already exists in articles.ts!`);
     return;
