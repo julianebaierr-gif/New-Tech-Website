@@ -1,9 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { siteConfig } from "@/lib/siteConfig";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#FFFFFF",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.baseUrl),
@@ -21,7 +27,7 @@ export const metadata: Metadata = {
     "aws ec2 sizing",
     "sysadmin workflows",
   ],
-  authors: siteConfig.authors.map((a) => ({ name: a.name, url: a.socials.linkedin })),
+  authors: siteConfig.authors.map((a) => ({ name: a.name, url: `${siteConfig.baseUrl}/authors/${a.id}` })),
   creator: siteConfig.name,
   publisher: siteConfig.name,
   robots: siteConfig.isStaging
@@ -92,6 +98,11 @@ export default function RootLayout({
         "publisher": {
           "@id": `${siteConfig.baseUrl}/#organization`,
         },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": `${siteConfig.baseUrl}/category/data-excel-automation?q={search_term_string}`,
+          "query-input": "required name=search_term_string",
+        },
       },
     ],
   };
@@ -99,7 +110,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth bg-white text-slate-900">
       <head>
-        <meta name="theme-color" content="#FFFFFF" />
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <SchemaJsonLd schema={globalSchema} />
       </head>
       <body className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">

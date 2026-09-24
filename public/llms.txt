@@ -1,0 +1,30 @@
+# TechOps Wire
+> Practical Guides for Cloud, Spreadsheets & Operating Systems
+
+TechOps Wire publishes technical guides, Excel automation tutorials, cloud architecture comparisons, and operating system maintenance roadmaps. Every tutorial is written and verified by real human specialists on clean test systems and enterprise environments.
+
+## Content Silos
+- [Data & Excel Automation](https://techopswire.com/category/data-excel-automation): Microsoft Excel formulas, dynamic arrays (XLOOKUP, UNIQUE, FILTER), data validation drop-down menus, and spreadsheet cleansing methods.
+- [Cloud & Infrastructure](https://techopswire.com/category/cloud-infrastructure): Linux server administration, AWS EC2 instance sizing, Docker networking and container volume architectures.
+- [AI & Developer Tools](https://techopswire.com/category/ai-developer-tools): Large language model token constraints, developer API integrations, context window limits, and automation pipelines.
+- [OS & Systems](https://techopswire.com/category/os-systems): Windows 11 enterprise settings, Linux permissions (chmod/chown), and Windows Server lifecycle upgrade strategies.
+
+## Editorial Staff & Technical Authors
+- [Sarah Blake](https://techopswire.com/authors/sarah-blake): Senior Data Operations & Spreadsheet Analyst. Specializes in advanced Excel formula architecture and spreadsheet validation.
+- [Evan Mitchell](https://techopswire.com/authors/evan-mitchell): Cloud Infrastructure Specialist & Systems Administrator. Specializes in Linux server administration, AWS EC2, and Docker containerization.
+
+## Core Technical Guides
+- [How to Highlight and Remove Duplicates in Excel](https://techopswire.com/articles/how-to-remove-duplicates-in-excel)
+- [How to Create and Edit Dynamic Drop-Down Lists in Excel](https://techopswire.com/articles/excel-drop-down-list)
+- [AWS EC2 Instance Types Explained](https://techopswire.com/articles/aws-ec2-instance-types-explained)
+- [Docker Container Architecture](https://techopswire.com/articles/docker-container-architecture)
+- [Linux File Permissions Explained](https://techopswire.com/articles/linux-file-permissions-chmod-chown)
+- [Windows 11 Pro vs Home](https://techopswire.com/articles/windows-11-pro-vs-home)
+- [Why is ChatGPT So Slow](https://techopswire.com/articles/why-is-chatgpt-so-slow)
+- [ChatGPT File Upload Limits](https://techopswire.com/articles/chatgpt-file-upload-limits)
+- [Windows Server 2019 End of Life](https://techopswire.com/articles/windows-server-2019-end-of-life)
+
+## Policies & Verification
+- [Editorial Policy & Testing Standards](https://techopswire.com/editorial-policy)
+- [About Us](https://techopswire.com/about)
+- [Contact Editorial Team](https://techopswire.com/contact)

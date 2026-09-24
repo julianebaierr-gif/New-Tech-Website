@@ -76,6 +76,7 @@ export default async function AuthorProfilePage({ params }: AuthorPageProps) {
     "@type": "ProfilePage",
     "mainEntity": {
       "@type": "Person",
+      "@id": `${authorUrl}#person`,
       "name": author.name,
       "jobTitle": author.role,
       "description": author.fullBio || author.bio,
@@ -83,6 +84,7 @@ export default async function AuthorProfilePage({ params }: AuthorPageProps) {
       "url": authorUrl,
       "worksFor": {
         "@type": "Organization",
+        "@id": `${siteConfig.baseUrl}/#organization`,
         "name": siteConfig.name,
         "url": siteConfig.baseUrl,
       },

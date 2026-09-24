@@ -26,12 +26,15 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
       {
-        userAgent: "Googlebot",
-        allow: "/",
-        disallow: ["/api/", "/search/"],
-      },
-      {
-        userAgent: "Bingbot",
+        userAgent: [
+          "Googlebot",
+          "Bingbot",
+          "Google-Extended",
+          "GPTBot",
+          "PerplexityBot",
+          "ClaudeBot",
+          "Applebot",
+        ],
         allow: "/",
         disallow: ["/api/", "/search/"],
       },

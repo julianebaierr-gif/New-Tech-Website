@@ -49,7 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const categoryRoutes: MetadataRoute.Sitemap = siteConfig.categories.map((cat) => ({
     url: `${baseUrl}/category/${cat.slug}`,
     lastModified: new Date(),
-    changeFrequency: "weekly",
+    changeFrequency: "daily",
     priority: 0.9,
   }));
 
@@ -57,15 +57,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const authorRoutes: MetadataRoute.Sitemap = siteConfig.authors.map((auth) => ({
     url: `${baseUrl}/authors/${auth.id}`,
     lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: 0.7,
+    changeFrequency: "weekly",
+    priority: 0.8,
   }));
 
   // 4. Articles (High Priority)
   const articleRoutes: MetadataRoute.Sitemap = articles.map((art) => ({
     url: `${baseUrl}/articles/${art.slug}`,
     lastModified: new Date(art.updatedAt),
-    changeFrequency: "monthly",
+    changeFrequency: "weekly",
     priority: 0.85,
   }));
 
