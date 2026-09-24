@@ -52,13 +52,19 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
           height: 630,
           alt: article.title,
         },
+        {
+          url: article.secondaryImage.url,
+          width: 1200,
+          height: 630,
+          alt: article.secondaryImage.alt,
+        },
       ],
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description: article.excerpt,
-      images: [article.coverImage],
+      images: [article.coverImage, article.secondaryImage.url],
     },
   };
 }
@@ -83,7 +89,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     "@type": "TechArticle",
     "headline": article.title,
     "description": article.excerpt,
-    "image": article.coverImage,
+    "image": [article.coverImage, article.secondaryImage.url],
     "datePublished": article.publishedAt,
     "dateModified": article.updatedAt,
     "author": {
@@ -212,6 +218,21 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               className="article-content"
               dangerouslySetInnerHTML={{ __html: article.contentHtml }}
             />
+
+            {/* Secondary Illustrated Figure */}
+            {article.secondaryImage && (
+              <figure className="my-10 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-xs">
+                <img
+                  src={article.secondaryImage.url}
+                  alt={article.secondaryImage.alt}
+                  className="w-full h-72 sm:h-96 object-cover"
+                  loading="lazy"
+                />
+                <figcaption className="p-3.5 text-xs text-slate-600 text-center border-t border-slate-200 bg-white">
+                  {article.secondaryImage.caption}
+                </figcaption>
+              </figure>
+            )}
 
             {/* Zero-Click AEO FAQ Accordion */}
             <FaqAccordion faqs={article.faqs} />

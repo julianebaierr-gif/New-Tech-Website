@@ -9,6 +9,13 @@ export interface TocItem {
   level: number;
 }
 
+export interface ArticleImage {
+  id: string;
+  url: string;
+  alt: string;
+  caption: string;
+}
+
 export interface Article {
   slug: string;
   title: string;
@@ -27,6 +34,8 @@ export interface Article {
   combinedVolume: number;
   featured: boolean;
   coverImage: string;
+  coverImageId: string;
+  secondaryImage: ArticleImage;
   tableOfContents: TocItem[];
   faqs: FaqItem[];
   contentHtml: string;
@@ -56,6 +65,13 @@ export const articles: Article[] = [
     combinedVolume: 90550,
     featured: true,
     coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImageId: "photo-1551288049-bebda4e38f71",
+    secondaryImage: {
+      id: "photo-1663124178632-488f399d5763",
+      url: "https://images.unsplash.com/photo-1663124178632-488f399d5763?auto=format&fit=crop&w=1200&h=630&q=80",
+      alt: "Cleaned Excel worksheet showing filtered unique records in tabular format",
+      caption: "Auditing spreadsheet records to isolate unique rows before permanent removal.",
+    },
     tableOfContents: [
       { id: "understanding-duplicate-types", title: "Exact Matches vs Partial Match Duplicates", level: 2 },
       { id: "method-1-conditional-formatting", title: "Visual Auditing with Conditional Formatting", level: 2 },
@@ -194,6 +210,13 @@ End Sub</code></pre>
     combinedVolume: 4350,
     featured: true,
     coverImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImageId: "photo-1451187580459-43490279c0fa",
+    secondaryImage: {
+      id: "photo-1652189977368-e9d033e7d3e7",
+      url: "https://images.unsplash.com/photo-1652189977368-e9d033e7d3e7?auto=format&fit=crop&w=1200&h=630&q=80",
+      alt: "Datacenter server hardware racks providing EC2 compute instances",
+      caption: "Server racks housing multicore Graviton and Xeon processors across cloud zones.",
+    },
     tableOfContents: [
       { id: "ec2-naming-convention-decoded", title: "The EC2 Naming Convention Decoded", level: 2 },
       { id: "compute-families-matrix", title: "Core Compute Families and Architectural Trade-offs", level: 2 },
@@ -324,7 +347,14 @@ End Sub</code></pre>
     ],
     combinedVolume: 13000,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImageId: "photo-1677442136019-21780ecad995",
+    secondaryImage: {
+      id: "photo-1618005182384-a83a8bd57fbe",
+      url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80",
+      alt: "Neural network token streaming data paths and GPU memory bandwidth",
+      caption: "Large language model inference processes streaming output tokens sequentially.",
+    },
     tableOfContents: [
       { id: "anatomy-of-llm-latency", title: "How ChatGPT Generates Responses Behind the Scenes", level: 2 },
       { id: "reason-1-gpu-queue-saturation", title: "High Server Traffic & Peak Hour Queue Delays", level: 2 },
@@ -407,6 +437,13 @@ End Sub</code></pre>
     combinedVolume: 17300,
     featured: false,
     coverImage: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImageId: "photo-1629654297299-c8506221ca97",
+    secondaryImage: {
+      id: "photo-1550751827-4bd374c3f58b",
+      url: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=630&q=80",
+      alt: "Hardware volume encryption lock representing Windows 11 BitLocker protection",
+      caption: "BitLocker drive encryption safeguards local disks with hardware TPM keys.",
+    },
     tableOfContents: [
       { id: "core-specifications-comparison", title: "Core Hardware Limits and Specifications", level: 2 },
       { id: "security-bitlocker-vs-device-encryption", title: "Security Architecture: BitLocker vs Device Encryption", level: 2 },
@@ -530,7 +567,14 @@ End Sub</code></pre>
     ],
     combinedVolume: 18500,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImage: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImageId: "photo-1461749280684-dccba630e2f6",
+    secondaryImage: {
+      id: "photo-1486312338219-ce68d2c6f44d",
+      url: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1200&h=630&q=80",
+      alt: "System administrator executing chmod and chown commands on keyboard",
+      caption: "Configuring chmod numeric modes and chown ownership directly in the shell.",
+    },
     tableOfContents: [
       { id: "understanding-linux-permission-structure", title: "Understanding the rwx Permission Matrix", level: 2 },
       { id: "octal-notation-binary-math", title: "Octal Notation Decoded (Read=4, Write=2, Execute=1)", level: 2 },
@@ -708,6 +752,13 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     combinedVolume: 102450,
     featured: false,
     coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImageId: "photo-1460925895917-afdab827c52f",
+    secondaryImage: {
+      id: "photo-1543286386-713bdd548da4",
+      url: "https://images.unsplash.com/photo-1543286386-713bdd548da4?auto=format&fit=crop&w=1200&h=630&q=80",
+      alt: "Business spreadsheet analysis report driven by configured drop down selectors",
+      caption: "Data validation menus standardize user choices across shared workbooks.",
+    },
     tableOfContents: [
       { id: "creating-basic-data-validation-list", title: "Creating a Standard List via Data Validation", level: 2 },
       { id: "dynamic-lists-with-tables", title: "Auto-Expanding Lists with Excel Tables", level: 2 },
@@ -784,6 +835,13 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     combinedVolume: 6500,
     featured: false,
     coverImage: "https://images.unsplash.com/photo-1605745341112-85968b19335b?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImageId: "photo-1605745341112-85968b19335b",
+    secondaryImage: {
+      id: "photo-1484557052118-f32bd25b45b5",
+      url: "https://images.unsplash.com/photo-1484557052118-f32bd25b45b5?auto=format&fit=crop&w=1200&h=630&q=80",
+      alt: "Datacenter network patch cords representing Docker bridge networking",
+      caption: "Virtual bridge networks route internal packet traffic between container endpoints.",
+    },
     tableOfContents: [
       { id: "docker-engine-and-containerd", title: "The Runtime Hierarchy: dockerd, containerd & runc", level: 2 },
       { id: "overlay2-filesystem-layers", title: "Overlay2 Storage: Copy-on-Write Layering", level: 2 },
@@ -862,7 +920,14 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     ],
     combinedVolume: 4850,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImage: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImageId: "photo-1586281380349-632531db7ed4",
+    secondaryImage: {
+      id: "photo-1526374965328-7f61d4dc18c5",
+      url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&h=630&q=80",
+      alt: "Code execution matrix representing Python pandas analysis in AI sandbox",
+      caption: "Python sandboxes process uploaded document slices using automated code execution.",
+    },
     tableOfContents: [
       { id: "file-size-and-format-specifications", title: "File Size and Format Thresholds", level: 2 },
       { id: "context-window-vs-file-storage", title: "Context Window Limits vs File Storage", level: 2 },
@@ -939,6 +1004,13 @@ sudo chown deployer /opt/applications/api-server</code></pre>
     combinedVolume: 5100,
     featured: false,
     coverImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&h=630&q=80",
+    coverImageId: "photo-1558494949-ef010cbdcc31",
+    secondaryImage: {
+      id: "photo-1544197150-b99a580bb7a8",
+      url: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&h=630&q=80",
+      alt: "Server racks and storage arrays ready for Windows Server 2022 migration",
+      caption: "Side-by-side migration keeps legacy servers running while staging Server 2022.",
+    },
     tableOfContents: [
       { id: "official-lifecycle-timeline", title: "Official Microsoft Lifecycle Timeline", level: 2 },
       { id: "in-place-upgrade-vs-clean-migration", title: "In-Place Upgrade vs Clean Side-by-Side Migration", level: 2 },
