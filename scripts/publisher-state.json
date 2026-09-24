@@ -1,0 +1,8 @@
+{
+  "active": true,
+  "postsRemaining": 1,
+  "paused": false,
+  "maxPosts": 1,
+  "targetSchedule": "Daily at 13:00 UTC",
+  "note": "Configured per user instruction: Execute exactly 1 post tomorrow at 13:00 UTC using SERP competitor gap intelligence. Immediately pause all further auto-posting until explicitly instructed by user."
+}

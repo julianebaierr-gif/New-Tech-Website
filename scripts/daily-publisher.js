@@ -109,15 +109,16 @@ function sanitizeContent(raw) {
 
 function craftSeoMetadata(proposedTitle, mainKeyword, categoryName) {
   let cleanTitle = proposedTitle
+    .replace(/&/g, 'and')
     .replace(/:\s*.*$/, '')
     .replace(/\(.*?\)/g, '')
-    .replace(/[^\w\s&]/g, '')
+    .replace(/[^\w\s]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 
   let prefix = cleanTitle;
-  if (prefix.length > 40) {
-    prefix = prefix.slice(0, 40).replace(/\s+\S*$/, '').trim();
+  if (prefix.length > 38) {
+    prefix = prefix.slice(0, 38).replace(/\s+\S*$/, '').trim();
   }
   let metaTitle = `${prefix} | TechOps Wire`;
   
@@ -143,9 +144,12 @@ function craftSeoMetadata(proposedTitle, mainKeyword, categoryName) {
     prefix = prefix + "+";
     metaTitle = `${prefix} | TechOps Wire`;
   }
+  if (metaTitle.length > 55) {
+    metaTitle = metaTitle.slice(0, 55);
+  }
 
-  let baseDesc = `Practical technical manual covering ${mainKeyword} with verified steps, command lines, troubleshooting methods, and architecture configurations.`;
-  baseDesc = sanitizeContent(baseDesc);
+  let baseDesc = `Practical manual covering ${mainKeyword} with step-by-step instructions, command lines, troubleshooting methods, and architecture configurations.`;
+  baseDesc = sanitizeContent(baseDesc).replace(/&/g, 'and');
   if (baseDesc.length > 155) {
     baseDesc = baseDesc.slice(0, 155);
   }
@@ -252,63 +256,116 @@ function slugify(text) {
     .trim();
 }
 
-// Gemini API Invocation with cascading model fallback
+// Gemini API Invocation with cascading model fallback and optional Google Search Grounding
 async function callGemini(apiKey, prompt) {
   const models = [
-    'models/gemini-2.5-flash',
-    'models/gemini-2.0-flash',
-    'models/gemini-1.5-flash'
+    'gemini-2.5-flash',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash'
   ];
 
-  for (const m of models) {
-    const cleanModel = m.replace('models/', '');
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${cleanModel}:generateContent?key=${apiKey}`;
-
-    try {
-      const res = await new Promise((resolve, reject) => {
-        const u = new URL(url);
-        const req = https.request({
-          hostname: u.hostname,
-          path: u.pathname + u.search,
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          timeout: 45000
-        }, (r) => {
-          let b = '';
-          r.on('data', chunk => b += chunk);
-          r.on('end', () => resolve({ statusCode: r.statusCode, body: b }));
-        });
-        req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
-        req.on('error', reject);
-        req.write(JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.3,
-            maxOutputTokens: 4096
-          }
-        }));
-        req.end();
+  function makeRequest(url, payload) {
+    return new Promise((resolve, reject) => {
+      const u = new URL(url);
+      const req = https.request({
+        hostname: u.hostname,
+        path: u.pathname + u.search,
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 60000
+      }, (r) => {
+        let b = '';
+        r.on('data', chunk => b += chunk);
+        r.on('end', () => resolve({ statusCode: r.statusCode, body: b }));
       });
+      req.on('timeout', () => { req.destroy(); reject(new Error('Request Timeout')); });
+      req.on('error', reject);
+      req.write(JSON.stringify(payload));
+      req.end();
+    });
+  }
 
+  // 1. First attempt: Search Grounding enabled (to reverse-engineer SERP competitors)
+  for (const m of models) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
+    try {
+      const payload = {
+        contents: [{ parts: [{ text: prompt }] }],
+        tools: [{ googleSearch: {} }],
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 6144
+        }
+      };
+      const res = await makeRequest(url, payload);
       if (res.statusCode === 200) {
         const parsed = JSON.parse(res.body);
         const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
         if (text && text.trim().length > 0) {
-          console.log(`  [GEMINI] Generated ${text.length} chars with ${cleanModel}`);
+          console.log(`  [GEMINI SEARCH GROUNDING] Generated ${text.length} chars with ${m}`);
           return text;
         }
       } else {
-        console.warn(`  [GEMINI] ${cleanModel} returned HTTP ${res.statusCode}`);
+        console.warn(`  [GEMINI SEARCH GROUNDING] ${m} returned HTTP ${res.statusCode}`);
       }
     } catch (e) {
-      console.warn(`  [GEMINI] ${cleanModel} failed: ${e.message}`);
+      console.warn(`  [GEMINI SEARCH GROUNDING] ${m} error: ${e.message}`);
     }
   }
+
+  // 2. Fallback attempt: Standard generation without tools
+  console.log('  [GEMINI FALLBACK] Trying standard generation without search tools...');
+  for (const m of models) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
+    try {
+      const payload = {
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 6144
+        }
+      };
+      const res = await makeRequest(url, payload);
+      if (res.statusCode === 200) {
+        const parsed = JSON.parse(res.body);
+        const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text && text.trim().length > 0) {
+          console.log(`  [GEMINI DIRECT] Generated ${text.length} chars with ${m}`);
+          return text;
+        }
+      } else {
+        console.warn(`  [GEMINI DIRECT] ${m} returned HTTP ${res.statusCode}`);
+      }
+    } catch (e) {
+      console.warn(`  [GEMINI DIRECT] ${m} error: ${e.message}`);
+    }
+  }
+
   return null;
 }
 
 async function run() {
   console.log('=== [DAILY AUTO-PUBLISHER] Starting Daily Publishing Run ===');
+
+  // Safety & Quota Control: Check publisher-state.json
+  const publisherStatePath = path.join(__dirname, 'publisher-state.json');
+  let publisherState = { active: true, postsRemaining: 1, paused: false };
+  if (fs.existsSync(publisherStatePath)) {
+    try {
+      publisherState = JSON.parse(fs.readFileSync(publisherStatePath, 'utf8'));
+    } catch (e) {
+      console.warn('[WARNING] Could not parse publisher-state.json, defaulting to standard state.');
+    }
+  }
+
+  if (publisherState.paused || publisherState.postsRemaining <= 0 || !publisherState.active) {
+    console.log('================================================================');
+    console.log('[AUTO-PUBLISHER PAUSED] Execution stopped.');
+    console.log(`Current state: postsRemaining = ${publisherState.postsRemaining}, paused = ${publisherState.paused}, active = ${publisherState.active}`);
+    console.log('Automated publishing quota reached. All auto-posting is PAUSED until explicitly instructed by user.');
+    console.log('================================================================');
+    process.exit(0);
+  }
 
   const articlesTsPath = path.join(__dirname, '../src/data/articles.ts');
   const articlesTs = fs.readFileSync(articlesTsPath, 'utf8');
@@ -421,36 +478,102 @@ async function run() {
   let faqItems = [];
 
   if (apiKey) {
-    console.log('[GEMINI] Generating full article body...');
-    const prompt = `You are ${nextAuthorName}, a technical writer for TechOps Wire.
-Write a comprehensive, step-by-step technical guide for: "${proposedTitle}".
-Primary keyword: "${mainKeyword}".
-Supporting keywords: ${tags.join(', ')}.
+    console.log('[GEMINI] Reverse-engineering SERP competitors & generating article...');
+    const prompt = `You are ${nextAuthorName}, an enterprise cloud and systems engineer writing for TechOps Wire.
+Write an authoritative, highly detailed technical manual for: "${proposedTitle}".
+Primary Target Keyword: "${mainKeyword}".
+Supporting Semantic / LSI Keywords: ${tags.join(', ')}.
+
+OBJECTIVE:
+1. Reverse-engineer what top competitors cover on Google for "${mainKeyword}".
+2. Extract all high-value Semantic and LSI keywords, architectural terminology, formulas, CLI syntax, and configuration flags.
+3. Exploit the "Competitor Content Gap" (Information Gain): Top competitor articles are often generic or promotional. You must provide superior technical depth, including real-world trade-offs, actual CLI/code commands, calculation or architectural pitfalls, a structured comparison table, and troubleshooting edge cases that competitors miss.
 
 STRUCTURE REQUIREMENTS:
-1. Include an introductory lead paragraph (<p class="lead text-lg text-slate-700 leading-relaxed mb-6">...).
-2. A Quick Action Summary box (<div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">...).
-3. Exactly 6 to 7 major sections using <h2 id="section-id" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Heading Title</h2>.
-4. Concrete step-by-step instructions (<ol class="list-decimal pl-6 space-y-3 text-slate-700 mb-6">).
-5. Accurate code blocks, keyboard shortcuts, or CLI snippets (<pre><code>...</code></pre>).
-6. 4 FAQ items at the end with realistic technical answers.
+1. Lead Paragraph:
+   <p class="lead text-lg text-slate-700 leading-relaxed mb-6">...</p>
+   Direct explanation of ${mainKeyword}, core engineering motivation, and operational trade-offs.
+
+2. Quick Action Summary Card:
+   <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
+     <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Decision Matrix</h4>
+     <p class="text-slate-700 text-sm">...</p>
+   </div>
+
+3. Exactly 6 to 7 Major Sections using:
+   <h2 id="section-slug" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Heading Title</h2>
+   Include practical subsections using:
+   <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Subheading Title</h3>
+
+4. Comprehensive Comparison / Decision Matrix Table:
+   Include a clean HTML table comparing models, trade-offs, or architectures:
+   <div class="my-6 overflow-x-auto">
+     <table class="min-w-full text-sm text-left border border-slate-200 rounded-lg">
+       <thead class="bg-slate-100 text-slate-800 font-semibold border-b border-slate-200">
+         <tr><th class="px-4 py-3">Feature</th><th class="px-4 py-3">Public Cloud</th><th class="px-4 py-3">On-Premises</th><th class="px-4 py-3">Hybrid Model</th></tr>
+       </thead>
+       <tbody class="divide-y divide-slate-200 text-slate-700">
+         ...
+       </tbody>
+     </table>
+   </div>
+
+5. Step-by-Step Implementation or Architecture Setup:
+   <ol class="list-decimal pl-6 space-y-3 text-slate-700 mb-6">
+     <li>...</li>
+   </ol>
+
+6. Real Command Snippets / CLI / Configuration:
+   <pre class="bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto text-sm font-mono my-4"><code>...</code></pre>
+
+7. Troubleshooting / Common Pitfalls Section:
+   Detailed section covering real operational traps (such as data egress charges, misconfigured security groups, or unattached disk storage waste).
+
+8. FAQs Section:
+   Include 4 technical FAQs addressing complex questions.
+   Also provide the FAQs in a JSON block at the very end of your response:
+   \`\`\`json
+   [
+     { "question": "...", "answer": "..." },
+     { "question": "...", "answer": "..." },
+     { "question": "...", "answer": "..." },
+     { "question": "...", "answer": "..." }
+   ]
+   \`\`\`
 
 STRICT WRITING RULES:
-- ZERO AI BUZZWORDS: Never use delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, unlock, pivotal, beacon, elevate.
-- ZERO EM-DASHES: Do NOT use the em-dash character '—' anywhere. Use commas or parentheses instead.
+- ZERO AI BUZZWORDS: Never use: delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, seamlessly, unlock, pivotal, beacon, elevate, harness, embark, powerhouse, realm, evolution, plethora, game-changer, vital, comprehensive guide, deep dive, in-depth, discover, explore.
+- ZERO EM-DASHES: Do NOT use the em-dash character '—' or spaced hyphens ' - ' anywhere. Use commas, colons, or parentheses instead.
 - Tone: Hands-on, practical, tested in real production environments.
-- Output ONLY valid HTML for the article body. No markdown formatting or extra text.`;
+- Output ONLY valid HTML for the article body followed by the \`\`\`json FAQ block.`;
 
     const raw = await callGemini(apiKey, prompt);
     if (raw) {
-      let cleaned = raw.replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '');
+      // 1. Extract JSON FAQs if present
+      const jsonMatch = raw.match(/```json\s*([\s\S]*?)\s*```/i);
+      if (jsonMatch) {
+        try {
+          faqItems = JSON.parse(jsonMatch[1]);
+        } catch (e) {
+          console.warn('[FAQS] JSON parse failed, relying on fallback/regex.');
+        }
+      }
+
+      let cleaned = raw
+        .replace(/```json[\s\S]*?```/gi, '')
+        .replace(/^```html\s*/i, '')
+        .replace(/^```\s*/i, '')
+        .replace(/\s*```$/i, '')
+        .trim();
+
       articleHtml = sanitizeContent(cleaned);
 
       // Extract TOC from H2 headings
-      const h2Regex = /<h2\s+id="([^"]+)"[^>]*>([^<]+)<\/h2>/gi;
+      const h2Regex = /<h2(?:\s+id="([^"]+)")?[^>]*>([^<]+)<\/h2>/gi;
       let m;
       while ((m = h2Regex.exec(articleHtml)) !== null) {
-        tocItems.push({ id: m[1], title: m[2].trim(), level: 2 });
+        const id = m[1] || slugify(m[2]);
+        tocItems.push({ id, title: m[2].trim(), level: 2 });
       }
     }
   }
@@ -523,11 +646,12 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
 
   // 5. Append New Article to src/data/articles.ts
   const { metaTitle, metaDescription } = craftSeoMetadata(proposedTitle, mainKeyword, category.name);
+  const cleanExcerpt = sanitizeContent(`Practical manual covering ${mainKeyword} with step-by-step instructions, commands, and troubleshooting methods.`);
   const newArticleObject = `  {
     slug: "${slug}",
     title: "${proposedTitle.replace(/"/g, '\\"')}",
     headline: "${proposedTitle.replace(/"/g, '\\"')}",
-    excerpt: "Practical guide explaining ${mainKeyword} with verified steps, commands, and troubleshooting tips.",
+    excerpt: "${cleanExcerpt.replace(/"/g, '\\"')}",
     metaTitle: "${metaTitle.replace(/"/g, '\\"')}",
     metaDescription: "${metaDescription.replace(/"/g, '\\"')}",
     categorySlug: "${category.slug}",
@@ -640,6 +764,16 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
   } catch (e) {
     console.error(`[INDEXING ERROR]:`, e.message);
   }
+
+  // 10. Safety & Quota Control: decrement remaining posts and pause
+  publisherState.postsRemaining = Math.max(0, (publisherState.postsRemaining || 1) - 1);
+  publisherState.paused = true;
+  publisherState.active = false;
+  publisherState.lastRunAt = new Date().toISOString();
+  publisherState.lastArticlePublished = slug;
+  publisherState.note = "Scheduled single post completed. Automated posting paused until user explicitly requests resumption.";
+  fs.writeFileSync(publisherStatePath, JSON.stringify(publisherState, null, 2), 'utf8');
+  console.log(`[STATE UPDATE] publisher-state.json updated: postsRemaining=${publisherState.postsRemaining}, paused=${publisherState.paused}`);
 
   console.log(`=== [DAILY AUTO-PUBLISHER] Daily run complete ===\n`);
 }

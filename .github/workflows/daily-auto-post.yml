@@ -43,7 +43,7 @@ jobs:
         run: |
           git config --global user.name "TechOps Wire Automation"
           git config --global user.email "bot@techopswire.com"
-          git add src/data/articles.ts scripts/sheet1_data.csv scripts/sheet2_updated.csv
+          git add src/data/articles.ts scripts/sheet1_data.csv scripts/sheet2_updated.csv scripts/publisher-state.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
