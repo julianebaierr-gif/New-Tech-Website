@@ -1,0 +1,56 @@
+name: Daily Auto-Post & Forceful Indexing
+
+on:
+  schedule:
+    # Runs everyday at 13:00 UTC (8:00 AM EST / 6:00 PM PKT - Peak Search Traffic Window)
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  auto_publish:
+    name: Publish Daily Article & Forceful Indexing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Daily Auto-Publisher
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          GOOGLE_SHEET_WEBHOOK_URL: ${{ secrets.GOOGLE_SHEET_WEBHOOK_URL }}
+        run: |
+          node scripts/daily-publisher.js
+
+      - name: Verify Production Build
+        run: npm run build
+
+      - name: Commit & Push New Article
+        run: |
+          git config --global user.name "TechOps Wire Automation"
+          git config --global user.email "bot@techopswire.com"
+          git add src/data/articles.ts scripts/sheet1_data.csv scripts/sheet2_updated.csv
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "feat(daily-post): publish scheduled daily article and update sheet logs"
+            git push origin main
+          fi
+
+      - name: Forceful Indexing Trigger
+        run: |
+          node scripts/submit-indexing.js
