@@ -150,8 +150,8 @@ async function run() {
   targetRow[10] = postUrl;
   targetRow[11] = postDateTime;
 
-  // Sync to Google Sheet Webhook if configured
-  const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
+  // Sync to Google Sheet Webhook
+  const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbxawZ-7K7VjR2_wOgqiVtdalkvFohhoM3VxRbnBmjsSz7pWnVVyA-EPXYJwvUNHuCjR8w/exec';
   if (webhookUrl) {
     console.log(`[GOOGLE SHEET SYNC] Calling Webhook URL...`);
     try {
@@ -163,26 +163,41 @@ async function run() {
         postDate: postDateTime
       });
 
-      // Submit POST
-      const u = new URL(webhookUrl);
-      const req = https.request({
-        hostname: u.hostname,
-        path: u.pathname + u.search,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(payload)
-        }
-      }, (res) => {
-        console.log(`[GOOGLE SHEET SYNC] Response status: ${res.statusCode}`);
-      });
-      req.write(payload);
-      req.end();
+      function submitToWebhook(targetUrl, method, body) {
+        return new Promise((resolve) => {
+          const u = new URL(targetUrl);
+          const req = https.request({
+            hostname: u.hostname,
+            path: u.pathname + u.search,
+            method: method,
+            timeout: 20000,
+            headers: {
+              'Content-Type': 'application/json',
+              ...(body ? { 'Content-Length': Buffer.byteLength(body) } : {})
+            }
+          }, (res) => {
+            if (res.statusCode === 302 || res.statusCode === 301 || res.statusCode === 307) {
+              submitToWebhook(res.headers.location, 'GET', null).then(resolve);
+              return;
+            }
+            let resBody = '';
+            res.on('data', chunk => resBody += chunk);
+            res.on('end', () => {
+              console.log(`[GOOGLE SHEET SYNC] Success: ${resBody.trim()}`);
+              resolve(true);
+            });
+          });
+          req.on('timeout', () => { req.destroy(); resolve(false); });
+          req.on('error', (err) => { console.error(`[GOOGLE SHEET SYNC ERROR]:`, err.message); resolve(false); });
+          if (body) req.write(body);
+          req.end();
+        });
+      }
+
+      await submitToWebhook(webhookUrl, 'POST', payload);
     } catch (e) {
       console.error(`[GOOGLE SHEET SYNC] Webhook error:`, e.message);
     }
-  } else {
-    console.log(`[GOOGLE SHEET SYNC] Note: Set GOOGLE_SHEET_WEBHOOK_URL in environment or GitHub Secrets for 100% automatic Sheet sync.`);
   }
 
   // Submit to IndexNow
