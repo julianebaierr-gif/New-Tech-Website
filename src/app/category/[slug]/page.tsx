@@ -18,30 +18,56 @@ export async function generateStaticParams() {
   }));
 }
 
+const categoryMetaMap: Record<string, { title: string; desc: string }> = {
+  "data-excel-automation": {
+    title: "Excel Formulas and Data Cleaning Steps | TechOps Wire",
+    desc: "Browse practical Excel tutorials, dynamic array formulas, drop-down validation menus, and reliable spreadsheet data cleaning steps tested by specialists.",
+  },
+  "cloud-infrastructure": {
+    title: "Cloud Infrastructure and Linux Setups | TechOps Wire",
+    desc: "Browse hands-on Linux administration tutorials, AWS EC2 compute sizing roadmaps, and Docker container networking setups tested on live server deployments.",
+  },
+  "ai-developer-tools": {
+    title: "AI Developer Tools and API Token Specs | TechOps Wire",
+    desc: "Practical developer references covering large language model token contexts, file upload constraints, API response speeds, and production AI utilities.",
+  },
+  "os-systems": {
+    title: "Operating Systems and Server Migration | TechOps Wire",
+    desc: "Practical operating system manuals covering Windows 11 settings, Linux octal permissions, and structured Windows Server upgrade and migration roadmaps.",
+  },
+};
+
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { slug } = await params;
   const category = siteConfig.categories.find((c) => c.slug === slug);
 
   if (!category) return {};
 
+  const meta = categoryMetaMap[slug] || {
+    title: `${category.name} Articles | ${siteConfig.name}`,
+    desc: category.description,
+  };
+
   const url = `${siteConfig.baseUrl}/category/${category.slug}`;
 
   return {
-    title: `${category.name} Articles | ${siteConfig.name}`,
-    description: category.description,
+    title: {
+      absolute: meta.title,
+    },
+    description: meta.desc,
     alternates: {
       canonical: url,
     },
     openGraph: {
-      title: `${category.name} Articles | ${siteConfig.name}`,
-      description: category.description,
+      title: meta.title,
+      description: meta.desc,
       url: url,
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${category.name} Articles | ${siteConfig.name}`,
-      description: category.description,
+      title: meta.title,
+      description: meta.desc,
     },
   };
 }

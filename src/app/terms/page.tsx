@@ -4,21 +4,23 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
-  title: "Terms of Use | TechOps Wire",
-  description: "Terms of use, code licensing terms, disclaimers, and intellectual property guidelines for TechOps Wire.",
+  title: {
+    absolute: "Terms of Service and Reader Agreement | TechOps Wire",
+  },
+  description: "Read our terms of service, acceptable use rules, and licensing policies for code snippets, configuration files, and software tutorials on this website.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/terms`,
   },
   openGraph: {
-    title: "Terms of Use | TechOps Wire",
-    description: "Terms of use, code licensing terms, disclaimers, and intellectual property guidelines for TechOps Wire.",
+    title: "Terms of Service and Reader Agreement | TechOps Wire",
+    description: "Read our terms of service, acceptable use rules, and licensing policies for code snippets, configuration files, and software tutorials on this website.",
     url: `${siteConfig.baseUrl}/terms`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Terms of Use | TechOps Wire",
-    description: "Terms of use, code licensing terms, disclaimers, and intellectual property guidelines for TechOps Wire.",
+    title: "Terms of Service and Reader Agreement | TechOps Wire",
+    description: "Read our terms of service, acceptable use rules, and licensing policies for code snippets, configuration files, and software tutorials on this website.",
   },
 };
 

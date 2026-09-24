@@ -4,21 +4,23 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | TechOps Wire",
-  description: "TechOps Wire privacy policy regarding server logs, cookies, third-party analytics, user rights, and data protection.",
+  title: {
+    absolute: "TechOps Wire Privacy and Cookie Policy | TechOps Wire",
+  },
+  description: "Review the TechOps Wire privacy policy regarding data collection, cookie usage, reader analytics, and our strict commitment to visitor privacy protection.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/privacy`,
   },
   openGraph: {
-    title: "Privacy Policy | TechOps Wire",
-    description: "TechOps Wire privacy policy regarding server logs, cookies, third-party analytics, user rights, and data protection.",
+    title: "TechOps Wire Privacy and Cookie Policy | TechOps Wire",
+    description: "Review the TechOps Wire privacy policy regarding data collection, cookie usage, reader analytics, and our strict commitment to visitor privacy protection.",
     url: `${siteConfig.baseUrl}/privacy`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Privacy Policy | TechOps Wire",
-    description: "TechOps Wire privacy policy regarding server logs, cookies, third-party analytics, user rights, and data protection.",
+    title: "TechOps Wire Privacy and Cookie Policy | TechOps Wire",
+    description: "Review the TechOps Wire privacy policy regarding data collection, cookie usage, reader analytics, and our strict commitment to visitor privacy protection.",
   },
 };
 

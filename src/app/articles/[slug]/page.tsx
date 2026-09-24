@@ -29,17 +29,21 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   if (!article) return {};
 
   const url = `${siteConfig.baseUrl}/articles/${article.slug}`;
+  const metaTitle = article.metaTitle || `${article.title} | ${siteConfig.name}`;
+  const metaDesc = article.metaDescription || article.excerpt;
 
   return {
-    title: article.title,
-    description: article.excerpt,
+    title: {
+      absolute: metaTitle,
+    },
+    description: metaDesc,
     keywords: [article.primaryKeyword, ...article.secondaryKeywords],
     alternates: {
       canonical: url,
     },
     openGraph: {
-      title: article.title,
-      description: article.excerpt,
+      title: metaTitle,
+      description: metaDesc,
       url: url,
       type: "article",
       publishedTime: article.publishedAt,
@@ -68,8 +72,8 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     },
     twitter: {
       card: "summary_large_image",
-      title: article.title,
-      description: article.excerpt,
+      title: metaTitle,
+      description: metaDesc,
       images: [
         article.coverImage,
         article.secondaryImage.url,

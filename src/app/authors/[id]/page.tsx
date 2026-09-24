@@ -18,6 +18,17 @@ export async function generateStaticParams() {
   }));
 }
 
+const authorMetaMap: Record<string, { title: string; desc: string }> = {
+  "sarah-blake": {
+    title: "Sarah Blake | Excel and Data Workflow | TechOps Wire",
+    desc: "Sarah Blake is a data operations analyst with 3+ years designing automated reporting workbooks, dynamic financial models, and clean spreadsheet workflows.",
+  },
+  "evan-mitchell": {
+    title: "Evan Mitchell | Cloud Systems Admin | TechOps Wire",
+    desc: "Evan Mitchell is a cloud systems administrator with 3+ years configuring Linux clusters, AWS EC2 instances, and Docker containers in enterprise networks.",
+  },
+};
+
 export async function generateMetadata({ params }: AuthorPageProps): Promise<Metadata> {
   const { id } = await params;
   const author = siteConfig.authors.find((a) => a.id === id);
@@ -28,17 +39,24 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
     };
   }
 
+  const meta = authorMetaMap[author.id] || {
+    title: `${author.name} | ${author.role} | ${siteConfig.name}`,
+    desc: author.bio,
+  };
+
   const authorUrl = `${siteConfig.baseUrl}/authors/${author.id}`;
 
   return {
-    title: `${author.name} - ${author.role} | TechOps Wire`,
-    description: author.bio,
+    title: {
+      absolute: meta.title,
+    },
+    description: meta.desc,
     alternates: {
       canonical: authorUrl,
     },
     openGraph: {
-      title: `${author.name} - ${author.role} | TechOps Wire`,
-      description: author.bio,
+      title: meta.title,
+      description: meta.desc,
       url: authorUrl,
       type: "profile",
       images: [
@@ -52,8 +70,8 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
     },
     twitter: {
       card: "summary",
-      title: `${author.name} - ${author.role} | TechOps Wire`,
-      description: author.bio,
+      title: meta.title,
+      description: meta.desc,
       images: [`${siteConfig.baseUrl}${author.avatar}`],
     },
   };

@@ -5,21 +5,23 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
-  title: "About TechOps Wire | Editorial Team, Testing Standards & Mission",
-  description: "Read about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
+  title: {
+    absolute: "About Our Tech Team and Lab Testing | TechOps Wire",
+  },
+  description: "Read about TechOps Wire, our team background, and why we test each spreadsheet formula, cloud configuration, and operating system tutorial on clean labs.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/about`,
   },
   openGraph: {
-    title: "About TechOps Wire | Editorial Team, Testing Standards & Mission",
-    description: "Read about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
+    title: "About Our Tech Team and Lab Testing | TechOps Wire",
+    description: "Read about TechOps Wire, our team background, and why we test each spreadsheet formula, cloud configuration, and operating system tutorial on clean labs.",
     url: `${siteConfig.baseUrl}/about`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "About TechOps Wire | Editorial Team, Testing Standards & Mission",
-    description: "Read about TechOps Wire, our editorial background, and why we test every spreadsheet formula, cloud configuration, and operating system tutorial on real machines before publishing.",
+    title: "About Our Tech Team and Lab Testing | TechOps Wire",
+    description: "Read about TechOps Wire, our team background, and why we test each spreadsheet formula, cloud configuration, and operating system tutorial on clean labs.",
   },
 };
 

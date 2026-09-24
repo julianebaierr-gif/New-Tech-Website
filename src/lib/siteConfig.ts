@@ -26,8 +26,8 @@ export interface AuthorConfig {
 
 export const siteConfig = {
   name: "TechOps Wire",
-  tagline: "Practical Guides for Cloud, Spreadsheets & Operating Systems",
-  description: "Clear tutorials, spreadsheet formulas, cloud comparisons, and operating system guides written and tested by working technicians.",
+  tagline: "Practical Cloud and Systems Tutorials",
+  description: "Tested practical manuals, cloud architecture comparisons, Linux commands, and Excel formulas written and tested by working technicians for IT operations.",
   // When deploying on Vercel preview, set isStaging to true. 
   // Set to false when custom domain is connected to enable full production indexing!
   isStaging: false, // Set to true if testing on .vercel.app, false for production

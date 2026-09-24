@@ -5,21 +5,23 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
-  title: "Contact Our Editorial Desk | TechOps Wire",
-  description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, suggestions, or licensing inquiries.",
+  title: {
+    absolute: "Contact TechOps Wire Editorial Team | TechOps Wire",
+  },
+  description: "Contact TechOps Wire editors for factual corrections, user feedback, tutorial ideas, and infrastructure questions. Our team responds within two work days.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/contact`,
   },
   openGraph: {
-    title: "Contact Our Editorial Desk | TechOps Wire",
-    description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, suggestions, or licensing inquiries.",
+    title: "Contact TechOps Wire Editorial Team | TechOps Wire",
+    description: "Contact TechOps Wire editors for factual corrections, user feedback, tutorial ideas, and infrastructure questions. Our team responds within two work days.",
     url: `${siteConfig.baseUrl}/contact`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact Our Editorial Desk | TechOps Wire",
-    description: "Get in touch with the editorial team at TechOps Wire for tutorial corrections, suggestions, or licensing inquiries.",
+    title: "Contact TechOps Wire Editorial Team | TechOps Wire",
+    description: "Contact TechOps Wire editors for factual corrections, user feedback, tutorial ideas, and infrastructure questions. Our team responds within two work days.",
   },
 };
 

@@ -5,21 +5,23 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
 export const metadata: Metadata = {
-  title: "Editorial Policy & Testing Standards | TechOps Wire",
-  description: "See how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
+  title: {
+    absolute: "Editorial Policy and Testing Standards | TechOps Wire",
+  },
+  description: "Review our quality standards, hardware testing methods, command safety rules, and reader correction policies across all published operating tutorials.",
   alternates: {
     canonical: `${siteConfig.baseUrl}/editorial-policy`,
   },
   openGraph: {
-    title: "Editorial Policy & Testing Standards | TechOps Wire",
-    description: "See how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
+    title: "Editorial Policy and Testing Standards | TechOps Wire",
+    description: "Review our quality standards, hardware testing methods, command safety rules, and reader correction policies across all published operating tutorials.",
     url: `${siteConfig.baseUrl}/editorial-policy`,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Editorial Policy & Testing Standards | TechOps Wire",
-    description: "See how we test code on real systems, keep tutorials up to date, verify command safety, and handle reader corrections.",
+    title: "Editorial Policy and Testing Standards | TechOps Wire",
+    description: "Review our quality standards, hardware testing methods, command safety rules, and reader correction policies across all published operating tutorials.",
   },
 };
 

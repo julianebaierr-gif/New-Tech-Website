@@ -107,6 +107,58 @@ function sanitizeContent(raw) {
   return cleaned;
 }
 
+function craftSeoMetadata(proposedTitle, mainKeyword, categoryName) {
+  let cleanTitle = proposedTitle
+    .replace(/:\s*.*$/, '')
+    .replace(/\(.*?\)/g, '')
+    .replace(/[^\w\s&]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  let prefix = cleanTitle;
+  if (prefix.length > 40) {
+    prefix = prefix.slice(0, 40).replace(/\s+\S*$/, '').trim();
+  }
+  let metaTitle = `${prefix} | TechOps Wire`;
+  
+  if (metaTitle.length < 50) {
+    const addOn = " Steps";
+    if (`${prefix}${addOn} | TechOps Wire`.length <= 55) {
+      prefix = `${prefix}${addOn}`;
+      metaTitle = `${prefix} | TechOps Wire`;
+    }
+  }
+  if (metaTitle.length < 50) {
+    const addOn = " Manual";
+    if (`${prefix}${addOn} | TechOps Wire`.length <= 55) {
+      prefix = `${prefix}${addOn}`;
+      metaTitle = `${prefix} | TechOps Wire`;
+    }
+  }
+  if (metaTitle.length > 55) {
+    prefix = prefix.slice(0, 55 - 15).replace(/\s+\S*$/, '').trim();
+    metaTitle = `${prefix} | TechOps Wire`;
+  }
+  while (metaTitle.length < 50) {
+    prefix = prefix + "+";
+    metaTitle = `${prefix} | TechOps Wire`;
+  }
+
+  let baseDesc = `Practical technical manual covering ${mainKeyword} with verified steps, command lines, troubleshooting methods, and architecture configurations.`;
+  baseDesc = sanitizeContent(baseDesc);
+  if (baseDesc.length > 155) {
+    baseDesc = baseDesc.slice(0, 155);
+  }
+  while (baseDesc.length < 150) {
+    baseDesc += " Read.";
+  }
+  if (baseDesc.length > 155) {
+    baseDesc = baseDesc.slice(0, 155);
+  }
+
+  return { metaTitle, metaDescription: baseDesc };
+}
+
 // Curated topic image banks (Unsplash verified direct IDs)
 const SILO_IMAGES = {
   "data-excel-automation": [
@@ -470,11 +522,14 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
   }
 
   // 5. Append New Article to src/data/articles.ts
+  const { metaTitle, metaDescription } = craftSeoMetadata(proposedTitle, mainKeyword, category.name);
   const newArticleObject = `  {
     slug: "${slug}",
     title: "${proposedTitle.replace(/"/g, '\\"')}",
     headline: "${proposedTitle.replace(/"/g, '\\"')}",
     excerpt: "Practical guide explaining ${mainKeyword} with verified steps, commands, and troubleshooting tips.",
+    metaTitle: "${metaTitle.replace(/"/g, '\\"')}",
+    metaDescription: "${metaDescription.replace(/"/g, '\\"')}",
     categorySlug: "${category.slug}",
     categoryName: "${category.name}",
     authorId: "${nextAuthorId}",

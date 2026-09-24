@@ -21,6 +21,8 @@ export interface Article {
   title: string;
   headline: string;
   excerpt: string;
+  metaTitle?: string;
+  metaDescription?: string;
   categorySlug: string;
   categoryName: string;
   authorId: string;
@@ -48,6 +50,8 @@ export const articles: Article[] = [
     title: "How to Highlight and Remove Duplicates in Excel (Step-by-Step)",
     headline: "How to Highlight and Remove Duplicates in Excel",
     excerpt: "Clean duplicate rows in Excel using conditional formatting to highlight duplicates, the built-in Remove Duplicates tool, or the non-destructive UNIQUE formula.",
+    metaTitle: "Remove Duplicates in Excel Step-by-Step | TechOps Wire",
+    metaDescription: "Remove duplicate rows in Excel using conditional formatting highlights, the native Remove Duplicates tool, or dynamic UNIQUE formulas without losing data.",
     categorySlug: "data-excel-automation",
     categoryName: "Data & Excel Automation",
     authorId: "sarah-blake",
@@ -336,6 +340,8 @@ End Sub</code></pre>
     title: "AWS EC2 Instance Types Explained: Sizing, Families & Cost Differences",
     headline: "AWS EC2 Instance Types Explained: Sizing & Performance Analysis",
     excerpt: "A practical breakdown of AWS EC2 instance families. Understand the difference between T4g, M6i, C7g, and R6i instances, and how to pick the right size for your budget and workload.",
+    metaTitle: "AWS EC2 Instance Types and Sizing Steps | TechOps Wire",
+    metaDescription: "Compare AWS EC2 instance types across general purpose, compute optimized, and memory families to choose the right virtual machine sizing for your workload.",
     categorySlug: "cloud-infrastructure",
     categoryName: "Cloud & Infrastructure",
     authorId: "evan-mitchell",
@@ -592,6 +598,8 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
     title: "Why is ChatGPT So Slow? Real Causes and Practical Fixes",
     headline: "Why is ChatGPT So Slow? Real Causes & How to Fix It",
     excerpt: "Why ChatGPT takes so long to respond, stops typing halfway, or buffers. Understand what causes the slowdowns and 5 practical fixes to get faster replies.",
+    metaTitle: "Why Is ChatGPT So Slow? Causes and Fixes | TechOps Wire",
+    metaDescription: "Fix slow ChatGPT response speeds with practical adjustments. Review why token generation lags during peak hours and how to bypass interface bottlenecks.",
     categorySlug: "ai-developer-tools",
     categoryName: "AI & Developer Tools",
     authorId: "evan-mitchell",
@@ -846,6 +854,8 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
     title: "Windows 11 Pro vs Home: Feature Breakdown, BitLocker & Remote Desktop",
     headline: "Windows 11 Pro vs Home: Enterprise Feature Comparison",
     excerpt: "Should you upgrade to Windows 11 Pro or stick with Home? A straightforward comparison of BitLocker drive encryption, Hyper-V, Remote Desktop hosting, and whether the extra cost is worth it.",
+    metaTitle: "Windows 11 Pro vs Home Edition Review | TechOps Wire",
+    metaDescription: "Compare Windows 11 Pro and Home editions. Review BitLocker encryption, Remote Desktop host features, Hyper-V virtualization, and enterprise security tools.",
     categorySlug: "os-systems",
     categoryName: "OS & Systems",
     authorId: "evan-mitchell",
@@ -1113,6 +1123,8 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
     title: "Linux File Permissions Explained: chmod, chown & Octal Notation Reference",
     headline: "Linux File Permissions Explained: chmod, chown & Octal Notation",
     excerpt: "How to understand and fix Linux file permissions without running risky shortcuts like chmod 777. Explains read, write, and execute rights, octal numbers (755 vs 644), and how to use chown properly.",
+    metaTitle: "Linux chmod and chown Permissions Steps | TechOps Wire",
+    metaDescription: "Understand Linux permissions with chmod and chown commands. Inspect octal modes like 755 and 644, user groups, and safe file security without chmod 777.",
     categorySlug: "cloud-infrastructure",
     categoryName: "Cloud & Infrastructure",
     authorId: "evan-mitchell",
@@ -1468,6 +1480,8 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
     title: "How to Create and Edit Dynamic Drop-Down Lists in Excel",
     headline: "How to Create and Edit Dynamic Drop-Down Lists in Excel",
     excerpt: "How to add drop-down lists in Excel to prevent typos and speed up data entry. Step-by-step instructions for simple lists, auto-updating lists, and dependent menus.",
+    metaTitle: "How to Create Drop-Down Lists in Excel | TechOps Wire",
+    metaDescription: "Create dynamic drop-down lists in Excel with data validation. Step-by-step tutorial covering auto-expanding lists, dependent menus, and error alert setups.",
     categorySlug: "data-excel-automation",
     categoryName: "Data & Excel Automation",
     authorId: "sarah-blake",
@@ -1769,6 +1783,8 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
     title: "Docker Container Architecture: Images, Volumes & Networks Explained",
     headline: "Docker Container Architecture: Images, Volumes & Networks",
     excerpt: "What actually happens when you run a Docker container? A clear look at images, container filesystems, persistent volumes, and bridge networking on Linux.",
+    metaTitle: "Docker Container Architecture Steps | TechOps Wire",
+    metaDescription: "Understand Docker container architecture including images, persistent storage volumes, and bridge networks on Linux systems with practical command lines.",
     categorySlug: "cloud-infrastructure",
     categoryName: "Cloud & Infrastructure",
     authorId: "evan-mitchell",
@@ -2033,6 +2049,8 @@ docker run -d --name web-api --network internal-app-net -p 3000:3000 my-api</cod
     title: "ChatGPT File Upload Limits, Token Contexts & Large Document Handling",
     headline: "ChatGPT File Upload Limits & Large Document Handling",
     excerpt: "How big of a file can you upload to ChatGPT? A practical breakdown of file size limits, row count limits for CSVs, and how to work with large PDFs without errors.",
+    metaTitle: "ChatGPT File Upload Limits and Formats | TechOps Wire",
+    metaDescription: "Review file upload limits in ChatGPT Plus. Check file size caps, token context window boundaries, and practical methods for processing large spreadsheets.",
     categorySlug: "ai-developer-tools",
     categoryName: "AI & Developer Tools",
     authorId: "sarah-blake",
@@ -2289,6 +2307,8 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
     title: "Windows Server 2019 End of Life: Upgrade Roadmap & Migration Strategy",
     headline: "Windows Server 2019 End of Life: Upgrade & Migration Strategy",
     excerpt: "What you need to know about the Windows Server 2019 end of life timeline. Important support dates, in-place upgrade steps to Server 2022, and a practical migration checklist.",
+    metaTitle: "Windows Server 2019 End of Life Roadmap | TechOps Wire",
+    metaDescription: "Prepare for Windows Server 2019 end of support with this upgrade roadmap. Master in-place upgrade steps, side-by-side VM migrations, and backup readiness.",
     categorySlug: "os-systems",
     categoryName: "OS & Systems",
     authorId: "evan-mitchell",
