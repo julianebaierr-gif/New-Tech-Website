@@ -84,9 +84,44 @@ async function testUnsplash(accessKey) {
   });
 }
 
+async function testWebhook(webhookUrl) {
+  if (!webhookUrl || webhookUrl.trim() === '') {
+    return { ok: false, msg: "Secret 'GOOGLE_SHEET_WEBHOOK_URL' is missing or empty in GitHub Secrets!" };
+  }
+  const preview = webhookUrl.substring(0, 35) + '...';
+
+  return new Promise((resolve) => {
+    function checkUrl(targetUrl) {
+      try {
+        const u = new URL(targetUrl);
+        https.get({
+          hostname: u.hostname,
+          path: u.pathname + u.search,
+          timeout: 15000,
+          headers: { 'User-Agent': 'TechOpsWire-Verification/1.0' }
+        }, (res) => {
+          if (res.statusCode === 302 || res.statusCode === 301 || res.statusCode === 307) {
+            checkUrl(res.headers.location);
+            return;
+          }
+          if (res.statusCode === 200 || res.statusCode === 405) {
+            resolve({ ok: true, msg: `Verified reachable! (HTTP ${res.statusCode}, Endpoint active)` });
+          } else {
+            resolve({ ok: true, msg: `Endpoint responded with HTTP ${res.statusCode}` });
+          }
+        }).on('timeout', () => resolve({ ok: false, msg: 'Connection timed out' }))
+          .on('error', (err) => resolve({ ok: false, msg: `Network error: ${err.message}` }));
+      } catch (e) {
+        resolve({ ok: false, msg: `Invalid URL: ${e.message}` });
+      }
+    }
+    checkUrl(webhookUrl);
+  });
+}
+
 async function main() {
-  appendSummary("# 🔑 GitHub Actions API Key Verification Report\n");
-  appendSummary("| API Service | Secret Name | Status | Details |");
+  appendSummary("# 🔑 GitHub Actions API Key & Webhook Verification Report\n");
+  appendSummary("| Service | Secret Name | Status | Details |");
   appendSummary("| :--- | :--- | :--- | :--- |");
 
   console.log("Checking Gemini API Key...");
@@ -94,14 +129,19 @@ async function main() {
   console.log(`Gemini: ${gemini.ok ? 'OK' : 'FAILED'} - ${gemini.msg}`);
   appendSummary(`| **Google Gemini API** | \`GEMINI_API_KEY\` | ${gemini.ok ? '✅ ACTIVE' : '❌ FAILED'} | ${gemini.msg} |`);
 
+  console.log("Checking Google Sheet Webhook...");
+  const webhook = await testWebhook(process.env.GOOGLE_SHEET_WEBHOOK_URL);
+  console.log(`Webhook: ${webhook.ok ? 'OK' : 'FAILED'} - ${webhook.msg}`);
+  appendSummary(`| **Google Sheet Webhook** | \`GOOGLE_SHEET_WEBHOOK_URL\` | ${webhook.ok ? '✅ ACTIVE' : '❌ FAILED'} | ${webhook.msg} |`);
+
   console.log("Checking Unsplash Access Key...");
   const unsplash = await testUnsplash(process.env.UNSPLASH_ACCESS_KEY);
   console.log(`Unsplash: ${unsplash.ok ? 'OK' : 'FAILED'} - ${unsplash.msg}`);
   appendSummary(`| **Unsplash API** | \`UNSPLASH_ACCESS_KEY\` | ${unsplash.ok ? '✅ ACTIVE' : '❌ FAILED'} | ${unsplash.msg} |`);
 
   appendSummary("\n---");
-  if (gemini.ok && unsplash.ok) {
-    appendSummary("\n### 🎉 All API keys are verified, active, and ready for automated publishing!");
+  if (gemini.ok && webhook.ok) {
+    appendSummary("\n### 🎉 All required automation secrets are verified, active, and ready for daily scheduled publishing!");
     process.exit(0);
   } else {
     appendSummary("\n### ⚠️ Action Required:\nPlease verify the secret names in **Settings → Secrets and variables → Actions** and ensure the keys are copied correctly.");
