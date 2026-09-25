@@ -1,8 +1,10 @@
 {
-  "active": true,
-  "postsRemaining": 1,
-  "paused": false,
+  "active": false,
+  "postsRemaining": 0,
+  "paused": true,
   "maxPosts": 1,
   "targetSchedule": "Daily at 13:00 UTC",
-  "note": "Configured per user instruction: Execute exactly 1 post tomorrow at 13:00 UTC using SERP competitor gap intelligence. Immediately pause all further auto-posting until explicitly instructed by user."
+  "note": "Scheduled single post completed. Automated posting paused until user explicitly requests resumption.",
+  "lastRunAt": "2026-09-25T15:16:25.426Z",
+  "lastArticlePublished": "benefits-of-cloud-computing"
 }
