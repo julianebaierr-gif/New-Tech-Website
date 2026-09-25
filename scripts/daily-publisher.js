@@ -267,7 +267,8 @@ async function generateArticleImageAI(apiKey, imagePrompt, filename) {
       body: JSON.stringify({
         instances: [{ prompt: imagePrompt }],
         parameters: { sampleCount: 1, aspectRatio: "16:9" }
-      })
+      }),
+      signal: AbortSignal.timeout(15000)
     });
     if (res.ok) {
       const data = await res.json();
@@ -896,13 +897,14 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
             hostname: u.hostname,
             path: u.pathname + u.search,
             method: method,
-            timeout: 20000,
+            timeout: 10000,
             headers: {
               'Content-Type': 'application/json',
               ...(body ? { 'Content-Length': Buffer.byteLength(body) } : {})
             }
           }, (res) => {
             if (res.statusCode === 302 || res.statusCode === 301 || res.statusCode === 307) {
+              res.resume(); // Free TCP socket immediately to prevent process hang
               submitToWebhook(res.headers.location, 'GET', null).then(resolve);
               return;
             }
@@ -913,8 +915,15 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
               resolve(true);
             });
           });
-          req.on('timeout', () => { req.destroy(); resolve(false); });
-          req.on('error', (err) => { console.error(`[GOOGLE SHEET SYNC ERROR]:`, err.message); resolve(false); });
+          req.on('timeout', () => {
+            console.warn('[GOOGLE SHEET SYNC] Request timed out after 10s');
+            req.destroy();
+            resolve(false);
+          });
+          req.on('error', (err) => {
+            console.error(`[GOOGLE SHEET SYNC ERROR]:`, err.message);
+            resolve(false);
+          });
           if (body) req.write(body);
           req.end();
         });
@@ -929,7 +938,7 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
   // 9. Submit to IndexNow
   try {
     console.log(`[INDEXING] Submitting new post URL to Bing IndexNow...`);
-    execSync(`node scripts/submit-indexing.js "${postUrl}"`, { stdio: 'inherit' });
+    execSync(`node scripts/submit-indexing.js "${postUrl}"`, { stdio: 'inherit', timeout: 25000 });
   } catch (e) {
     console.error(`[INDEXING ERROR]:`, e.message);
   }
@@ -945,6 +954,10 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
   console.log(`[STATE UPDATE] publisher-state.json updated: postsRemaining=${publisherState.postsRemaining}, paused=${publisherState.paused}`);
 
   console.log(`=== [DAILY AUTO-PUBLISHER] Daily run complete ===\n`);
+  process.exit(0);
 }
 
-run();
+run().catch((err) => {
+  console.error('[FATAL DAILY PUBLISHER ERROR]', err);
+  process.exit(1);
+});

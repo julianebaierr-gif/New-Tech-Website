@@ -57,6 +57,7 @@ async function submitIndexNow() {
       port: 443,
       path: '/indexnow',
       method: 'POST',
+      timeout: 8000,
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Content-Length': Buffer.byteLength(payload)
@@ -72,6 +73,12 @@ async function submitIndexNow() {
         if (respBody) console.log(`[INDEXNOW] Body: ${respBody}`);
         resolve(res.statusCode);
       });
+    });
+
+    req.on('timeout', () => {
+      console.warn('[INDEXNOW] Request timed out after 8s');
+      req.destroy();
+      resolve(null);
     });
 
     req.on('error', (e) => {
@@ -94,10 +101,17 @@ async function pingSitemaps() {
 
   for (const p of pings) {
     await new Promise((res) => {
-      https.get(p.url, (r) => {
+      const req = https.get(p.url, { timeout: 5000 }, (r) => {
         console.log(`[SITEMAP PING] ${p.name}: Status ${r.statusCode}`);
+        r.resume();
         res();
-      }).on('error', (err) => {
+      });
+      req.on('timeout', () => {
+        console.log(`[SITEMAP PING] ${p.name} timed out, skipping.`);
+        req.destroy();
+        res();
+      });
+      req.on('error', (err) => {
         console.log(`[SITEMAP PING] ${p.name} failed: ${err.message}`);
         res();
       });
@@ -121,6 +135,10 @@ async function run() {
   await pingSitemaps();
   await submitGoogleIndexingApi();
   console.log('\n[INDEXING COMPLETE] All instant indexing signals dispatched.\n');
+  process.exit(0);
 }
 
-run();
+run().catch((err) => {
+  console.error('[INDEXING ERROR]', err);
+  process.exit(0);
+});
