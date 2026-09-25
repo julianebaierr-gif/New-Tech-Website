@@ -303,7 +303,6 @@ STRICT WRITING RULES:
   block = block.replace(/contentHtml:\s*`[\s\S]*?`/, `contentHtml: \`\n${safeHtml}\n\``);
 
   fileContent = fileContent.substring(0, slugPos) + block + fileContent.substring(endPos);
-  fileContent = sanitizeAllContent(fileContent);
 
   fs.writeFileSync(articlesPath, fileContent, 'utf8');
   console.log('[SUCCESS] Successfully updated benefits-of-cloud-computing in src/data/articles.ts!');

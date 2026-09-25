@@ -107,10 +107,9 @@ function sanitizeAllContent(raw) {
     text = text.replace(p, r);
   }
 
-  // Eliminate em-dashes and spaced hyphens
+  // Eliminate em-dashes and en-dashes
   text = text.replace(/—/g, ', ');
   text = text.replace(/ – /g, ', ');
-  text = text.replace(/ - /g, ': ');
 
   return text;
 }
