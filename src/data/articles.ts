@@ -2984,14 +2984,24 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
   }
 ];
 
+export function getSortedArticles(): Article[] {
+  return [...articles].sort(
+    (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  );
+}
+
 export function getArticleBySlug(slug: string): Article | undefined {
   return articles.find((a) => a.slug === slug);
 }
 
 export function getArticlesByCategory(categorySlug: string): Article[] {
-  return articles.filter((a) => a.categorySlug === categorySlug);
+  return getSortedArticles().filter((a) => a.categorySlug === categorySlug);
+}
+
+export function getArticlesByAuthor(authorId: string): Article[] {
+  return getSortedArticles().filter((a) => a.authorId === authorId);
 }
 
 export function getFeaturedArticles(): Article[] {
-  return articles.filter((a) => a.featured);
+  return getSortedArticles().filter((a) => a.featured);
 }

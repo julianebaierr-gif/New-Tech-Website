@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { siteConfig } from "@/lib/siteConfig";
-import { articles } from "@/data/articles";
+import { getArticlesByAuthor } from "@/data/articles";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SchemaJsonLd } from "@/components/SchemaJsonLd";
 
@@ -85,7 +85,7 @@ export default async function AuthorProfilePage({ params }: AuthorPageProps) {
     notFound();
   }
 
-  const authorArticles = articles.filter((art) => art.authorId === author.id);
+  const authorArticles = getArticlesByAuthor(author.id);
   const authorUrl = `${siteConfig.baseUrl}/authors/${author.id}`;
 
   // Google E-E-A-T Person & ProfilePage Schema

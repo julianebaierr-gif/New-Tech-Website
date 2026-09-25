@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/siteConfig";
-import { articles } from "@/data/articles";
+import { getSortedArticles } from "@/data/articles";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.baseUrl;
@@ -62,7 +62,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // 4. Articles (High Priority)
-  const articleRoutes: MetadataRoute.Sitemap = articles.map((art) => ({
+  const articleRoutes: MetadataRoute.Sitemap = getSortedArticles().map((art) => ({
     url: `${baseUrl}/articles/${art.slug}`,
     lastModified: new Date(art.updatedAt),
     changeFrequency: "weekly",

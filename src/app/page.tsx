@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/siteConfig";
-import { articles } from "@/data/articles";
+import { getSortedArticles } from "@/data/articles";
 
 export default function HomePage() {
-  // Top 5 Hero Magazine Grid: 1 prominent lead article + 4 companion grid cards
-  const leadArticle = articles[0]; // Excel Deduplication
-  const topFourArticles = articles.slice(1, 5); // AWS EC2, ChatGPT, Windows 11, Linux permissions
+  const sortedArticles = getSortedArticles();
+  // Top 5 Hero Magazine Grid: 1 prominent lead article (newest) + 4 companion grid cards
+  const leadArticle = sortedArticles[0];
+  const topFourArticles = sortedArticles.slice(1, 5);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
@@ -145,7 +146,7 @@ export default function HomePage() {
          ========================================================================= */}
       <section className="mb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.slice(0, 9).map((art) => (
+          {sortedArticles.slice(0, 9).map((art) => (
             <article
               key={art.slug}
               className="rounded-2xl border border-slate-200/90 bg-white hover:border-slate-300 publication-card shadow-xs overflow-hidden flex flex-col justify-between group transition-all"
