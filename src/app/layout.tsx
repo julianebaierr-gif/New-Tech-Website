@@ -53,11 +53,29 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
     siteName: siteConfig.name,
+    images: [
+      {
+        url: `${siteConfig.baseUrl}/logo.png`,
+        width: 512,
+        height: 512,
+        alt: `${siteConfig.name} Logo`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
+    images: [`${siteConfig.baseUrl}/logo.png`],
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
   alternates: {
     canonical: siteConfig.baseUrl,

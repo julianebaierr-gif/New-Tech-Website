@@ -1,4 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
+const fs = require('fs');
+const path = require('path');
+const sharp = require('sharp');
+
+// Design Master SVG for TechOps Wire
+// Dimensions: 512 x 512
+// Aesthetic: Futuristic, High-End Enterprise Tech Monogram fusing 'T', 'W', and 'Wire/Circuit Pipeline'
+const svgMaster = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
   <defs>
     <!-- Background Gradient -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -214,3 +221,115 @@
     <text x="230" y="434" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="700" fill="#94A3B8" letter-spacing="1.5">ONLINE</text>
   </g>
 </svg>
+`;
+
+// App Icon SVG (Optimized for small display: 16x16, 32x32, 64x64, 180x180)
+const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" fill="none">
+  <defs>
+    <linearGradient id="iconBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#080C17"/>
+      <stop offset="50%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="iconRim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <radialGradient id="iconGlow" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#080C17" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="iconT" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00F2FE"/>
+      <stop offset="50%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="iconStem" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="iconWLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="iconWRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#A855F7"/>
+    </linearGradient>
+    <linearGradient id="iconWire" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E0F2FE"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Container -->
+  <rect x="6" y="6" width="244" height="244" rx="54" fill="url(#iconBg)"/>
+  <rect x="6" y="6" width="244" height="244" rx="54" stroke="url(#iconRim)" stroke-width="2.5" stroke-opacity="0.85"/>
+  <circle cx="128" cy="128" r="100" fill="url(#iconGlow)"/>
+
+  <!-- The W Waves (Thick, High Contrast for Small Sizes) -->
+  <path d="M 58 98 L 98 192 L 128 138" stroke="url(#iconWLeft)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 128 138 L 158 192 L 198 98" stroke="url(#iconWRight)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- The T Bar -->
+  <path d="M 54 72 C 50 72 47 75 48 79 L 52 92 C 53 95 56 97 59 97 L 197 97 C 200 97 203 95 204 92 L 208 79 C 209 75 206 72 202 72 Z" fill="url(#iconT)"/>
+
+  <!-- The T Stem -->
+  <path d="M 117 96 L 139 96 L 139 132 L 128 140 L 117 132 Z" fill="url(#iconStem)"/>
+
+  <!-- Core Neon Pulse Conductor Lines -->
+  <path d="M 68 84 L 188 84" stroke="url(#iconWire)" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="128" y1="84" x2="128" y2="138" stroke="url(#iconWire)" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 72 110 L 98 174 L 128 126 L 158 174 L 184 110" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
+
+  <!-- Strategic Glow Nodes -->
+  <circle cx="128" cy="138" r="9" fill="#080C17" stroke="#00F2FE" stroke-width="3"/>
+  <circle cx="128" cy="138" r="4" fill="#FFFFFF"/>
+
+  <circle cx="98" cy="192" r="7" fill="#38BDF8"/>
+  <circle cx="98" cy="192" r="2.5" fill="#FFFFFF"/>
+
+  <circle cx="158" cy="192" r="7" fill="#C084FC"/>
+  <circle cx="158" cy="192" r="2.5" fill="#FFFFFF"/>
+</svg>
+`;
+
+async function main() {
+  const root = path.resolve(__dirname, '..');
+  const publicDir = path.join(root, 'public');
+  const appDir = path.join(root, 'src', 'app');
+
+  // 1. Write public/logo.svg
+  fs.writeFileSync(path.join(publicDir, 'logo.svg'), svgMaster, 'utf-8');
+  console.log('✓ Wrote public/logo.svg');
+
+  // 2. Write src/app/icon.svg
+  fs.writeFileSync(path.join(appDir, 'icon.svg'), svgIcon, 'utf-8');
+  console.log('✓ Wrote src/app/icon.svg');
+
+  // 3. Render high-res public/logo.png (512x512)
+  await sharp(Buffer.from(svgMaster))
+    .resize(512, 512)
+    .png({ quality: 100, compressionLevel: 9 })
+    .toFile(path.join(publicDir, 'logo.png'));
+  console.log('✓ Rendered high-res 512x512 public/logo.png');
+
+  // 4. Render apple-touch-icon.png (180x180)
+  await sharp(Buffer.from(svgIcon))
+    .resize(180, 180)
+    .png({ quality: 100 })
+    .toFile(path.join(publicDir, 'apple-touch-icon.png'));
+  console.log('✓ Rendered public/apple-touch-icon.png');
+
+  // 5. Render favicon.png (32x32)
+  await sharp(Buffer.from(svgIcon))
+    .resize(32, 32)
+    .png({ quality: 100 })
+    .toFile(path.join(publicDir, 'favicon.png'));
+  console.log('✓ Rendered public/favicon.png');
+}
+
+main().catch(err => {
+  console.error('Error rendering logos:', err);
+  process.exit(1);
+});

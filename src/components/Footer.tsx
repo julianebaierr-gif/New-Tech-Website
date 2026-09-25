@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { siteConfig } from "@/lib/siteConfig";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,14 +13,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand Column */}
           <div className="md:col-span-1 space-y-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white font-mono font-bold text-sm">
-                TW
-              </div>
-              <span className="font-bold text-slate-900 tracking-tight text-base">
-                {siteConfig.name}
-              </span>
-            </div>
+            <Link href="/" className="inline-block group">
+              <BrandLogo size="md" />
+            </Link>
             <p className="text-xs text-slate-500 leading-relaxed">
               {siteConfig.description}
             </p>
