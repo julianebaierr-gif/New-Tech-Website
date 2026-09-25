@@ -52,48 +52,56 @@ async function testGemini(apiKey) {
           console.log(`[DIAGNOSTIC] Total models: ${models.length}, Content generation models: ${genModels.length}`);
           console.log(`[DIAGNOSTIC] Content models: ${genModels.slice(0, 10).join(', ')}`);
 
-          // Test generation candidates
-          const candidates = genModels.filter(m => m.includes('flash') || m.includes('pro')).slice(0, 5);
-          console.log(`[DIAGNOSTIC] Testing candidates:`, candidates);
+          console.log(`[DIAGNOSTIC] All Gemini content models:`, genModels.filter(m => m.startsWith('gemini-')));
 
-          const testPayloads = [
-            { name: 'googleSearch (camelCase)', tools: [{ googleSearch: {} }] },
-            { name: 'google_search (snake_case)', tools: [{ google_search: {} }] },
-            { name: 'no tools (direct)', tools: undefined }
-          ];
+          // Recommended models from Google API error message
+          const priorityModels = [
+            'gemini-3.8-flash',
+            'gemini-flash-latest',
+            'gemini-2.5-flash-lite',
+            'gemini-pro-latest',
+            'gemini-3.1-pro-preview'
+          ].filter(m => genModels.includes(m));
 
+          console.log(`[DIAGNOSTIC] Priority models present in key:`, priorityModels);
+
+          const delay = (ms) => new Promise(r => setTimeout(r, ms));
           let workingSetup = null;
 
-          for (const m of candidates) {
-            for (const tp of testPayloads) {
+          for (const m of priorityModels) {
+            for (const toolType of ['grounded', 'direct']) {
+              await delay(2000); // 2s pacing to prevent 429
               const postUrl = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
               const payload = {
-                contents: [{ parts: [{ text: "Respond in 3 words: SERP testing ok." }] }]
+                contents: [{ parts: [{ text: "Write 1 sentence explaining cloud computing." }] }]
               };
-              if (tp.tools) payload.tools = tp.tools;
+              if (toolType === 'grounded') {
+                payload.tools = [{ googleSearch: {} }];
+              }
               try {
                 const postRes = await makePost(postUrl, payload);
-                console.log(`  -> Model ${m} + [${tp.name}]: HTTP ${postRes.statusCode}`);
+                console.log(`  -> Model ${m} [${toolType}]: HTTP ${postRes.statusCode}`);
                 if (postRes.statusCode === 200) {
                   const parsed = JSON.parse(postRes.body);
                   const reply = parsed.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-                  console.log(`     SUCCESS: "${reply}"`);
-                  if (!workingSetup && tp.tools) {
-                    workingSetup = { model: m, toolFormat: tp.name, reply };
+                  console.log(`     SUCCESS: "${reply?.slice(0, 100)}..."`);
+                  if (!workingSetup && toolType === 'grounded') {
+                    workingSetup = { model: m, reply };
                   }
                 } else {
-                  console.log(`     ERROR: ${postRes.body.slice(0, 200)}`);
+                  console.log(`     RESPONSE: ${postRes.body.slice(0, 250)}`);
                 }
               } catch (err) {
-                console.log(`  -> Model ${m} + [${tp.name}] network error: ${err.message}`);
+                console.log(`  -> Model ${m} network error: ${err.message}`);
               }
             }
+            if (workingSetup) break; // Found working search grounded model!
           }
 
           if (workingSetup) {
-            resolve({ ok: true, msg: `Verified with Search Grounding! (Model: ${workingSetup.model}, Tool: ${workingSetup.toolFormat}, Test Reply: "${workingSetup.reply}")` });
+            resolve({ ok: true, msg: `Verified Grounded! Model: ${workingSetup.model} generated content with Google Search.` });
           } else {
-            resolve({ ok: true, msg: `Verified API Key, but test payload needs review. Detected ${genModels.length} models.` });
+            resolve({ ok: true, msg: `Verified API Key. Candidate models tested.` });
           }
         } catch (e) {
           resolve({ ok: false, msg: `Parse error: ${e.message}` });
