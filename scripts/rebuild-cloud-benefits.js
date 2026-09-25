@@ -299,7 +299,8 @@ STRICT WRITING RULES:
 
   block = block.replace(/tableOfContents:\s*\[[\s\S]*?\],/, `tableOfContents: ${tocJson},`);
   block = block.replace(/faqs:\s*\[[\s\S]*?\],/, `faqs: ${faqsJson},`);
-  block = block.replace(/contentHtml:\s*`[\s\S]*?`/, `contentHtml: \`\n${finalHtml}\n\``);
+  const safeHtml = finalHtml.replace(/`/g, '\\`').replace(/\$/g, '\\$');
+  block = block.replace(/contentHtml:\s*`[\s\S]*?`/, `contentHtml: \`\n${safeHtml}\n\``);
 
   fileContent = fileContent.substring(0, slugPos) + block + fileContent.substring(endPos);
   fileContent = sanitizeAllContent(fileContent);
