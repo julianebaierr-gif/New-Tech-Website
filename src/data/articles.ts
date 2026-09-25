@@ -69,20 +69,20 @@ export const articles: Article[] = [
 ],
     combinedVolume: 90550,
     featured: true,
-    coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1551288049-bebda4e38f71",
+    coverImage: "/images/articles/excel-remove-duplicates-cover.jpg",
+    coverImageId: "excel-remove-duplicates-cover",
     secondaryImage: {
-      "id": "photo-1663124178632-488f399d5763",
-      "url": "https://images.unsplash.com/photo-1663124178632-488f399d5763?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Cleaned Excel worksheet showing filtered unique records in tabular format",
-      "caption": "Auditing spreadsheet records to isolate unique rows before permanent removal."
-},
+      "id": "excel-remove-duplicates-dialog",
+      "url": "/images/articles/excel-remove-duplicates-dialog.jpg",
+      "alt": "Excel Remove Duplicates pop-up dialog box selecting specific columns",
+      "caption": "Configuring Excel Remove Duplicates dialog box checkboxes across tabular columns."
+    },
     tertiaryImage: {
-      "id": "photo-1454165804606-c3d57bc86b40",
-      "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Financial data spreadsheet audit showing deduplicated row counts",
-      "caption": "Validating spreadsheet calculations following formula-based row deduplication."
-},
+      "id": "excel-remove-duplicates-formula",
+      "url": "/images/articles/excel-remove-duplicates-formula.jpg",
+      "alt": "Excel spreadsheet showing dynamic array formula UNIQUE filtering distinct records",
+      "caption": "Dynamic UNIQUE formula listing distinct row records into an adjacent reporting table."
+    },
     tableOfContents: [
       {
             "id": "understanding-duplicate-types",
@@ -432,20 +432,20 @@ End Sub</code></pre>
 ],
     combinedVolume: 4350,
     featured: true,
-    coverImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1451187580459-43490279c0fa",
+    coverImage: "/images/articles/aws-ec2-types-cover.jpg",
+    coverImageId: "aws-ec2-types-cover",
     secondaryImage: {
-      "id": "photo-1652189977368-e9d033e7d3e7",
-      "url": "https://images.unsplash.com/photo-1652189977368-e9d033e7d3e7?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Datacenter server hardware racks providing EC2 compute instances",
-      "caption": "Server racks housing multicore Graviton and Xeon processors across cloud zones."
-},
+      "id": "aws-ec2-types-architecture",
+      "url": "/images/articles/aws-ec2-types-architecture.jpg",
+      "alt": "AWS EC2 virtual machine architecture diagram showing Nitro hypervisor, vCPU, and EBS bandwidth",
+      "caption": "Virtual machine architecture detailing Nitro hypervisor isolation and dedicated EBS bandwidth."
+    },
     tertiaryImage: {
-      "id": "photo-1518770660439-4636190af475",
-      "url": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Silicon microchip architecture representing cloud server processor silicon",
-      "caption": "Processor microarchitecture powers high-throughput cloud compute instances."
-},
+      "id": "aws-ec2-types-datacenter",
+      "url": "/images/articles/aws-ec2-types-datacenter.jpg",
+      "alt": "Production enterprise cloud datacenter server corridor with fiber optic wiring",
+      "caption": "Physical server hypervisor racks and fiber interconnects hosting multi-tenant EC2 compute nodes."
+    },
     tableOfContents: [
       {
             "id": "ec2-naming-convention-decoded",
@@ -690,8 +690,8 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
 ],
     combinedVolume: 13000,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1677442136019-21780ecad995",
+    coverImage: "/images/articles/chatgpt-slow-cover.jpg",
+    coverImageId: "chatgpt-slow-cover",
     secondaryImage: {
       "id": "photo-1618005182384-a83a8bd57fbe",
       "url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80",

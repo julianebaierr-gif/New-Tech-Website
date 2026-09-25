@@ -256,6 +256,35 @@ function selectUniqueArticleImages(categorySlug, articlesTsContent) {
   };
 }
 
+// Automated AI Image Generator for newly published articles
+async function generateArticleImageAI(apiKey, imagePrompt, filename) {
+  if (!apiKey) return null;
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        instances: [{ prompt: imagePrompt }],
+        parameters: { sampleCount: 1, aspectRatio: "16:9" }
+      })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const b64 = data.predictions?.[0]?.bytesBase64Encoded;
+      if (b64) {
+        const destPath = path.join(__dirname, '..', 'public', 'images', 'articles', filename);
+        fs.writeFileSync(destPath, Buffer.from(b64, 'base64'));
+        console.log(`[AI IMAGE] Successfully generated & saved: ${filename}`);
+        return `/images/articles/${filename}`;
+      }
+    }
+  } catch (e) {
+    console.warn('[AI IMAGE] Direct generation error:', e.message);
+  }
+  return null;
+}
+
 // Robust CSV parser
 function parseCSV(text) {
   const rows = [];
@@ -535,8 +564,12 @@ async function run() {
     return;
   }
 
-  // Pick 3 topic-relevant, 100% unique images guaranteed never used in any existing article
-  const { coverImage, coverImageId, secondaryImage, tertiaryImage } = selectUniqueArticleImages(category.slug, articlesTs);
+  // 3. Select or Generate 110% Keyword-Relevant Images (AI first, guaranteed zero-duplicate fallback)
+  const fallbackImages = selectUniqueArticleImages(category.slug, articlesTs);
+  let coverImage = fallbackImages.coverImage;
+  let coverImageId = fallbackImages.coverImageId;
+  let secondaryImage = fallbackImages.secondaryImage;
+  let tertiaryImage = fallbackImages.tertiaryImage;
 
   // 4. Generate Article via Gemini API
   const apiKey = process.env.GEMINI_API_KEY;
@@ -545,6 +578,45 @@ async function run() {
   let faqItems = [];
 
   if (apiKey) {
+    console.log('[AI IMAGE] Attempting dynamic AI image generation tailored to keyword...');
+    const coverAi = await generateArticleImageAI(
+      apiKey,
+      `Professional photorealistic 16:9 photograph illustrating ${mainKeyword} for ${proposedTitle}. Accurate technical UI, clean workspace desk, high resolution.`,
+      `${slug}-cover.jpg`
+    );
+    if (coverAi) {
+      coverImage = coverAi;
+      coverImageId = `${slug}-cover`;
+    }
+
+    const secAi = await generateArticleImageAI(
+      apiKey,
+      `Detailed technical screen close-up illustrating step-by-step implementation for ${mainKeyword}. Clean software interface, sharp focus.`,
+      `${slug}-mid.jpg`
+    );
+    if (secAi) {
+      secondaryImage = {
+        id: `${slug}-mid`,
+        url: secAi,
+        alt: `${proposedTitle} step-by-step implementation interface`,
+        caption: `Practical workflow configuration for ${mainKeyword}.`
+      };
+    }
+
+    const tertAi = await generateArticleImageAI(
+      apiKey,
+      `Enterprise technical architecture or analytics report verifying ${mainKeyword}. Production IT environment, modern display.`,
+      `${slug}-detail.jpg`
+    );
+    if (tertAi) {
+      tertiaryImage = {
+        id: `${slug}-detail`,
+        url: tertAi,
+        alt: `${proposedTitle} production verification and architecture`,
+        caption: `Production verification and benchmark setup for ${mainKeyword}.`
+      };
+    }
+
     console.log('[GEMINI] Reverse-engineering SERP competitors & generating article...');
 
     // Build live article reference catalog for contextual in-text internal linking
