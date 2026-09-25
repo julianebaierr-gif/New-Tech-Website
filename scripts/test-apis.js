@@ -104,30 +104,60 @@ async function testGemini(apiKey) {
             console.log(`  Competitor 1: "${serpData.snippets[0].slice(0, 80)}..."`);
           }
 
-          // Step 2: Feed SERP data into Gemini model (gemini-flash-latest)
-          console.log('[GEMINI TEST] Sending SERP snippets to gemini-flash-latest...');
-          const postUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
+          // Step 2: Feed SERP data into multi-tier cascading Gemini models
+          console.log('[GEMINI CASCADE] Sending SERP snippets to model cascade...');
+          const cascadeModels = [
+            'gemini-3.5-flash',
+            'gemini-3.8-flash',
+            'gemini-3.6-flash',
+            'gemini-3.7-flash',
+            'gemini-flash-latest',
+            'gemini-3.1-flash-lite',
+            'gemini-3.5-flash-lite',
+            'gemini-flash-lite-latest'
+          ];
+
           const prompt = `You are an enterprise systems engineer writing for TechOps Wire.
 Target Keyword: benefits of cloud computing
-Competitor Snippets:
+Top 5 Competitor Snippets:
 ${serpData.snippets.map((s, i) => `${i + 1}. ${s}`).join('\n')}
 
-Identify what these top 5 competitors are MISSING (the content gap), and write a 100-word lead paragraph with zero fluff.`;
+Identify the competitor content gap and output a 120-word technical introduction with concrete metrics and zero fluff.`;
 
-          const postRes = await makePost(postUrl, {
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.3, maxOutputTokens: 1000 }
-          });
+          let generatedText = null;
+          let usedModel = null;
 
-          console.log(`[GEMINI TEST] HTTP status: ${postRes.statusCode}`);
-          if (postRes.statusCode === 200) {
-            const parsed = JSON.parse(postRes.body);
-            const generated = parsed.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-            console.log(`[GEMINI TEST SUCCESS] Generated text:\n${generated?.slice(0, 300)}...`);
-            resolve({ ok: true, msg: `SERP + Gemini Pipeline Verified! Model gemini-flash-latest generated ${generated?.length} chars based on live search results.` });
+          for (const m of cascadeModels) {
+            console.log(`  -> Trying model: ${m}...`);
+            const postUrl = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
+            try {
+              const postRes = await makePost(postUrl, {
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: { temperature: 0.3, maxOutputTokens: 1200 }
+              });
+              if (postRes.statusCode === 200) {
+                const parsed = JSON.parse(postRes.body);
+                generatedText = parsed.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+                if (generatedText && generatedText.length > 50) {
+                  usedModel = m;
+                  console.log(`     SUCCESS with ${m}! Generated ${generatedText.length} chars:`);
+                  console.log(`     "${generatedText.slice(0, 200)}..."`);
+                  break;
+                }
+              } else {
+                console.log(`     HTTP ${postRes.statusCode}: ${postRes.body.slice(0, 120)}`);
+              }
+            } catch (err) {
+              console.log(`     Network error: ${err.message}`);
+            }
+            // Small pause between model attempts
+            await new Promise(r => setTimeout(r, 1000));
+          }
+
+          if (generatedText) {
+            resolve({ ok: true, msg: `SERP + Gemini Pipeline Verified! Model ${usedModel} generated ${generatedText.length} chars based on live search results.` });
           } else {
-            console.log(`[GEMINI TEST ERROR]: ${postRes.body.slice(0, 200)}`);
-            resolve({ ok: true, msg: `Gemini verified (HTTP ${postRes.statusCode})` });
+            resolve({ ok: false, msg: `All cascade models failed to generate content.` });
           }
         } catch (e) {
           resolve({ ok: false, msg: `Parse error: ${e.message}` });
