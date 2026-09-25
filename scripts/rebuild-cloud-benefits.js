@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { sanitizeAllContent } = require('./sanitize-rules.js');
 
 function fetchLiveSerpCompetitors(keyword) {
   return new Promise((resolve) => {
@@ -46,101 +47,6 @@ function fetchLiveSerpCompetitors(keyword) {
     req.write(postData);
     req.end();
   });
-}
-
-const BANNED_REPLACEMENTS = [
-  { p: /\bA deep dive into\b/gi, r: "An examination of" },
-  { p: /\bA Guide to\b/gi, r: "A Tutorial on" },
-  { p: /\bAdopting\b/gi, r: "Implementing" },
-  { p: /\bAdopt\b/gi, r: "Apply" },
-  { p: /\bAn in-depth look (at|into)\b/gi, r: "A breakdown of" },
-  { p: /\bAs we look ahead\b/gi, r: "In practice" },
-  { p: /\bBattle-tested\b/gi, r: "Field-tested" },
-  { p: /\bBeacon\b/gi, r: "Benchmark" },
-  { p: /\bBulletproof\b/gi, r: "Hardened" },
-  { p: /\bComprehensive Guide( to)?\b/gi, r: "Field manual" },
-  { p: /\bComprehensive\b/gi, r: "Complete" },
-  { p: /\bCornerstone\b/gi, r: "Core pillar" },
-  { p: /\bCrucial component\b/gi, r: "Key component" },
-  { p: /\bCrucial\b/gi, r: "Critical" },
-  { p: /\bDeep dive\b/gi, r: "Detailed breakdown" },
-  { p: /\bDelve into\b/gi, r: "Examine" },
-  { p: /\bDelve\b/gi, r: "Investigate" },
-  { p: /\bDelving\b/gi, r: "Investigating" },
-  { p: /\bDemystifying\b/gi, r: "Clarifying" },
-  { p: /\bDiscover verified facts\b/gi, r: "Review verified data" },
-  { p: /\bDiscover\b/gi, r: "Observe" },
-  { p: /\bDive into\b/gi, r: "Examine" },
-  { p: /\bElevate\b/gi, r: "Improve" },
-  { p: /\bEmbark\b/gi, r: "Start" },
-  { p: /\bEnterprise-grade\b/gi, r: "Production-ready" },
-  { p: /\bEvolution\b/gi, r: "Advancement" },
-  { p: /\bExplore\b/gi, r: "Inspect" },
-  { p: /\bFind verified facts\b/gi, r: "Review system facts" },
-  { p: /\bFoster\b/gi, r: "Encourage" },
-  { p: /\bFurthermore\b/gi, r: "Additionally" },
-  { p: /\bGame-changer\b/gi, r: "Fundamental shift" },
-  { p: /\bGuide\b/gi, r: "Handbook" },
-  { p: /\bHarness\b/gi, r: "Utilize" },
-  { p: /\bHelpful background details and common queries\b/gi, r: "System background and technical reference" },
-  { p: /\bHelpful background\b/gi, r: "Technical context" },
-  { p: /\bHigh-Fidelity\b/gi, r: "Accurate" },
-  { p: /\bIn conclusion\b/gi, r: "Summary" },
-  { p: /\bIn this article, we explore\b/gi, r: "This document reviews" },
-  { p: /\bIn this article\b/gi, r: "In this guide" },
-  { p: /\bIn today's fast-paced digital world\b/gi, r: "In modern production environments" },
-  { p: /\bIn today's digital era\b/gi, r: "In enterprise infrastructure" },
-  { p: /\bIn today's fast-paced\b/gi, r: "In modern" },
-  { p: /\bIn-depth\b/gi, r: "Detailed" },
-  { p: /\bIt is crucial to\b/gi, r: "Engineers must" },
-  { p: /\bIt is important to remember\b/gi, r: "Note that" },
-  { p: /\bIt is important to note\b/gi, r: "Note that" },
-  { p: /\bKey Insights\b/gi, r: "Core Metrics" },
-  { p: /\bLandscape\b/gi, r: "Environment" },
-  { p: /\bLearn how\b/gi, r: "Configure" },
-  { p: /\bLearn more details\b/gi, r: "Review full metrics" },
-  { p: /\bLearn more today\b/gi, r: "Review operational parameters" },
-  { p: /\bLearn more now\b/gi, r: "Inspect configuration" },
-  { p: /\bLearn more\b/gi, r: "Read details" },
-  { p: /\bLearn\b/gi, r: "Review" },
-  { p: /\bLeverage\b/gi, r: "Use" },
-  { p: /\bLook no further\b/gi, r: "Review the workflow below" },
-  { p: /\bModern teams adopting\b/gi, r: "Engineering teams running" },
-  { p: /\bMoreover\b/gi, r: "Additionally" },
-  { p: /\bNavigating the\b/gi, r: "Configuring the" },
-  { p: /\bNavigating\b/gi, r: "Operating" },
-  { p: /\bOrchestrate\b/gi, r: "Coordinate" },
-  { p: /\bParadigm shift\b/gi, r: "Structural change" },
-  { p: /\bPivotal\b/gi, r: "Significant" },
-  { p: /\bPlethora\b/gi, r: "Collection" },
-  { p: /\bPowerhouse\b/gi, r: "High-performance platform" },
-  { p: /\bRealm\b/gi, r: "Domain" },
-  { p: /\bRobust\b/gi, r: "Resilient" },
-  { p: /\bSeamlessly\b/gi, r: "Directly" },
-  { p: /\bSeamless\b/gi, r: "Direct" },
-  { p: /\bTapestry\b/gi, r: "Architecture" },
-  { p: /\bTestament\b/gi, r: "Proof" },
-  { p: /\bThe Ultimate\b/gi, r: "The Definitive" },
-  { p: /\bUltimate Guide\b/gi, r: "Definitive Reference" },
-  { p: /\bUltimate\b/gi, r: "Definitive" },
-  { p: /\bUltra-High\b/gi, r: "Extreme" },
-  { p: /\bUncover\b/gi, r: "Identify" },
-  { p: /\bUnleash\b/gi, r: "Enable" },
-  { p: /\bUnlock\b/gi, r: "Access" },
-  { p: /\bUnpacking\b/gi, r: "Analyzing" },
-  { p: /\bVital role\b/gi, r: "Key role" },
-  { p: /\bVital\b/gi, r: "Essential" }
-];
-
-function sanitizeContent(raw) {
-  let cleaned = raw;
-  for (const { p, r } of BANNED_REPLACEMENTS) {
-    cleaned = cleaned.replace(p, r);
-  }
-  cleaned = cleaned.replace(/—/g, ', ');
-  cleaned = cleaned.replace(/ – /g, ', ');
-  cleaned = cleaned.replace(/ - /g, ': ');
-  return cleaned;
 }
 
 function slugify(text) {
@@ -312,7 +218,7 @@ STRUCTURE REQUIREMENTS:
    \`\`\`
 
 STRICT WRITING RULES:
-- ZERO AI BUZZWORDS: Never use: delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, seamlessly, unlock, pivotal, beacon, elevate, harness, embark, powerhouse, realm, evolution, plethora, game-changer, vital, comprehensive guide, deep dive, in-depth, discover, explore.
+- ZERO AI BUZZWORDS: Never use: delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, seamlessly, unlock, pivotal, beacon, elevate, harness, embark, powerhouse, realm, evolution, plethora, game-changer, vital, comprehensive guide, deep dive, in-depth, discover, explore, modern, digital, pipelines, consumption, technical, verified.
 - ZERO EM-DASHES: Do NOT use the em-dash character '—' or spaced hyphens ' - ' anywhere. Use commas, colons, or parentheses instead.
 - Tone: Hands-on, practical, tested in real production environments.
 - Output ONLY valid HTML for the article body followed by the \`\`\`json FAQ block.`;
@@ -342,7 +248,7 @@ STRICT WRITING RULES:
     .replace(/\s*```$/i, '')
     .trim();
 
-  const finalHtml = sanitizeContent(cleaned);
+  const finalHtml = sanitizeAllContent(cleaned);
 
   // Extract TOC from H2 headings
   const tocItems = [];
@@ -362,40 +268,41 @@ STRICT WRITING RULES:
   let fileContent = fs.readFileSync(articlesPath, 'utf8');
 
   const slug = 'benefits-of-cloud-computing';
-  const slugIndex = fileContent.indexOf(`slug: "${slug}"`);
-  if (slugIndex === -1) {
+  const slugPos = fileContent.indexOf(`slug: "${slug}"`);
+  if (slugPos === -1) {
     console.error(`ERROR: Article slug ${slug} not found in articles.ts`);
     process.exit(1);
   }
 
-  // Update tableOfContents, faqs, and contentHtml for this article
-  // Find the block for this article
-  const nextSlugIndex = fileContent.indexOf('slug: "', slugIndex + 20);
-  const articleBlockEnd = nextSlugIndex !== -1 ? nextSlugIndex : fileContent.lastIndexOf('};');
+  let endPos = fileContent.indexOf('\n  },\n  {', slugPos);
+  if (endPos === -1) {
+    endPos = fileContent.indexOf('\n  },\n];', slugPos);
+  }
+  if (endPos === -1) {
+    endPos = fileContent.indexOf('\n  }\n];', slugPos);
+  }
+  if (endPos === -1) {
+    throw new Error('Could not find closing bracket of article block');
+  }
 
-  const block = fileContent.substring(slugIndex, articleBlockEnd);
+  let block = fileContent.substring(slugPos, endPos);
 
-  // Replace tableOfContents
   const tocJson = JSON.stringify(tocItems, null, 6)
     .split('\n')
     .map((l, i) => i === 0 ? l : '    ' + l)
     .join('\n');
 
-  // Replace faqs
   const faqsJson = JSON.stringify(faqs, null, 6)
     .split('\n')
     .map((l, i) => i === 0 ? l : '    ' + l)
     .join('\n');
 
-  let newBlock = block;
-  newBlock = newBlock.replace(/tableOfContents:\s*\[[\s\S]*?\],/, `tableOfContents: ${tocJson},`);
-  newBlock = newBlock.replace(/faqs:\s*\[[\s\S]*?\],/, `faqs: ${faqsJson},`);
-  newBlock = newBlock.replace(/contentHtml:\s*`[\s\S]*?`\s*,?/, `contentHtml: \`\n${finalHtml}\n\`,\n`);
+  block = block.replace(/tableOfContents:\s*\[[\s\S]*?\],/, `tableOfContents: ${tocJson},`);
+  block = block.replace(/faqs:\s*\[[\s\S]*?\],/, `faqs: ${faqsJson},`);
+  block = block.replace(/contentHtml:\s*`[\s\S]*?`/, `contentHtml: \`\n${finalHtml}\n\``);
 
-  fileContent = fileContent.substring(0, slugIndex) + newBlock + fileContent.substring(articleBlockEnd);
-
-  // Final scrub
-  fileContent = sanitizeContent(fileContent);
+  fileContent = fileContent.substring(0, slugPos) + block + fileContent.substring(endPos);
+  fileContent = sanitizeAllContent(fileContent);
 
   fs.writeFileSync(articlesPath, fileContent, 'utf8');
   console.log('[SUCCESS] Successfully updated benefits-of-cloud-computing in src/data/articles.ts!');

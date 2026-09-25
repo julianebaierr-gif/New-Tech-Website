@@ -95,16 +95,10 @@ const BANNED_REPLACEMENTS = [
   { p: /\bVital\b/gi, r: "Crucial" }
 ];
 
+const { sanitizeAllContent } = require('./sanitize-rules.js');
+
 function sanitizeContent(raw) {
-  let cleaned = raw;
-  for (const { p, r } of BANNED_REPLACEMENTS) {
-    cleaned = cleaned.replace(p, r);
-  }
-  // Remove em-dashes and spaced hyphens
-  cleaned = cleaned.replace(/—/g, ', ');
-  cleaned = cleaned.replace(/ – /g, ', ');
-  cleaned = cleaned.replace(/ - /g, ': ');
-  return cleaned;
+  return sanitizeAllContent(raw);
 }
 
 function craftSeoMetadata(proposedTitle, mainKeyword, categoryName) {
