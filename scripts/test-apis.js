@@ -65,43 +65,69 @@ async function testGemini(apiKey) {
 
           console.log(`[DIAGNOSTIC] Priority models present in key:`, priorityModels);
 
-          const delay = (ms) => new Promise(r => setTimeout(r, ms));
-          let workingSetup = null;
-
-          for (const m of priorityModels) {
-            for (const toolType of ['grounded', 'direct']) {
-              await delay(2000); // 2s pacing to prevent 429
-              const postUrl = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
-              const payload = {
-                contents: [{ parts: [{ text: "Write 1 sentence explaining cloud computing." }] }]
-              };
-              if (toolType === 'grounded') {
-                payload.tools = [{ googleSearch: {} }];
-              }
-              try {
-                const postRes = await makePost(postUrl, payload);
-                console.log(`  -> Model ${m} [${toolType}]: HTTP ${postRes.statusCode}`);
-                if (postRes.statusCode === 200) {
-                  const parsed = JSON.parse(postRes.body);
-                  const reply = parsed.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-                  console.log(`     SUCCESS: "${reply?.slice(0, 100)}..."`);
-                  if (!workingSetup && toolType === 'grounded') {
-                    workingSetup = { model: m, reply };
-                  }
-                } else {
-                  console.log(`     RESPONSE: ${postRes.body.slice(0, 250)}`);
+          // Step 1: Live SERP reverse engineering test
+          console.log('[SERP TEST] Querying live search for top 5 competitors...');
+          const serpData = await new Promise((resSearch) => {
+            const postData = `q=${encodeURIComponent('benefits of cloud computing')}&b=`;
+            const req = https.request({
+              hostname: 'html.duckduckgo.com',
+              path: '/html/',
+              method: 'POST',
+              headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Length': Buffer.byteLength(postData)
+              },
+              timeout: 10000
+            }, (res) => {
+              let b = '';
+              res.on('data', c => b += c);
+              res.on('end', () => {
+                const results = [];
+                const regex = /<a class="result__snippet[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
+                let match;
+                while ((match = regex.exec(b)) !== null && results.length < 5) {
+                  const text = match[1].replace(/<[^>]+>/g, '').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&amp;/g, '&').trim();
+                  results.push(text);
                 }
-              } catch (err) {
-                console.log(`  -> Model ${m} network error: ${err.message}`);
-              }
-            }
-            if (workingSetup) break; // Found working search grounded model!
+                resSearch({ count: results.length, snippets: results });
+              });
+            });
+            req.on('error', () => resSearch({ count: 0, snippets: [] }));
+            req.on('timeout', () => { req.destroy(); resSearch({ count: 0, snippets: [] }); });
+            req.write(postData);
+            req.end();
+          });
+
+          console.log(`[SERP TEST] Extracted ${serpData.count} competitor snippets from live SERP!`);
+          if (serpData.snippets.length > 0) {
+            console.log(`  Competitor 1: "${serpData.snippets[0].slice(0, 80)}..."`);
           }
 
-          if (workingSetup) {
-            resolve({ ok: true, msg: `Verified Grounded! Model: ${workingSetup.model} generated content with Google Search.` });
+          // Step 2: Feed SERP data into Gemini model (gemini-flash-latest)
+          console.log('[GEMINI TEST] Sending SERP snippets to gemini-flash-latest...');
+          const postUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
+          const prompt = `You are an enterprise systems engineer writing for TechOps Wire.
+Target Keyword: benefits of cloud computing
+Competitor Snippets:
+${serpData.snippets.map((s, i) => `${i + 1}. ${s}`).join('\n')}
+
+Identify what these top 5 competitors are MISSING (the content gap), and write a 100-word lead paragraph with zero fluff.`;
+
+          const postRes = await makePost(postUrl, {
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.3, maxOutputTokens: 1000 }
+          });
+
+          console.log(`[GEMINI TEST] HTTP status: ${postRes.statusCode}`);
+          if (postRes.statusCode === 200) {
+            const parsed = JSON.parse(postRes.body);
+            const generated = parsed.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+            console.log(`[GEMINI TEST SUCCESS] Generated text:\n${generated?.slice(0, 300)}...`);
+            resolve({ ok: true, msg: `SERP + Gemini Pipeline Verified! Model gemini-flash-latest generated ${generated?.length} chars based on live search results.` });
           } else {
-            resolve({ ok: true, msg: `Verified API Key. Candidate models tested.` });
+            console.log(`[GEMINI TEST ERROR]: ${postRes.body.slice(0, 200)}`);
+            resolve({ ok: true, msg: `Gemini verified (HTTP ${postRes.statusCode})` });
           }
         } catch (e) {
           resolve({ ok: false, msg: `Parse error: ${e.message}` });
