@@ -374,9 +374,11 @@ async function run() {
   for (let i = 1; i < articleBlocks.length; i++) {
     const block = articleBlocks[i];
     const slug = block.match(/^([^"']+)/)?.[1];
+    const title = block.match(/title:\s*["']([^"']+)["']/)?.[1];
+    const primaryKeyword = block.match(/primaryKeyword:\s*["']([^"']+)["']/)?.[1];
     const categorySlug = block.match(/categorySlug:\s*["']([^"']+)["']/)?.[1];
     const authorId = block.match(/authorId:\s*["']([^"']+)["']/)?.[1];
-    if (slug) existingArticles.push({ slug, categorySlug, authorId });
+    if (slug) existingArticles.push({ slug, title, primaryKeyword, categorySlug, authorId });
   }
 
   const lastArticle = existingArticles[existingArticles.length - 1];
@@ -479,6 +481,12 @@ async function run() {
 
   if (apiKey) {
     console.log('[GEMINI] Reverse-engineering SERP competitors & generating article...');
+
+    // Build live article reference catalog for contextual in-text internal linking
+    const liveArticlesCatalog = existingArticles
+      .map(a => `- Title: "${a.title || a.slug}", URL: "/articles/${a.slug}", Category: "${a.categorySlug}", Target: "${a.primaryKeyword || ''}"`)
+      .join('\n');
+
     const prompt = `You are ${nextAuthorName}, an enterprise cloud and systems engineer writing for TechOps Wire.
 Write an authoritative, highly detailed technical manual for: "${proposedTitle}".
 Primary Target Keyword: "${mainKeyword}".
@@ -529,7 +537,19 @@ STRUCTURE REQUIREMENTS:
 7. Troubleshooting / Common Pitfalls Section:
    Detailed section covering real operational traps (such as data egress charges, misconfigured security groups, or unattached disk storage waste).
 
-8. FAQs Section:
+8. Contextual In-Text Internal Linking (Strict Editorial Rules):
+   You have access to the complete index of currently published live articles on TechOps Wire:
+${liveArticlesCatalog}
+
+   INTERNAL LINKING RULES:
+   - Carefully review the live index above and identify 2 to 3 articles that have a genuine, direct technical connection to "${mainKeyword}".
+   - Weave these links naturally into explanatory sentences within your body paragraphs.
+   - Anchor text MUST be descriptive and flow naturally inside the sentence (e.g. '<a href="/articles/docker-container-architecture" class="text-blue-600 font-medium hover:underline">Docker container architecture</a>').
+   - NEVER create generic 'Related reading:', 'Read also', or standalone bullet point link widgets. Links must be embedded within real sentences.
+   - Never use generic anchor text like 'click here' or 'this guide'.
+   - Only link to URLs from the live index above. Never link to unverified or external domains.
+
+9. FAQs Section:
    Include 4 technical FAQs addressing complex questions.
    Also provide the FAQs in a JSON block at the very end of your response:
    \`\`\`json
@@ -567,6 +587,18 @@ STRICT WRITING RULES:
         .trim();
 
       articleHtml = sanitizeContent(cleaned);
+
+      // Validate internal links against existing live articles to guarantee 0 broken links
+      const validSlugs = new Set(existingArticles.map(a => a.slug));
+      const internalLinkRegex = /<a\s+[^>]*href="\/articles\/([^"#?]+)"[^>]*>([\s\S]*?)<\/a>/gi;
+      articleHtml = articleHtml.replace(internalLinkRegex, (fullMatch, targetSlug, anchorText) => {
+        if (validSlugs.has(targetSlug)) {
+          return `<a href="/articles/${targetSlug}" class="text-blue-600 font-medium hover:underline">${anchorText}</a>`;
+        } else {
+          console.warn(`[LINK VALIDATION] Stripping unverified link to /articles/${targetSlug}`);
+          return anchorText;
+        }
+      });
 
       // Extract TOC from H2 headings
       const h2Regex = /<h2(?:\s+id="([^"]+)")?[^>]*>([^<]+)<\/h2>/gi;
