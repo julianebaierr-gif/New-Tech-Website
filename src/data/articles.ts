@@ -693,17 +693,17 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
     coverImage: "/images/articles/chatgpt-slow-cover.jpg",
     coverImageId: "chatgpt-slow-cover",
     secondaryImage: {
-      "id": "photo-1618005182384-a83a8bd57fbe",
-      "url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80",
+      "id": "chatgpt-slow-latency",
+      "url": "/images/articles/chatgpt-slow-latency.jpg",
       "alt": "Neural network token streaming data paths and GPU memory bandwidth",
       "caption": "Large language model inference processes streaming output tokens sequentially."
-},
+    },
     tertiaryImage: {
-      "id": "photo-1555066931-4365d14bab8c",
-      "url": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Software programming terminal code interface for streaming API responses",
+      "id": "chatgpt-slow-gpu",
+      "url": "/images/articles/chatgpt-slow-gpu.jpg",
+      "alt": "High-performance AI GPU compute cluster processing LLM requests",
       "caption": "Developer API connections bypass consumer browser interface queuing bottlenecks."
-},
+    },
     tableOfContents: [
       {
             "id": "anatomy-of-llm-latency",
@@ -946,20 +946,20 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
 ],
     combinedVolume: 17300,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1629654297299-c8506221ca97",
+    coverImage: "/images/articles/windows-11-pro-home-cover.jpg",
+    coverImageId: "windows-11-pro-home-cover",
     secondaryImage: {
-      "id": "photo-1550751827-4bd374c3f58b",
-      "url": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=630&q=80",
+      "id": "windows-11-pro-bitlocker",
+      "url": "/images/articles/windows-11-pro-bitlocker.jpg",
       "alt": "Hardware volume encryption lock representing Windows 11 BitLocker protection",
       "caption": "BitLocker drive encryption safeguards local disks with hardware TPM keys."
-},
+    },
     tertiaryImage: {
-      "id": "photo-1587831990711-23ca6441447b",
-      "url": "https://images.unsplash.com/photo-1587831990711-23ca6441447b?auto=format&fit=crop&w=1200&h=630&q=80",
+      "id": "windows-11-pro-workstation",
+      "url": "/images/articles/windows-11-pro-workstation.jpg",
       "alt": "High performance workstation PC setup running multiple operating system screens",
       "caption": "Workstation environments utilize dual-socket CPUs and inbound remote access."
-},
+    },
     tableOfContents: [
       {
             "id": "core-specifications-comparison",
@@ -1216,20 +1216,20 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
 ],
     combinedVolume: 18500,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1461749280684-dccba630e2f6",
+    coverImage: "/images/articles/linux-permissions-chmod-cover.jpg",
+    coverImageId: "linux-permissions-chmod-cover",
     secondaryImage: {
-      "id": "photo-1486312338219-ce68d2c6f44d",
-      "url": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "System administrator executing chmod and chown commands on keyboard",
-      "caption": "Configuring chmod numeric modes and chown ownership directly in the shell."
-},
+      "id": "linux-permissions-terminal-octal",
+      "url": "/images/articles/linux-permissions-terminal-octal.jpg",
+      "alt": "Systems administrator typing Linux terminal commands on keyboard",
+      "caption": "Direct command line file modification configures read, write, and execute bits."
+    },
     tertiaryImage: {
-      "id": "photo-1562813733-b31f71025d54",
-      "url": "https://images.unsplash.com/photo-1562813733-b31f71025d54?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Command line terminal showing file access control configurations",
-      "caption": "Configuring filesystem security bits protects root services from unauthorized access."
-},
+      "id": "linux-permissions-access-control",
+      "url": "/images/articles/linux-permissions-access-control.jpg",
+      "alt": "Computer terminal access screen showing secure system login",
+      "caption": "Group ownership settings isolate system files from standard user accounts."
+    },
     tableOfContents: [
       {
             "id": "understanding-linux-permission-structure",
@@ -1575,20 +1575,20 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
 ],
     combinedVolume: 102450,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1460925895917-afdab827c52f",
+    coverImage: "/images/articles/excel-dropdown-list-cover.jpg",
+    coverImageId: "excel-dropdown-list-cover",
     secondaryImage: {
-      "id": "photo-1543286386-713bdd548da4",
-      "url": "https://images.unsplash.com/photo-1543286386-713bdd548da4?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Business spreadsheet analysis report driven by configured drop down selectors",
-      "caption": "Data validation menus standardize user choices across shared workbooks."
-},
+      "id": "excel-dropdown-validation",
+      "url": "/images/articles/excel-dropdown-validation.jpg",
+      "alt": "Data analyst configuring Excel table properties on office workstation",
+      "caption": "Structured Excel tables automatically expand data validation ranges when new rows appear."
+    },
     tertiaryImage: {
-      "id": "photo-1512758017271-d7b84c2113f1",
-      "url": "https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Organized checklist and data validation entry form on spreadsheet clipboard",
-      "caption": "Restricting cell inputs to approved entries eliminates human transcription errors."
-},
+      "id": "excel-dropdown-selection",
+      "url": "/images/articles/excel-dropdown-selection.jpg",
+      "alt": "Business professional selecting options in a software drop-down menu",
+      "caption": "Drop-down lists restrict data input to authorized categories across collaborative workbooks."
+    },
     tableOfContents: [
       {
             "id": "creating-basic-data-validation-list",
@@ -1891,20 +1891,20 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
 ],
     combinedVolume: 6500,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1605745341112-85968b19335b?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1605745341112-85968b19335b",
+    coverImage: "/images/articles/docker-architecture-cover.jpg",
+    coverImageId: "docker-architecture-cover",
     secondaryImage: {
-      "id": "photo-1484557052118-f32bd25b45b5",
-      "url": "https://images.unsplash.com/photo-1484557052118-f32bd25b45b5?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Datacenter network patch cords representing Docker bridge networking",
-      "caption": "Virtual bridge networks route internal packet traffic between container endpoints."
-},
+      "id": "docker-architecture-networking",
+      "url": "/images/articles/docker-architecture-networking.jpg",
+      "alt": "High-tech server network architecture diagram showing layered container services",
+      "caption": "Container images share the host Linux kernel while running in isolated namespaces."
+    },
     tertiaryImage: {
-      "id": "photo-1544716278-ca5e3f4abd8c",
-      "url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Organized container stacking structure representing isolated software units",
-      "caption": "Process isolation confines container filesystems inside dedicated namespaces."
-},
+      "id": "docker-architecture-volumes",
+      "url": "/images/articles/docker-architecture-volumes.jpg",
+      "alt": "Software engineer configuring Docker container volumes on development laptop",
+      "caption": "Named Docker volumes decouple stateful database storage from container lifecycles."
+    },
     tableOfContents: [
       {
             "id": "docker-engine-and-containerd",
@@ -2157,20 +2157,20 @@ docker run -d --name web-api --network internal-app-net -p 3000:3000 my-api</cod
 ],
     combinedVolume: 4850,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1586281380349-632531db7ed4",
+    coverImage: "/images/articles/chatgpt-file-upload-cover.jpg",
+    coverImageId: "chatgpt-file-upload-cover",
     secondaryImage: {
-      "id": "photo-1526374965328-7f61d4dc18c5",
-      "url": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Code execution matrix representing Python pandas analysis in AI sandbox",
-      "caption": "Python sandboxes process uploaded document slices using automated code execution."
-},
+      "id": "chatgpt-file-upload-token-limits",
+      "url": "/images/articles/chatgpt-file-upload-token-limits.jpg",
+      "alt": "Terminal screen displaying code for data file parsing and token counting",
+      "caption": "Pre-filtering file headers and removing null rows prevents hitting context window token limits."
+    },
     tertiaryImage: {
-      "id": "photo-1456513080510-7bf3a84b82f8",
-      "url": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Archive library collection representing large document files and vector records",
-      "caption": "Vector retrieval systems query document chunks across extensive corporate archives."
-},
+      "id": "chatgpt-file-upload-data-parsing",
+      "url": "/images/articles/chatgpt-file-upload-data-parsing.jpg",
+      "alt": "Spreadsheet and CSV reference documents illustrating text file upload limits",
+      "caption": "Plain text, CSV, and markdown files process faster with fewer formatting errors than complex PDFs."
+    },
     tableOfContents: [
       {
             "id": "file-size-and-format-specifications",
@@ -2415,20 +2415,20 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
 ],
     combinedVolume: 5100,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1558494949-ef010cbdcc31",
+    coverImage: "/images/articles/windows-server-eol-cover.jpg",
+    coverImageId: "windows-server-eol-cover",
     secondaryImage: {
-      "id": "photo-1544197150-b99a580bb7a8",
-      "url": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Server racks and storage arrays ready for Windows Server 2022 migration",
-      "caption": "Side-by-side migration keeps legacy servers running while staging Server 2022."
-},
+      "id": "windows-server-eol-cabling",
+      "url": "/images/articles/windows-server-eol-cabling.jpg",
+      "alt": "Enterprise server room with organized patch cabling connecting server racks",
+      "caption": "Server room infrastructure requires migration planning before security patch support ends."
+    },
     tertiaryImage: {
-      "id": "photo-1542751371-adc38448a05e",
-      "url": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Enterprise IT infrastructure workstation managing server cluster lifecycle migration",
-      "caption": "Structured migration planning ensures continuous enterprise services during operating system updates."
-},
+      "id": "windows-server-eol-lifecycle",
+      "url": "/images/articles/windows-server-eol-lifecycle.jpg",
+      "alt": "Systems engineers planning enterprise IT infrastructure upgrade roadmap",
+      "caption": "Parallel deployment of new server hardware ensures zero downtime during production migrations."
+    },
     tableOfContents: [
       {
             "id": "official-lifecycle-timeline",
