@@ -22,6 +22,13 @@ export async function generateStaticParams() {
   }));
 }
 
+function toAbsoluteUrl(url: string): string {
+  if (!url) return "";
+  return url.startsWith("http://") || url.startsWith("https://")
+    ? url
+    : `${siteConfig.baseUrl}${url.startsWith("/") ? "" : "/"}${url}`;
+}
+
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
@@ -51,19 +58,19 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       authors: [siteConfig.authors.find((a) => a.id === article.authorId)?.name || siteConfig.name],
       images: [
         {
-          url: article.coverImage,
+          url: toAbsoluteUrl(article.coverImage),
           width: 1200,
           height: 630,
           alt: article.title,
         },
         {
-          url: article.secondaryImage.url,
+          url: toAbsoluteUrl(article.secondaryImage.url),
           width: 1200,
           height: 630,
           alt: article.secondaryImage.alt,
         },
         ...(article.tertiaryImage ? [{
-          url: article.tertiaryImage.url,
+          url: toAbsoluteUrl(article.tertiaryImage.url),
           width: 1200,
           height: 630,
           alt: article.tertiaryImage.alt,
@@ -75,9 +82,9 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       title: metaTitle,
       description: metaDesc,
       images: [
-        article.coverImage,
-        article.secondaryImage.url,
-        ...(article.tertiaryImage ? [article.tertiaryImage.url] : []),
+        toAbsoluteUrl(article.coverImage),
+        toAbsoluteUrl(article.secondaryImage.url),
+        ...(article.tertiaryImage ? [toAbsoluteUrl(article.tertiaryImage.url)] : []),
       ],
     },
   };
@@ -150,9 +157,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     "headline": article.title,
     "description": article.excerpt,
     "image": [
-      article.coverImage,
-      article.secondaryImage.url,
-      ...(article.tertiaryImage ? [article.tertiaryImage.url] : []),
+      toAbsoluteUrl(article.coverImage),
+      toAbsoluteUrl(article.secondaryImage.url),
+      ...(article.tertiaryImage ? [toAbsoluteUrl(article.tertiaryImage.url)] : []),
     ],
     "datePublished": article.publishedAt,
     "dateModified": article.updatedAt,

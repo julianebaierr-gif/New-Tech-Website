@@ -2680,20 +2680,20 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
     secondaryKeywords: ["bullet points in excel","insert bullet points in excel","how to insert bullet points in excel","how to put bullet points in excel","how to add a bullet point in excel","excel bullet point shortcut"],
     combinedVolume: 8200,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1551288049-bebda4e38f71",
+    coverImage: "/images/articles/excel-bullet-points-cover.jpg",
+    coverImageId: "excel-bullet-points-cover",
     secondaryImage: {
-      "id": "photo-1460925895917-afdab827c52f",
-      "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Financial analyst configuring cell formatting options in Excel",
-      "caption": "Custom number formats apply visual bullets without altering underlying cell strings."
-},
+      "id": "excel-bullet-points-formula",
+      "url": "/images/articles/excel-bullet-points-formula.jpg",
+      "alt": "Excel worksheet editing formula with bullet points in cells",
+      "caption": "Dynamic formula bar combining UNICHAR bullet point symbols with cell text."
+    },
     tertiaryImage: {
-      "id": "photo-1454165804606-c3d57bc86b40",
-      "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Spreadsheet formula bar entering CHAR and TEXTJOIN functions",
-      "caption": "Formulas automatically generate multi-line bullet lists from raw range inputs."
-},
+      "id": "excel-bullet-points-dashboard",
+      "url": "/images/articles/excel-bullet-points-dashboard.jpg",
+      "alt": "Corporate Excel executive performance dashboard with formatted bullet checklists",
+      "caption": "Executive performance workbook displaying formatted bullet checklist items alongside metrics."
+    },
     tableOfContents: [
       {
             "id": "keyboard-shortcuts-windows-mac",
