@@ -13,35 +13,93 @@ async function testGemini(apiKey) {
   }
   const preview = apiKey.substring(0, 4) + '...' + apiKey.substring(apiKey.length - 3);
 
+  function makePost(url, payload) {
+    return new Promise((resolve, reject) => {
+      const u = new URL(url);
+      const req = https.request({
+        hostname: u.hostname,
+        path: u.pathname + u.search,
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 20000
+      }, (r) => {
+        let b = '';
+        r.on('data', chunk => b += chunk);
+        r.on('end', () => resolve({ statusCode: r.statusCode, body: b }));
+      });
+      req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
+      req.on('error', reject);
+      req.write(JSON.stringify(payload));
+      req.end();
+    });
+  }
+
   return new Promise((resolve) => {
-    // Test Gemini API with gemini-2.5-flash or gemini-1.5-flash
-    const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
-    const req = https.get(url, (res) => {
+    const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
+    https.get(listUrl, async (res) => {
       let body = '';
       res.on('data', chunk => body += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          try {
-            const data = JSON.parse(body);
-            const models = data.models?.map(m => m.name.replace('models/', '')) || [];
-            const count = models.length;
-            const sample = models.filter(m => m.includes('flash') || m.includes('pro')).slice(0, 4).join(', ');
-            resolve({ ok: true, msg: `Verified! (${count} models detected, e.g. ${sample})` });
-          } catch {
-            resolve({ ok: true, msg: `Verified successfully! (Key preview: ${preview})` });
+      res.on('end', async () => {
+        if (res.statusCode !== 200) {
+          return resolve({ ok: false, msg: `HTTP ${res.statusCode}: ${body}` });
+        }
+        try {
+          const data = JSON.parse(body);
+          const models = data.models || [];
+          const genModels = models
+            .filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes('generateContent'))
+            .map(m => m.name.replace('models/', ''));
+          console.log(`[DIAGNOSTIC] Total models: ${models.length}, Content generation models: ${genModels.length}`);
+          console.log(`[DIAGNOSTIC] Content models: ${genModels.slice(0, 10).join(', ')}`);
+
+          // Test generation candidates
+          const candidates = genModels.filter(m => m.includes('flash') || m.includes('pro')).slice(0, 5);
+          console.log(`[DIAGNOSTIC] Testing candidates:`, candidates);
+
+          const testPayloads = [
+            { name: 'googleSearch (camelCase)', tools: [{ googleSearch: {} }] },
+            { name: 'google_search (snake_case)', tools: [{ google_search: {} }] },
+            { name: 'no tools (direct)', tools: undefined }
+          ];
+
+          let workingSetup = null;
+
+          for (const m of candidates) {
+            for (const tp of testPayloads) {
+              const postUrl = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
+              const payload = {
+                contents: [{ parts: [{ text: "Respond in 3 words: SERP testing ok." }] }]
+              };
+              if (tp.tools) payload.tools = tp.tools;
+              try {
+                const postRes = await makePost(postUrl, payload);
+                console.log(`  -> Model ${m} + [${tp.name}]: HTTP ${postRes.statusCode}`);
+                if (postRes.statusCode === 200) {
+                  const parsed = JSON.parse(postRes.body);
+                  const reply = parsed.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+                  console.log(`     SUCCESS: "${reply}"`);
+                  if (!workingSetup && tp.tools) {
+                    workingSetup = { model: m, toolFormat: tp.name, reply };
+                  }
+                } else {
+                  console.log(`     ERROR: ${postRes.body.slice(0, 200)}`);
+                }
+              } catch (err) {
+                console.log(`  -> Model ${m} + [${tp.name}] network error: ${err.message}`);
+              }
+            }
           }
-        } else {
-          try {
-            const err = JSON.parse(body);
-            resolve({ ok: false, msg: `HTTP ${res.statusCode}: ${err.error?.message || body}` });
-          } catch {
-            resolve({ ok: false, msg: `HTTP ${res.statusCode}: ${body}` });
+
+          if (workingSetup) {
+            resolve({ ok: true, msg: `Verified with Search Grounding! (Model: ${workingSetup.model}, Tool: ${workingSetup.toolFormat}, Test Reply: "${workingSetup.reply}")` });
+          } else {
+            resolve({ ok: true, msg: `Verified API Key, but test payload needs review. Detected ${genModels.length} models.` });
           }
+        } catch (e) {
+          resolve({ ok: false, msg: `Parse error: ${e.message}` });
         }
       });
-    });
-
-    req.on('error', (e) => {
+    }).on('error', (e) => {
       resolve({ ok: false, msg: `Network error: ${e.message}` });
     });
   });
