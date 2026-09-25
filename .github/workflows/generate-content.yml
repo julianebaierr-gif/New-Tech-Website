@@ -29,21 +29,13 @@ jobs:
       - name: Install Project Dependencies
         run: npm ci
 
-      - name: Run Gemini API Generator Script
+      - name: Run Gemini SERP Article Generator Script
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: |
-          node scripts/generate-articles-with-gemini.js > run.log 2>&1 || {
-            echo "Generator failed! Saving run.log for diagnostic..."
-            cat run.log
-            git config --global user.name "TechOps Wire Bot"
-            git config --global user.email "bot@techopswire.com"
-            git add run.log
-            git commit -m "debug: log output from failed run"
-            git push origin main
-            exit 1
-          }
+          node scripts/rebuild-cloud-benefits.js
+          node scripts/scan-user-words.js
 
       - name: Verify Production Build
         run: npm run build

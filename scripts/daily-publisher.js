@@ -355,12 +355,65 @@ function slugify(text) {
     .trim();
 }
 
-// Gemini API Invocation with cascading model fallback and optional Google Search Grounding
+// 1. Live Google / Web SERP Reverse Engineering (Top 5 Competitors + Snippets)
+function fetchLiveSerpCompetitors(keyword) {
+  return new Promise((resolve) => {
+    const postData = `q=${encodeURIComponent(keyword)}&b=`;
+    const req = https.request({
+      hostname: 'html.duckduckgo.com',
+      path: '/html/',
+      method: 'POST',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(postData)
+      },
+      timeout: 10000
+    }, (res) => {
+      let b = '';
+      res.on('data', chunk => b += chunk);
+      res.on('end', () => {
+        const results = [];
+        const itemRegex = /<h2 class="result__title">[\s\S]*?<a[^>]*class="result__url"[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>[\s\S]*?<a class="result__snippet[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
+        let match;
+        while ((match = itemRegex.exec(b)) !== null && results.length < 5) {
+          const rawUrl = match[1];
+          let realUrl = rawUrl;
+          const uddgMatch = rawUrl.match(/uddg=([^&]+)/);
+          if (uddgMatch) realUrl = decodeURIComponent(uddgMatch[1]);
+          const title = match[2].replace(/<[^>]+>/g, '').trim();
+          const snippet = match[3].replace(/<[^>]+>/g, '').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&amp;/g, '&').trim();
+          results.push({ title, url: realUrl, snippet });
+        }
+        resolve(results);
+      });
+    });
+    req.on('error', (e) => {
+      console.warn(`[SERP SEARCH] Network error: ${e.message}`);
+      resolve([]);
+    });
+    req.on('timeout', () => {
+      req.destroy();
+      console.warn('[SERP SEARCH] Request timeout');
+      resolve([]);
+    });
+    req.write(postData);
+    req.end();
+  });
+}
+
+// 2. Multi-tier Cascading Gemini Generation (Reliable, Zero-Timeout, High-Quality)
 async function callGemini(apiKey, prompt) {
   const models = [
-    'gemini-2.5-flash',
-    'gemini-2.0-flash',
-    'gemini-1.5-flash'
+    'gemini-3.1-flash-lite',
+    'gemini-flash-latest',
+    'gemini-3.5-flash-lite',
+    'gemini-3.8-flash',
+    'gemini-3.5-flash',
+    'gemini-3.6-flash',
+    'gemini-3.7-flash',
+    'gemini-flash-lite-latest',
+    'gemini-pro-latest'
   ];
 
   function makeRequest(url, payload) {
@@ -384,60 +437,32 @@ async function callGemini(apiKey, prompt) {
     });
   }
 
-  // 1. First attempt: Search Grounding enabled (to reverse-engineer SERP competitors)
-  for (const m of models) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
-    try {
-      const payload = {
-        contents: [{ parts: [{ text: prompt }] }],
-        tools: [{ googleSearch: {} }],
-        generationConfig: {
-          temperature: 0.3,
-          maxOutputTokens: 6144
-        }
-      };
-      const res = await makeRequest(url, payload);
-      if (res.statusCode === 200) {
-        const parsed = JSON.parse(res.body);
-        const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (text && text.trim().length > 0) {
-          console.log(`  [GEMINI SEARCH GROUNDING] Generated ${text.length} chars with ${m}`);
-          return text;
-        }
-      } else {
-        console.warn(`  [GEMINI SEARCH GROUNDING] ${m} returned HTTP ${res.statusCode}`);
-      }
-    } catch (e) {
-      console.warn(`  [GEMINI SEARCH GROUNDING] ${m} error: ${e.message}`);
-    }
-  }
-
-  // 2. Fallback attempt: Standard generation without tools
-  console.log('  [GEMINI FALLBACK] Trying standard generation without search tools...');
   for (const m of models) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
     try {
       const payload = {
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
-          temperature: 0.3,
-          maxOutputTokens: 6144
+          temperature: 0.25,
+          maxOutputTokens: 8192
         }
       };
       const res = await makeRequest(url, payload);
       if (res.statusCode === 200) {
         const parsed = JSON.parse(res.body);
         const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (text && text.trim().length > 0) {
-          console.log(`  [GEMINI DIRECT] Generated ${text.length} chars with ${m}`);
+        if (text && text.trim().length > 200) {
+          console.log(`  [GEMINI CASCADE] Successfully generated ${text.length} chars with model: ${m}`);
           return text;
         }
       } else {
-        console.warn(`  [GEMINI DIRECT] ${m} returned HTTP ${res.statusCode}`);
+        console.warn(`  [GEMINI CASCADE] ${m} returned HTTP ${res.statusCode}: ${res.body.slice(0, 150)}`);
       }
     } catch (e) {
-      console.warn(`  [GEMINI DIRECT] ${m} error: ${e.message}`);
+      console.warn(`  [GEMINI CASCADE] ${m} error: ${e.message}`);
     }
+    // Pause 1 second before trying next candidate
+    await new Promise(r => setTimeout(r, 1000));
   }
 
   return null;
@@ -618,22 +643,41 @@ async function run() {
       };
     }
 
-    console.log('[GEMINI] Reverse-engineering SERP competitors & generating article...');
+    console.log(`[SERP EXTRACTION] Performing live Google / SERP reverse-engineering for "${mainKeyword}"...`);
+    const serpCompetitors = await fetchLiveSerpCompetitors(mainKeyword);
+    console.log(`[SERP EXTRACTION] Extracted ${serpCompetitors.length} top-ranking competitors from live search:`);
+    serpCompetitors.forEach((c, idx) => {
+      console.log(`  ${idx + 1}. [${c.title}] (${c.url})`);
+      console.log(`     Snippet: "${c.snippet.slice(0, 100)}..."`);
+    });
+
+    const competitorSummary = serpCompetitors.length > 0
+      ? serpCompetitors.map((c, i) => `Competitor ${i + 1}:\n- Title: "${c.title}"\n- URL: ${c.url}\n- Snippet Content: "${c.snippet}"`).join('\n\n')
+      : `Top search results for "${mainKeyword}" focus on surface-level definitions.`;
+
+    console.log('[GEMINI] Synthesizing competitor content gap and generating authoritative manual...');
 
     // Build live article reference catalog for contextual in-text internal linking
     const liveArticlesCatalog = existingArticles
       .map(a => `- Title: "${a.title || a.slug}", URL: "/articles/${a.slug}", Category: "${a.categorySlug}", Target: "${a.primaryKeyword || ''}"`)
       .join('\n');
 
-    const prompt = `You are ${nextAuthorName}, an enterprise cloud and systems engineer writing for TechOps Wire.
-Write an authoritative, highly detailed technical manual for: "${proposedTitle}".
+    const prompt = `You are ${nextAuthorName}, a Principal Systems Architect and DevOps Engineer writing for TechOps Wire.
+Write an authoritative, highly comprehensive, hands-on production guide for: "${proposedTitle}".
 Primary Target Keyword: "${mainKeyword}".
 Supporting Semantic / LSI Keywords: ${tags.join(', ')}.
 
-OBJECTIVE:
-1. Reverse-engineer what top competitors cover on Google for "${mainKeyword}".
-2. Extract all high-value Semantic and LSI keywords, architectural terminology, formulas, CLI syntax, and configuration flags.
-3. Exploit the "Competitor Content Gap" (Information Gain): Top competitor articles are often generic or promotional. You must provide superior technical depth, including real-world trade-offs, actual CLI/code commands, calculation or architectural pitfalls, a structured comparison table, and troubleshooting edge cases that competitors miss.
+LIVE SERP REVERSE-ENGINEERING DATA (Top 5 Ranking Competitors):
+${competitorSummary}
+
+COMPETITOR CONTENT GAP (INFORMATION GAIN) OBJECTIVE:
+1. Reverse-engineer what the top 5 competitors above cover. Most competitors only provide superficial overviews or promotional summaries.
+2. EXPLOIT THE CONTENT GAP: Deliver the concrete engineering substance that competitors miss:
+   - Provide concrete, production-ready CLI commands (e.g. AWS CLI, Azure CLI, gcloud, bash, or PowerShell depending on context).
+   - Provide real architectural diagrams / workflow mechanics with failure modes and latency trade-offs.
+   - Include a comprehensive Decision Matrix / Comparison Table with at least 5 structured columns comparing architectural options.
+   - Include exact financial / operational calculations (e.g., CapEx vs OpEx formula, egress bandwidth cost modeling).
+   - Include a detailed Troubleshooting & Common Pitfalls section covering real production edge cases.
 
 STRUCTURE REQUIREMENTS:
 1. Lead Paragraph:
