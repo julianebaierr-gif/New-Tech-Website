@@ -268,10 +268,50 @@ STRICT WRITING RULES:
   const jsonMatch = raw.match(/```json\s*([\s\S]*?)\s*```/i);
   if (jsonMatch) {
     try {
-      faqs = JSON.parse(jsonMatch[1]);
+      const parsed = JSON.parse(jsonMatch[1]);
+      if (Array.isArray(parsed)) {
+        faqs = parsed;
+      } else if (parsed && typeof parsed === 'object') {
+        const arr = parsed.faqs || parsed.faq || parsed.questions || Object.values(parsed).find(v => Array.isArray(v));
+        if (Array.isArray(arr)) {
+          faqs = arr;
+        }
+      }
     } catch (e) {
       console.warn('FAQ JSON parse error:', e.message);
     }
+  }
+
+  // Ensure every item is { question, answer }
+  faqs = (Array.isArray(faqs) ? faqs : []).filter(item => item && item.question && item.answer).map(item => ({
+    question: String(item.question).trim(),
+    answer: String(item.answer).trim()
+  }));
+
+  // Fallback high-depth FAQs if empty
+  if (faqs.length === 0) {
+    faqs = [
+      {
+        question: "What is the primary architectural difference between a GPU and a TPU?",
+        answer: "GPUs employ massive arrays of SIMD cores suited for general parallel computing, while TPUs utilize systolic array Matrix Multiply Units (MXUs) that stream data directly between compute registers to drastically cut memory bandwidth overhead during matrix dot products."
+      },
+      {
+        question: "Why is high bandwidth memory (HBM3e) essential for modern LLM inference?",
+        answer: "Large language models during auto-regressive generation are memory-bound. Calculating each new token requires loading billions of model weights into registers; HBM3e provides multi-terabyte-per-second memory bandwidth to prevent compute execution units from stalling on memory latency."
+      },
+      {
+        question: "When should an enterprise deploy custom NPUs instead of discrete server GPUs?",
+        answer: "NPUs are optimized for energy-efficient, low-power edge inference and client devices with strict thermal ceilings (15W to 45W), whereas server GPUs are designed for high-concurrency model training and high-throughput data center inference exceeding 700W TDP."
+      },
+      {
+        question: "What is the memory wall problem in deep learning silicon architectures?",
+        answer: "The memory wall occurs when compute throughput (FLOPS) scales significantly faster than memory bus bandwidth (GB/s). Accelerators spend the majority of clock cycles waiting for matrix tensors to transfer between DRAM and on-chip SRAM."
+      },
+      {
+        question: "How do interconnect protocols like NVLink 5 compare to standard PCIe Gen 5?",
+        answer: "PCIe Gen 5 provides up to 128 GB/s bidirectional throughput across a 16-lane slot, whereas NVLink 5 provides up to 1.8 TB/s bidirectional bandwidth per GPU, enabling multi-GPU clusters to share memory address spaces with microsecond latencies."
+      }
+    ];
   }
 
   let cleaned = raw
