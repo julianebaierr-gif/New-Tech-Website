@@ -159,7 +159,7 @@ export const articles: Article[] = [
 </p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Action Summary</h4>
+  <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Action Summary</p>
   <p class="text-slate-700 text-sm">
     To delete identical rows immediately, select your dataset and press <kbd class="px-2 py-0.5 bg-white border border-slate-300 rounded text-xs text-slate-800 font-mono shadow-2xs">Alt + A + M</kbd> on your keyboard. Select your target columns and click <strong>OK</strong>. To preserve your original records without risk of data loss, extract clean unique rows into adjacent columns using the formula <code>=UNIQUE(A2:D500)</code>.
   </p>
@@ -411,7 +411,7 @@ End Sub</code></pre>
   },
   {
     slug: "aws-ec2-instance-types-explained",
-    title: "AWS EC2 Instance Types Explained: Sizing, Families & Cost Differences",
+    title: "AWS EC2 Instance Types Explained: Sizing, Families and Costs",
     headline: "AWS EC2 Instance Types Explained: Sizing & Performance Analysis",
     excerpt: "A practical breakdown of AWS EC2 instance families. Understand the difference between T4g, M6i, C7g, and R6i instances, and how to pick the right size for your budget and workload.",
     metaTitle: "AWS EC2 Instance Types and Sizing Steps | TechOps Wire",
@@ -517,7 +517,7 @@ End Sub</code></pre>
 </p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Architecture Summary</h4>
+  <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Architecture Summary</p>
   <p class="text-slate-700 text-sm">
     EC2 naming codes identify core specifications at a glance: <code>c7g.2xlarge</code> indicates Compute-optimized (<strong>c</strong>), 7th generation (<strong>7</strong>), AWS Graviton processor (<strong>g</strong>), and double extra large capacity (<strong>2xlarge</strong> with 8 vCPUs and 16 GiB RAM). Pick <strong>T4g</strong> for bursty development environments, <strong>C7g</strong> for high-throughput web frontends, <strong>M7g</strong> for balanced enterprise services, and <strong>R7g</strong> for caching layers and production databases.
   </p>
@@ -770,7 +770,7 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
 </p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Diagnostic Summary</h4>
+  <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Diagnostic Summary</p>
   <p class="text-slate-700 text-sm">
     Sluggish responses usually occur due to three factors: peak datacenter queue congestion during transatlantic business hours, conversational context bloat in long threads, and aggressive browser extensions buffering WebSocket data packets. To restore speed immediately, open a fresh chat thread, disable ad-blockers on the domain, or switch to dedicated developer API endpoints.
   </p>
@@ -925,7 +925,7 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
   },
   {
     slug: "windows-11-pro-vs-home",
-    title: "Windows 11 Pro vs Home: Feature Breakdown, BitLocker & Remote Desktop",
+    title: "Windows 11 Pro vs Home: BitLocker and Remote Desktop",
     headline: "Windows 11 Pro vs Home: Enterprise Feature Comparison",
     excerpt: "Should you upgrade to Windows 11 Pro or stick with Home? A straightforward comparison of BitLocker drive encryption, Hyper-V, Remote Desktop hosting, and whether the extra cost is worth it.",
     metaTitle: "Windows 11 Pro vs Home Edition Review | TechOps Wire",
@@ -1031,7 +1031,7 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
 </p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Decision Matrix</h4>
+  <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Decision Matrix</p>
   <p class="text-slate-700 text-sm">
     Choose <strong>Windows 11 Home</strong> for personal web browsing, everyday productivity, and pure gaming PCs where advanced networking is unnecessary. Upgrade to <strong>Windows 11 Pro</strong> if you need full BitLocker drive encryption on internal and external disks, inbound Remote Desktop hosting, native Hyper-V virtual machines, or connection to Microsoft Entra ID (Azure Active Directory).
   </p>
@@ -1194,7 +1194,7 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
   },
   {
     slug: "linux-file-permissions-chmod-chown",
-    title: "Linux File Permissions Explained: chmod, chown & Octal Notation Reference",
+    title: "Linux File Permissions Explained: chmod, chown & Octal Notation",
     headline: "Linux File Permissions Explained: chmod, chown & Octal Notation",
     excerpt: "How to understand and fix Linux file permissions without running risky shortcuts like chmod 777. Explains read, write, and execute rights, octal numbers (755 vs 644), and how to use chown properly.",
     metaTitle: "Linux chmod and chown Permissions Steps | TechOps Wire",
@@ -1301,7 +1301,7 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
 </p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Reference Summary</h4>
+  <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Reference Summary</p>
   <p class="text-slate-700 text-sm">
     Use <strong>644</strong> (<code>-rw-r--r--</code>) for regular application files and web assets. Use <strong>755</strong> (<code>drwxr-xr-x</code>) for executable binaries and directories. Use <strong>600</strong> (<code>-rw-------</code>) for sensitive credentials like SSH private keys and <code>.env</code> files. Use <code>chown user:group filename</code> to assign ownership, and never grant world-writable 777 permissions in production environments.
   </p>
@@ -1650,7 +1650,7 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
 </p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Implementation Summary</h4>
+  <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Implementation Summary</p>
   <p class="text-slate-700 text-sm">
     To generate a drop-down menu fast: Highlight your target cells, open the ribbon to <strong>Data &gt; Data Validation</strong> (or press <kbd class="px-2 py-0.5 bg-white border border-slate-300 rounded text-xs text-slate-800 font-mono shadow-2xs">Alt + A + V + V</kbd>), change the <strong>Allow</strong> setting to <strong>List</strong>, enter your source range or type comma-separated values into the <strong>Source</strong> field, and click <strong>OK</strong>.
   </p>
@@ -1870,7 +1870,7 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
   },
   {
     slug: "docker-container-architecture",
-    title: "Docker Container Architecture: Images, Volumes & Networks Explained",
+    title: "Docker Container Architecture: Images, Volumes and Networks",
     headline: "Docker Container Architecture: Images, Volumes & Networks",
     excerpt: "What actually happens when you run a Docker container? A clear look at images, container filesystems, persistent volumes, and bridge networking on Linux.",
     metaTitle: "Docker Container Architecture Steps | TechOps Wire",
@@ -1971,7 +1971,7 @@ sudo chown :developers /opt/apps/backend-api</code></pre>
 </p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Architecture Quick Summary</h4>
+  <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Architecture Quick Summary</p>
   <p class="text-slate-700 text-sm">
     Docker relies on a modular stack: <strong>dockerd</strong> handles client API commands; <strong>containerd</strong> oversees image transfers and container execution; and <strong>runc</strong> interacts with the Linux kernel to configure namespaces and cgroups. Storage utilizes the <strong>overlay2</strong> copy-on-write driver, while network communication routes through private virtual bridge interfaces managed via <strong>iptables</strong> packet forwarding.
   </p>
@@ -2136,7 +2136,7 @@ docker run -d --name web-api --network internal-app-net -p 3000:3000 my-api</cod
   },
   {
     slug: "chatgpt-file-upload-limits",
-    title: "ChatGPT File Upload Limits, Token Contexts & Large Document Handling",
+    title: "ChatGPT File Upload Limits: Token Contexts and Handling",
     headline: "ChatGPT File Upload Limits & Large Document Handling",
     excerpt: "How big of a file can you upload to ChatGPT? A practical breakdown of file size limits, row count limits for CSVs, and how to work with large PDFs without errors.",
     metaTitle: "ChatGPT File Upload Limits and Formats | TechOps Wire",
@@ -2232,7 +2232,7 @@ docker run -d --name web-api --network internal-app-net -p 3000:3000 my-api</cod
 </p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Upload Specs Summary</h4>
+  <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Upload Specs Summary</p>
   <p class="text-slate-700 text-sm">
     Individual document uploads are capped at a <strong>512 MB hard ceiling</strong> per file, with a maximum of <strong>10 files per prompt</strong>. Tabular spreadsheets hit practical processing limits at approximately <strong>2,000,000 cells</strong> or <strong>1 GB container RAM</strong>. To analyze massive datasets reliably, convert workbooks to clean CSVs, split lengthy PDFs into distinct sections, or deploy external vector retrieval (RAG).
   </p>
@@ -2394,7 +2394,7 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
   },
   {
     slug: "windows-server-2019-end-of-life",
-    title: "Windows Server 2019 End of Life: Upgrade Roadmap & Migration Strategy",
+    title: "Windows Server 2019 End of Life: Upgrade and Migration",
     headline: "Windows Server 2019 End of Life: Upgrade & Migration Strategy",
     excerpt: "What you need to know about the Windows Server 2019 end of life timeline. Important support dates, in-place upgrade steps to Server 2022, and a practical migration checklist.",
     metaTitle: "Windows Server 2019 End of Life Roadmap | TechOps Wire",
@@ -2495,7 +2495,7 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
 </p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Lifecycle Quick Summary</h4>
+  <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Lifecycle Quick Summary</p>
   <p class="text-slate-700 text-sm">
     Mainstream Support for Windows Server 2019 officially ended on <strong>January 9, 2024</strong>. Extended Security Support continues until <strong>January 9, 2029</strong>. Production workloads should be transitioned to Windows Server 2022 or Server 2025 well ahead of the final cutoff. For domain controllers and critical database hosts, favor side-by-side migration over in-place upgrades to prevent accumulated driver conflicts.
   </p>
@@ -2760,7 +2760,7 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
 </p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Decision Matrix</h4>
+  <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Decision Matrix</p>
   <p class="text-slate-700 text-sm">
     <strong>For 1 or 2 quick cells:</strong> Use the numeric keypad shortcut <kbd class="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-xs font-mono">Alt + 7</kbd> on Windows or <kbd class="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-xs font-mono">Option + 8</kbd> on Mac.<br />
     <strong>For entire columns or lists:</strong> Apply Custom Formatting (<code class="text-xs bg-slate-100 px-1 py-0.5 rounded font-mono">• @</code>) to add bullets automatically as you type.<br />
@@ -3079,7 +3079,7 @@ pdftk enterprise-manual.pdf cat 40-85 output section-financials.pdf</code></pre>
 <p class="lead text-lg text-slate-700 leading-relaxed mb-6">The primary benefits of cloud computing stem from the shift in operational control from hardware procurement to software-defined infrastructure. Engineering teams move away from managing physical racks and power cooling toward managing APIs and declarative configuration files. This transition changes the financial model from capital expenditure (CapEx) to operational expenditure (OpEx), allowing for granular cost tracking and the ability to scale resources based on real-time traffic patterns rather than peak-load capacity planning.</p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Decision Matrix</h4>
+  <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Decision Matrix</p>
   <p class="text-slate-700 text-sm">Cloud adoption requires balancing cost, latency, and operational overhead. Use this matrix to align your architectural strategy with business requirements for availability and budget.</p>
 </div>
 

@@ -415,9 +415,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             {relatedArticles.length > 0 && (
               <div className="mt-14 pt-8 border-t border-slate-200">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-bold text-slate-900">
+                  <h2 className="text-lg font-bold text-slate-900">
                     Recommended Follow-up Guides
-                  </h3>
+                  </h2>
                   <Link
                     href={`/category/${article.categorySlug}`}
                     className="text-xs font-semibold text-blue-600 hover:text-blue-700"
@@ -444,11 +444,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                         <span className="text-[11px] font-mono text-slate-500 block">
                           {rel.readingTimeMinutes} min read • {rel.difficulty}
                         </span>
-                        <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                        <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
                           <Link href={`/articles/${rel.slug}`}>
                             {rel.headline}
                           </Link>
-                        </h4>
+                        </h3>
                       </div>
                     </article>
                   ))}

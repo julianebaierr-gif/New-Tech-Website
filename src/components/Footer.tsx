@@ -23,9 +23,9 @@ export function Footer() {
 
           {/* Core Silos */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
+            <p className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
               Categories
-            </h4>
+            </p>
             <ul className="space-y-2 text-xs">
               {siteConfig.categories.map((cat) => (
                 <li key={cat.slug}>
@@ -42,9 +42,9 @@ export function Footer() {
 
           {/* Editorial & E-E-A-T */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
+            <p className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
               Editorial Standards
-            </h4>
+            </p>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link href="/editorial-policy" className="hover:text-blue-600 transition-colors">
@@ -66,9 +66,9 @@ export function Footer() {
 
           {/* Newsletter / Updates */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
+            <p className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
               System Updates
-            </h4>
+            </p>
             <p className="text-xs text-slate-500 mb-3 leading-relaxed">
               Weekly articles on Linux, AWS, and enterprise data workflows. No spam.
             </p>

@@ -10,6 +10,9 @@ export default function HomePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      {/* Primary Semantic H1 for Homepage */}
+      <h1 className="sr-only">TechOps Wire - Practical Cloud Infrastructure and Systems Tutorials</h1>
+
       {/* =========================================================================
           TOP 5 MAGAZINE HERO GRID (Clean, Editorial, High-Impact)
           1 Large Featured Lead + 4 Companion Stories in a 2x2 Grid = Exactly 5
@@ -44,11 +47,11 @@ export default function HomePage() {
                   </Link>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight group-hover:text-blue-300 transition-colors">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight group-hover:text-blue-300 transition-colors">
                   <Link href={`/articles/${leadArticle.slug}`}>
                     {leadArticle.title}
                   </Link>
-                </h1>
+                </h2>
 
                 <p className="text-slate-300 text-sm sm:text-base leading-relaxed line-clamp-2 max-w-2xl">
                   {leadArticle.excerpt}
@@ -92,11 +95,11 @@ export default function HomePage() {
                       {art.categoryName}
                     </span>
 
-                    <h2 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                    <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
                       <Link href={`/articles/${art.slug}`}>
                         {art.headline}
                       </Link>
-                    </h2>
+                    </h3>
 
                     <p className="text-xs text-slate-600 leading-relaxed line-clamp-2 pt-1">
                       {art.excerpt}
