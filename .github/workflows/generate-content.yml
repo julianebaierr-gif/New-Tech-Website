@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/generate-content.yml'
       - 'scripts/generate-articles-with-gemini.js'
+      - 'scripts/rebuild-ai-chips.js'
   workflow_dispatch:
 
 permissions:
@@ -34,7 +35,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: |
-          node scripts/rebuild-cloud-benefits.js
+          node scripts/rebuild-ai-chips.js
           node scripts/scan-user-words.js
 
       - name: Verify Production Build
