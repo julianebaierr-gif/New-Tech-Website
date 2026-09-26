@@ -23,7 +23,7 @@ if (process.argv[2]) {
 } else {
   // Read all URLs from sheet1_data.csv or articles.ts
   const sheet1Data = fs.readFileSync(path.join(__dirname, 'sheet1_data.csv'), 'utf8');
-  const lines = sheet1Data.split('\r\n').filter(Boolean);
+  const lines = sheet1Data.split(/\r?\n/).filter(Boolean);
   for (let i = 1; i < lines.length; i++) {
     const parts = lines[i].split(',');
     // Col 4 is URL: e.g. https://techopswire.com/articles/...
