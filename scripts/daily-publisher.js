@@ -819,6 +819,7 @@ ${liveArticlesCatalog}
 
 STRICT WRITING RULES:
 - ZERO AI BUZZWORDS: Never use: delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, seamlessly, unlock, pivotal, beacon, elevate, harness, embark, powerhouse, realm, evolution, plethora, game-changer, vital, comprehensive guide, deep dive, in-depth, discover, explore, modern, digital, pipelines, consumption, technical, verified.
+- NEVER NUMBER HEADINGS: Never prefix H2 or H3 headings with numbers like '1.', '2.', 'Step 1:', or 'Section 1:'. Headings MUST be clean, natural, and descriptive.
 - ZERO EM-DASHES: Do NOT use the em-dash character '—' or spaced hyphens ' - ' anywhere. Use commas, colons, or parentheses instead.
 - Tone: Hands-on, practical, tested in real production environments.
 - Output ONLY valid HTML for the article body followed by the \`\`\`json FAQ block.`;
@@ -853,6 +854,10 @@ STRICT WRITING RULES:
 
       articleHtml = sanitizeContent(cleaned);
 
+      // Strip leading numbers from headings if any
+      articleHtml = articleHtml.replace(/<h2([^>]*)>\s*(?:\d+\.|\bSection\s+\d+:?|\bStep\s+\d+:?)\s*/gi, '<h2$1>');
+      articleHtml = articleHtml.replace(/<h3([^>]*)>\s*(?:\d+\.|\bSection\s+\d+:?|\bStep\s+\d+:?)\s*/gi, '<h3$1>');
+
       // Validate internal links against existing live articles to guarantee 0 broken links
       const validSlugs = new Set(existingArticles.map(a => a.slug));
       const internalLinkRegex = /<a\s+[^>]*href="\/articles\/([^"#?]+)"[^>]*>([\s\S]*?)<\/a>/gi;
@@ -869,8 +874,9 @@ STRICT WRITING RULES:
       const h2Regex = /<h2(?:\s+id="([^"]+)")?[^>]*>([^<]+)<\/h2>/gi;
       let m;
       while ((m = h2Regex.exec(articleHtml)) !== null) {
-        const id = m[1] || slugify(m[2]);
-        tocItems.push({ id, title: m[2].trim(), level: 2 });
+        const rawTitle = m[2].replace(/^(?:\d+\.|\bSection\s+\d+:?|\bStep\s+\d+:?)\s*/i, '').trim();
+        const id = m[1] || slugify(rawTitle);
+        tocItems.push({ id, title: rawTitle, level: 2 });
       }
     }
   }

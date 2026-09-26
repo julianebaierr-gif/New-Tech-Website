@@ -3199,37 +3199,37 @@ ls -l /var/www/html
     tableOfContents: [
           {
                 "id": "silicon-taxonomy",
-                "title": "1. The Silicon Taxonomy: GPUs, TPUs, and NPUs",
+                "title": "The Silicon Taxonomy: GPUs, TPUs, and NPUs",
                 "level": 2
           },
           {
                 "id": "memory-bandwidth-wall",
-                "title": "2. The Memory Bandwidth Wall: HBM3e vs SRAM vs DDR5",
+                "title": "The Memory Bandwidth Wall: HBM3e vs SRAM vs DDR5",
                 "level": 2
           },
           {
                 "id": "architectural-comparison-matrix",
-                "title": "3. Architectural Comparison Matrix (5-Column Benchmarks)",
+                "title": "Architectural Comparison Matrix (5-Column Benchmarks)",
                 "level": 2
           },
           {
                 "id": "interconnect-and-networking",
-                "title": "4. Cluster Interconnects: NVLink 5, InfiniBand, and RoCE v2",
+                "title": "Cluster Interconnects: NVLink 5, InfiniBand, and RoCE v2",
                 "level": 2
           },
           {
                 "id": "implementation-workflow",
-                "title": "5. Production Deployment Workflow and CLI Verification",
+                "title": "Production Deployment Workflow and CLI Verification",
                 "level": 2
           },
           {
                 "id": "operational-cost-modeling",
-                "title": "6. Operational TCO and Power Efficiency Calculations",
+                "title": "Operational TCO and Power Efficiency Calculations",
                 "level": 2
           },
           {
                 "id": "troubleshooting-and-pitfalls",
-                "title": "7. Production Failure Modes and Troubleshooting Runbook",
+                "title": "Production Failure Modes and Troubleshooting Runbook",
                 "level": 2
           }
     ],
@@ -3263,7 +3263,7 @@ ls -l /var/www/html
   <p class="text-slate-700 text-sm">For training large language models, prioritize HBM3e memory capacity and NVLink bandwidth. For inference, focus on low latency interconnects and FP8/INT8 quantization support. When evaluating <a href="/articles/aws-ec2-instance-types-explained" class="text-blue-600 font-medium hover:underline">AWS EC2 instance types and sizing steps</a>, ensure the selected instance supports the specific tensor core generation required by your model framework.</p>
 </div>
 
-<h2 id="silicon-taxonomy" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">1. The Silicon Taxonomy: GPUs, TPUs, and NPUs</h2>
+<h2 id="silicon-taxonomy" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">The Silicon Taxonomy: GPUs, TPUs, and NPUs</h2>
 
 <p>Graphics Processing Units (GPUs) function as massively parallel processors designed originally for pixel shading. In the context of artificial intelligence, they utilize thousands of small, efficient cores to execute floating point operations simultaneously. The architecture relies on a SIMT (Single Instruction, Multiple Threads) model, which allows the hardware to manage large batches of data efficiently. Standard iterations include dedicated tensor cores that perform matrix multiplication in a single clock cycle, significantly accelerating deep learning workloads compared to standard scalar processors.</p>
 
@@ -3271,7 +3271,7 @@ ls -l /var/www/html
 
 <p>Neural Processing Units (NPUs) are specialized accelerators integrated into system on chips (SoCs) for mobile and edge devices. These chips focus on low power inference, often utilizing fixed point arithmetic to maximize performance per watt. While they lack the raw memory bandwidth of data center GPUs, they provide the necessary compute density for real time processing of audio, video, and sensor data. Companies like Bridgecom Semiconductors provide specialized products and services that bridge the gap between high performance server silicon and power constrained edge deployments, ensuring that inference tasks remain performant across diverse hardware environments.</p>
 
-<h2 id="memory-bandwidth-wall" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">2. The Memory Bandwidth Wall: HBM3e vs SRAM vs DDR5</h2>
+<h2 id="memory-bandwidth-wall" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">The Memory Bandwidth Wall: HBM3e vs SRAM vs DDR5</h2>
 
 <p>The primary constraint in Standard AI chip architecture is the memory wall. As compute throughput increases, the ability to feed data to the processing units becomes the limiting factor. High Bandwidth Memory (HBM3e) addresses this by stacking DRAM dies vertically and connecting them to the processor via a wide bus. Current HBM3e implementations provide bandwidth exceeding 4.8 TB/s per chip, which is necessary to prevent the compute units from idling while waiting for weight parameters during backpropagation.</p>
 
@@ -3279,7 +3279,7 @@ ls -l /var/www/html
 
 <p>The hierarchy of memory access determines the efficiency of the entire system. A well architected AI chip minimizes data movement by keeping active model weights in local SRAM or HBM. When the model size exceeds the available HBM, the system must implement model parallelism or offloading techniques. This increases latency and reduces overall throughput. Understanding these constraints is critical when selecting hardware for specific model architectures, as the ratio of compute to memory bandwidth dictates the effective utilization of the silicon.</p>
 
-<h2 id="architectural-comparison-matrix" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">3. Architectural Comparison Matrix (5-Column Benchmarks)</h2>
+<h2 id="architectural-comparison-matrix" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Architectural Comparison Matrix (5-Column Benchmarks)</h2>
 
 <div class="my-6 overflow-x-auto">
   <table class="min-w-full text-sm text-left border border-slate-200 rounded-lg">
@@ -3302,7 +3302,7 @@ ls -l /var/www/html
   </table>
 </div>
 
-<h2 id="interconnect-and-networking" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">4. Cluster Interconnects: NVLink 5, InfiniBand, and RoCE v2</h2>
+<h2 id="interconnect-and-networking" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Cluster Interconnects: NVLink 5, InfiniBand, and RoCE v2</h2>
 
 <p>Scaling AI workloads requires high speed communication between multiple chips. NVLink 5 provides a proprietary, high bandwidth interconnect that allows GPUs to share memory address spaces and communicate at 1.8 TB/s bidirectional speeds. This reduces the overhead of data synchronization during distributed training. Without such interconnects, the system would rely on PCIe Gen 5, which is limited to 128 GB/s, creating a massive bottleneck for multi-node operations.</p>
 
@@ -3310,7 +3310,7 @@ ls -l /var/www/html
 
 <p>Google utilizes custom Optical Circuit Switches (OCS) to connect TPUs in their data centers. This allows for dynamic reconfiguration of the network topology based on the specific requirements of the training job. By moving data through light rather than copper, they reduce power Utilization and latency at the rack level. These interconnect strategies are as important as the silicon itself, as the performance of a cluster is defined by the slowest link in the communication path.</p>
 
-<h2 id="implementation-workflow" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">5. Production Deployment Workflow and CLI Verification</h2>
+<h2 id="implementation-workflow" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Production Deployment Workflow and CLI Verification</h2>
 
 <p>Deploying AI models requires precise configuration of the driver and runtime environment. When using <a href="/articles/docker-container-architecture" class="text-blue-600 font-medium hover:underline">Docker container architecture</a>, ensure the NVIDIA Container Toolkit is installed to allow the container to access the host GPU. The following command verifies that the driver and CUDA runtime are correctly mapped to the container environment.</p>
 
@@ -3334,7 +3334,7 @@ gcloud compute tpus tpu-vm create tpu-node-01 \
 # Verify TPU connectivity
 gcloud compute tpus tpu-vm ssh tpu-node-01 --command="ls /dev/accel*"</code></pre>
 
-<h2 id="operational-cost-modeling" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">6. Operational TCO and Power Efficiency Calculations</h2>
+<h2 id="operational-cost-modeling" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Operational TCO and Power Efficiency Calculations</h2>
 
 <p>Calculating the Total Cost of Ownership (TCO) for AI infrastructure requires accounting for more than just the initial hardware purchase. The formula must include the hourly compute cost, data egress fees, storage IOPS, and the power Utilization per token generated. Power efficiency is measured in GFLOPS per watt, a metric that highlights the superiority of ASICs over general purpose GPUs in specific workloads.</p>
 
@@ -3342,7 +3342,7 @@ gcloud compute tpus tpu-vm ssh tpu-node-01 --command="ls /dev/accel*"</code></pr
 
 <p>To optimize costs, organizations should implement spot instances for non critical training jobs and utilize reserved instances for production inference. Monitoring the utilization rate of the chips is essential; idle GPUs are a significant source of wasted capital. By implementing auto scaling policies based on request volume, administrators can ensure that the infrastructure footprint aligns with actual demand, thereby improving the overall return on investment.</p>
 
-<h2 id="troubleshooting-and-pitfalls" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">7. Production Failure Modes and Troubleshooting Runbook</h2>
+<h2 id="troubleshooting-and-pitfalls" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Production Failure Modes and Troubleshooting Runbook</h2>
 
 <p>Thermal throttling is a common failure mode in high density AI clusters. When the junction temperature exceeds the safety threshold, the chip automatically reduces its clock frequency to prevent physical damage. This manifests as a sudden drop in throughput. Monitoring tools should alert on temperature spikes before throttling occurs. Ensure that the cooling solution, whether air or liquid, is rated for the peak TDP of the installed hardware.</p>
 
