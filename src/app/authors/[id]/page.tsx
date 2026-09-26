@@ -130,6 +130,8 @@ export default async function AuthorProfilePage({ params }: AuthorPageProps) {
             <img
               src={author.avatar}
               alt={author.name}
+              width={112}
+              height={112}
               className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-2 border-slate-200 shadow-sm"
             />
             <span className="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center text-[10px] text-white" title="Staff Writer">
@@ -294,6 +296,8 @@ export default async function AuthorProfilePage({ params }: AuthorPageProps) {
                     <img
                       src={art.coverImage}
                       alt={art.title}
+                      width={600}
+                      height={375}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-3 left-3">

@@ -205,6 +205,8 @@ export default function AboutPage() {
                       <img
                         src={author.avatar}
                         alt={author.name}
+                        width={64}
+                        height={64}
                         className="w-16 h-16 rounded-full object-cover border-2 border-slate-200 group-hover:border-blue-500 transition-all shadow-xs"
                       />
                     </Link>

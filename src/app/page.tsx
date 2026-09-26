@@ -23,6 +23,8 @@ export default function HomePage() {
               <img
                 src={leadArticle.coverImage}
                 alt={leadArticle.title}
+                width={1200}
+                height={630}
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70"
               />
               {/* Gradient Overlay for Crisp Typography Contrast */}
@@ -79,6 +81,8 @@ export default function HomePage() {
                     <img
                       src={art.coverImage}
                       alt={art.title}
+                      width={600}
+                      height={338}
                       className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
@@ -156,6 +160,8 @@ export default function HomePage() {
                   <img
                     src={art.coverImage}
                     alt={art.title}
+                    width={800}
+                    height={500}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
@@ -189,6 +195,8 @@ export default function HomePage() {
                     <img
                       src={siteConfig.authors.find((a) => a.id === art.authorId)?.avatar}
                       alt={siteConfig.authors.find((a) => a.id === art.authorId)?.name || "Author"}
+                      width={20}
+                      height={20}
                       className="w-5 h-5 rounded-full object-cover border border-slate-200"
                     />
                     <span className="text-slate-600 font-medium group-hover/author:text-blue-600 transition-colors">

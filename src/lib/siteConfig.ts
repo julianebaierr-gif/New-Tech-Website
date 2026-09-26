@@ -31,8 +31,8 @@ export const siteConfig = {
   // When deploying on Vercel preview, set isStaging to true. 
   // Set to false when custom domain is connected to enable full production indexing!
   isStaging: false,
-  productionUrl: "https://techopswire.com",
-  stagingUrl: "https://techopswire.com",
+  productionUrl: "https://www.techopswire.com",
+  stagingUrl: "https://www.techopswire.com",
   
   get baseUrl() {
     return this.productionUrl;
@@ -87,11 +87,7 @@ export const siteConfig = {
       location: "Austin, Texas, United States",
       certifications: ["AWS Certified Solutions Architect (Associate)", "CompTIA Linux+", "Docker Certified Associate"],
       skills: ["Linux Server Administration (Ubuntu/Debian)", "AWS EC2, VPC & S3", "Docker Networking & Volumes", "Bash Shell Scripting", "Windows Server 2019/2022"],
-      socials: {
-        linkedin: "https://www.linkedin.com/in/evan-mitchell-ops",
-        github: "https://github.com/evan-mitchell-ops",
-        twitter: "https://twitter.com/evanmitchellops",
-      },
+      socials: {},
     },
     {
       id: "sarah-blake",
@@ -104,11 +100,7 @@ export const siteConfig = {
       location: "Chicago, Illinois, United States",
       certifications: ["Microsoft Office Specialist: Excel Expert", "Google Data Analytics Professional", "Power BI Data Analyst Associate"],
       skills: ["Advanced Excel Formulas (XLOOKUP, FILTER, UNIQUE)", "Data Hygiene & De-duplication", "Data Validation & Dynamic Drop-Down Lists", "Google Sheets Automation", "SQL & Power Query"],
-      socials: {
-        linkedin: "https://www.linkedin.com/in/sarah-blake-data",
-        github: "https://github.com/sarah-blake-data",
-        twitter: "https://twitter.com/sarahblakedata",
-      },
+      socials: {},
     },
   ] as AuthorConfig[],
 };

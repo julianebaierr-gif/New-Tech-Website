@@ -376,6 +376,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                   <img
                     src={author.avatar}
                     alt={author.name}
+                    width={64}
+                    height={64}
                     className="w-16 h-16 rounded-2xl object-cover border-2 border-slate-200 hover:border-blue-500 transition-all shadow-xs"
                   />
                 </Link>
@@ -433,6 +435,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                         <img
                           src={rel.coverImage}
                           alt={rel.title}
+                          width={600}
+                          height={375}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       </div>
