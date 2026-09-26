@@ -30,16 +30,16 @@ export const siteConfig = {
   description: "Tested practical manuals, cloud architecture comparisons, Linux commands, and Excel formulas written and tested by working technicians for IT operations.",
   // When deploying on Vercel preview, set isStaging to true. 
   // Set to false when custom domain is connected to enable full production indexing!
-  isStaging: false, // Set to true if testing on .vercel.app, false for production
+  isStaging: false,
   productionUrl: "https://techopswire.com",
-  stagingUrl: "https://techopswire.vercel.app",
+  stagingUrl: "https://techopswire.com",
   
   get baseUrl() {
-    return this.isStaging ? this.stagingUrl : this.productionUrl;
+    return this.productionUrl;
   },
 
   editorialStandardsUrl: "/editorial-policy",
-  contactEmail: "editorial@techopswire.com",
+  contactEmail: "info.techopswire@gmail.com",
   foundedYear: 2026,
 
   // 4 Core Categories
