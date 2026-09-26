@@ -80,6 +80,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteConfig.baseUrl,
   },
+  verification: {
+    google: siteConfig.googleSiteVerification,
+  },
 };
 
 export default function RootLayout({

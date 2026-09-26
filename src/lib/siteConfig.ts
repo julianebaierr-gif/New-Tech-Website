@@ -40,6 +40,7 @@ export const siteConfig = {
 
   editorialStandardsUrl: "/editorial-policy",
   contactEmail: "info.techopswire@gmail.com",
+  googleSiteVerification: "ZrghEub1-zRi1ld6WuvJLAb_Fo039b4oLjQbrV894QM",
   foundedYear: 2026,
 
   // 4 Core Categories
