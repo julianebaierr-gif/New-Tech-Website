@@ -888,7 +888,9 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
     console.error('[ERROR] Closing bracket not found in articles.ts!');
     return;
   }
-  const updatedArticlesTs = articlesTs.slice(0, lastClosing) + ',\n' + newArticleObject + '\n];' + articlesTs.slice(lastClosing + 2);
+  const trimmedBefore = articlesTs.slice(0, lastClosing).trimEnd();
+  const separator = trimmedBefore.endsWith(',') ? '\n' : ',\n';
+  const updatedArticlesTs = trimmedBefore + separator + newArticleObject + '\n];\n' + articlesTs.slice(lastClosing + 2).trimStart();
   fs.writeFileSync(articlesTsPath, updatedArticlesTs, 'utf8');
   console.log(`[SUCCESS] Article appended to src/data/articles.ts!`);
 
