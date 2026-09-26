@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { siteConfig } from "@/lib/siteConfig";
 import { BrandLogo } from "@/components/BrandLogo";
@@ -13,7 +11,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand Column */}
           <div className="md:col-span-1 space-y-3">
-            <Link href="/" className="inline-block group">
+            <Link href="/" prefetch={false} className="inline-block group">
               <BrandLogo size="md" />
             </Link>
             <p className="text-xs text-slate-500 leading-relaxed">
@@ -31,6 +29,7 @@ export function Footer() {
                 <li key={cat.slug}>
                   <Link
                     href={`/category/${cat.slug}`}
+                    prefetch={false}
                     className="hover:text-blue-600 transition-colors"
                   >
                     {cat.name}
@@ -47,17 +46,17 @@ export function Footer() {
             </p>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/editorial-policy" className="hover:text-blue-600 transition-colors">
+                <Link href="/editorial-policy" prefetch={false} className="hover:text-blue-600 transition-colors">
                   Editorial & Fact-Checking Policy
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-blue-600 transition-colors">
+                <Link href="/about" prefetch={false} className="hover:text-blue-600 transition-colors">
                   About Our Editorial Team
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-blue-600 transition-colors">
+                <Link href="/contact" prefetch={false} className="hover:text-blue-600 transition-colors">
                   Contact Editorial Desk
                 </Link>
               </li>
@@ -72,7 +71,7 @@ export function Footer() {
             <p className="text-xs text-slate-500 mb-3 leading-relaxed">
               Weekly articles on Linux, AWS, and enterprise data workflows. No spam.
             </p>
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
+            <form action="#" className="space-y-2">
               <input
                 type="email"
                 placeholder="your.email@company.com"
@@ -92,9 +91,9 @@ export function Footer() {
         <div className="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
           <p>© {currentYear} {siteConfig.name}. All rights reserved.</p>
           <div className="flex space-x-6">
-            <Link href="/privacy" className="hover:text-slate-800">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-slate-800">Terms of Use</Link>
-            <Link href="/sitemap.xml" className="hover:text-slate-800">XML Sitemap</Link>
+            <Link href="/privacy" prefetch={false} className="hover:text-slate-800">Privacy Policy</Link>
+            <Link href="/terms" prefetch={false} className="hover:text-slate-800">Terms of Use</Link>
+            <Link href="/sitemap.xml" prefetch={false} className="hover:text-slate-800">XML Sitemap</Link>
           </div>
         </div>
       </div>

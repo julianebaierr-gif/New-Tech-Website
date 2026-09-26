@@ -28,6 +28,9 @@ export default function HomePage() {
                 alt={leadArticle.title}
                 width={1200}
                 height={630}
+                fetchPriority="high"
+                loading="eager"
+                decoding="async"
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70"
               />
               {/* Gradient Overlay for Crisp Typography Contrast */}
@@ -42,13 +45,13 @@ export default function HomePage() {
                   <span className="text-slate-400">•</span>
                   <span className="text-slate-300">{leadArticle.readingTimeMinutes} min read</span>
                   <span className="text-slate-400">•</span>
-                  <Link href={`/authors/${leadArticle.authorId}`} className="text-slate-300 hover:text-white transition-colors underline-offset-2 hover:underline">
+                  <Link href={`/authors/${leadArticle.authorId}`} prefetch={false} className="text-slate-300 hover:text-white transition-colors underline-offset-2 hover:underline">
                     {siteConfig.authors.find((a) => a.id === leadArticle.authorId)?.name || "Staff Writer"}
                   </Link>
                 </div>
 
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight group-hover:text-blue-300 transition-colors">
-                  <Link href={`/articles/${leadArticle.slug}`}>
+                  <Link href={`/articles/${leadArticle.slug}`} prefetch={false}>
                     {leadArticle.title}
                   </Link>
                 </h2>
@@ -63,6 +66,7 @@ export default function HomePage() {
                   </span>
                   <Link
                     href={`/articles/${leadArticle.slug}`}
+                    prefetch={false}
                     className="font-bold text-white bg-blue-600 hover:bg-blue-500 px-3.5 py-1.5 rounded-lg transition-colors inline-flex items-center gap-1"
                   >
                     Read Tutorial <span>→</span>
@@ -86,6 +90,8 @@ export default function HomePage() {
                       alt={art.title}
                       width={600}
                       height={338}
+                      loading="lazy"
+                      decoding="async"
                       className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
@@ -96,7 +102,7 @@ export default function HomePage() {
                     </span>
 
                     <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
-                      <Link href={`/articles/${art.slug}`}>
+                      <Link href={`/articles/${art.slug}`} prefetch={false}>
                         {art.headline}
                       </Link>
                     </h3>
@@ -111,6 +117,7 @@ export default function HomePage() {
                   <span>{art.readingTimeMinutes} min read</span>
                   <Link
                     href={`/articles/${art.slug}`}
+                    prefetch={false}
                     className="font-semibold text-blue-600 hover:text-blue-700 inline-flex items-center gap-0.5"
                   >
                     Read <span>→</span>
@@ -140,6 +147,7 @@ export default function HomePage() {
             <Link
               key={cat.slug}
               href={`/category/${cat.slug}`}
+              prefetch={false}
               className="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors"
             >
               {cat.name}
@@ -165,6 +173,8 @@ export default function HomePage() {
                     alt={art.title}
                     width={800}
                     height={500}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
@@ -178,7 +188,7 @@ export default function HomePage() {
                   </div>
 
                   <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
-                    <Link href={`/articles/${art.slug}`}>
+                    <Link href={`/articles/${art.slug}`} prefetch={false}>
                       {art.headline}
                     </Link>
                   </h3>
@@ -193,6 +203,7 @@ export default function HomePage() {
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
                   <Link
                     href={`/authors/${art.authorId}`}
+                    prefetch={false}
                     className="flex items-center gap-2 group/author hover:text-blue-600 transition-colors"
                   >
                     <img
@@ -200,6 +211,8 @@ export default function HomePage() {
                       alt={siteConfig.authors.find((a) => a.id === art.authorId)?.name || "Author"}
                       width={20}
                       height={20}
+                      loading="lazy"
+                      decoding="async"
                       className="w-5 h-5 rounded-full object-cover border border-slate-200"
                     />
                     <span className="text-slate-600 font-medium group-hover/author:text-blue-600 transition-colors">
@@ -208,6 +221,7 @@ export default function HomePage() {
                   </Link>
                   <Link
                     href={`/articles/${art.slug}`}
+                    prefetch={false}
                     className="font-bold text-blue-600 hover:text-blue-700 text-xs inline-flex items-center gap-0.5"
                   >
                     Read Tutorial →
@@ -223,6 +237,7 @@ export default function HomePage() {
           <div className="inline-flex flex-col sm:flex-row items-center gap-3">
             <Link
               href="/editorial-policy"
+              prefetch={false}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-white font-semibold text-xs transition-all shadow-xs group"
             >
               <span>Read Our Testing &amp; Editorial Standards</span>

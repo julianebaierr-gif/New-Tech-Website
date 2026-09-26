@@ -128,8 +128,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth bg-white text-slate-900">
       <head>
-        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <SchemaJsonLd schema={globalSchema} />
       </head>
       <body className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
