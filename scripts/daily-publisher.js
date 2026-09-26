@@ -853,6 +853,14 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
   }
 
   // 5. Append New Article to src/data/articles.ts
+  if (secondaryImage) {
+    secondaryImage.alt = sanitizeContent(secondaryImage.alt || "");
+    secondaryImage.caption = sanitizeContent(secondaryImage.caption || "");
+  }
+  if (tertiaryImage) {
+    tertiaryImage.alt = sanitizeContent(tertiaryImage.alt || "");
+    tertiaryImage.caption = sanitizeContent(tertiaryImage.caption || "");
+  }
   const { metaTitle, metaDescription } = craftSeoMetadata(proposedTitle, mainKeyword, category.name);
   const cleanExcerpt = sanitizeContent(`Practical manual covering ${mainKeyword} with step-by-step instructions, commands, and troubleshooting methods.`);
   const newArticleObject = `  {

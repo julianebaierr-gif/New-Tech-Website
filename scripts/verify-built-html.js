@@ -25,6 +25,7 @@ const filesToCheck = [
   { path: '.next/server/app/articles/windows-server-2019-end-of-life.html', name: 'Article: win-server-2019' },
   { path: '.next/server/app/articles/how-to-add-bullet-points-in-excel.html', name: 'Article: bullet-points-excel' },
   { path: '.next/server/app/articles/benefits-of-cloud-computing.html', name: 'Article: cloud-benefits' },
+  { path: '.next/server/app/articles/ai-chips-news-today.html', name: 'Article: ai-chips-news-today' },
 ];
 
 console.log("=== INSPECTING PRODUCTION BUILT HTML FILES ===");
