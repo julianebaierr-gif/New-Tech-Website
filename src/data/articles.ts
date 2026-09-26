@@ -3243,7 +3243,7 @@ ls -l /var/www/html
                 "answer": "HBM3e provides the high memory bandwidth required to keep compute units fed with data, preventing the processor from idling during large scale model training."
           },
           {
-                "question": "What is the role of an NPU in modern systems?",
+                "question": "What is the role of an NPU in production systems?",
                 "answer": "NPUs are specialized for low power inference on edge devices, focusing on fixed point arithmetic to maximize performance per watt for real time tasks."
           },
           {

@@ -36,6 +36,7 @@ jobs:
           GOOGLE_SHEET_WEBHOOK_URL: ${{ secrets.GOOGLE_SHEET_WEBHOOK_URL }}
         run: |
           node scripts/daily-publisher.js
+          node scripts/scan-user-words.js
 
       - name: Verify Production Build
         run: npm run build

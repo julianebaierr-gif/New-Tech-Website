@@ -349,51 +349,117 @@ function slugify(text) {
     .trim();
 }
 
-// 1. Live Google / Web SERP Reverse Engineering (Top 5 Competitors + Snippets)
-function fetchLiveSerpCompetitors(keyword) {
-  return new Promise((resolve) => {
-    const postData = `q=${encodeURIComponent(keyword)}&b=`;
-    const req = https.request({
-      hostname: 'html.duckduckgo.com',
-      path: '/html/',
-      method: 'POST',
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Content-Length': Buffer.byteLength(postData)
-      },
+// 1. Google Suggest LSI Extractor (50+ Real Semantic Keywords)
+async function fetchGoogleLsiKeywords(keyword) {
+  const getSuggest = (query) => new Promise((resolve) => {
+    https.get('https://suggestqueries.google.com/complete/search?client=firefox&q=' + encodeURIComponent(query), (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          resolve(parsed[1] || []);
+        } catch {
+          resolve([]);
+        }
+      });
+    }).on('error', () => resolve([]));
+  });
+
+  const words = keyword.split(/\s+/).filter(w => !['today', 'news', 'and', 'or', 'in', 'the', 'for', 'with', 'to', 'how'].includes(w.toLowerCase()));
+  const rootPhrase = words.slice(0, 2).join(' ') || keyword;
+
+  const querySeeds = [
+    keyword,
+    rootPhrase,
+    `${rootPhrase} guide`,
+    `${rootPhrase} steps`,
+    `${rootPhrase} tutorial`,
+    `${rootPhrase} commands`,
+    `${rootPhrase} comparison`,
+    `${rootPhrase} troubleshooting`,
+    ...['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'm', 'n', 'p', 's', 't', 'v', 'w'].map(l => `${rootPhrase} ${l}`)
+  ];
+
+  const lsiSet = new Set();
+  for (const seed of querySeeds) {
+    const results = await getSuggest(seed);
+    results.forEach(kw => {
+      if (kw && kw.toLowerCase() !== keyword.toLowerCase()) {
+        lsiSet.add(kw.trim());
+      }
+    });
+    if (lsiSet.size >= 65) break;
+  }
+
+  return Array.from(lsiSet);
+}
+
+// 2. Multi-Source Competitor Scraper (Google News/Search RSS with Silo Fallbacks)
+async function fetchLiveSerpCompetitors(keyword, categorySlug) {
+  const fetchGoogleRss = () => new Promise((resolve) => {
+    https.get('https://news.google.com/rss/search?q=' + encodeURIComponent(keyword) + '&hl=en-US&gl=US&ceid=US:en', {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
       timeout: 10000
     }, (res) => {
-      let b = '';
-      res.on('data', chunk => b += chunk);
+      let data = '';
+      res.on('data', chunk => data += chunk);
       res.on('end', () => {
-        const results = [];
-        const itemRegex = /<h2 class="result__title">[\s\S]*?<a[^>]*class="result__url"[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>[\s\S]*?<a class="result__snippet[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
-        let match;
-        while ((match = itemRegex.exec(b)) !== null && results.length < 5) {
-          const rawUrl = match[1];
-          let realUrl = rawUrl;
-          const uddgMatch = rawUrl.match(/uddg=([^&]+)/);
-          if (uddgMatch) realUrl = decodeURIComponent(uddgMatch[1]);
-          const title = match[2].replace(/<[^>]+>/g, '').trim();
-          const snippet = match[3].replace(/<[^>]+>/g, '').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&amp;/g, '&').trim();
-          results.push({ title, url: realUrl, snippet });
+        const items = data.match(/<item>[\s\S]*?<\/item>/g) || [];
+        const competitors = [];
+        for (const it of items) {
+          const title = it.match(/<title>([^<]+)<\/title>/)?.[1] || '';
+          const link = it.match(/<link>([^<]+)<\/link>/)?.[1] || '';
+          if (title && link) {
+            competitors.push({
+              title: title.replace(/&quot;/g, '"').replace(/&amp;/g, '&'),
+              url: link,
+              snippet: `Published analysis covering ${title}`
+            });
+          }
+          if (competitors.length >= 5) break;
         }
-        resolve(results);
+        resolve(competitors);
       });
-    });
-    req.on('error', (e) => {
-      console.warn(`[SERP SEARCH] Network error: ${e.message}`);
-      resolve([]);
-    });
-    req.on('timeout', () => {
-      req.destroy();
-      console.warn('[SERP SEARCH] Request timeout');
-      resolve([]);
-    });
-    req.write(postData);
-    req.end();
+    }).on('error', () => resolve([])).on('timeout', function() { this.destroy(); resolve([]); });
   });
+
+  const res = await fetchGoogleRss();
+  if (res.length >= 3) return res;
+
+  // Domain-specific curated fallback competitors if RSS is restricted
+  const FALLBACK_COMPETITORS = {
+    "data-excel-automation": [
+      { title: "Microsoft Support: Excel Formulas, Functions and Data Cleaning", url: "https://support.microsoft.com/en-us/excel", snippet: "Official technical documentation covering spreadsheet formulas, array syntax, and table operations." },
+      { title: "Exceljet: Practical Excel Workflows and Function Tutorials", url: "https://exceljet.net", snippet: "Clear explanations of spreadsheet mechanics, keyboard shortcuts, and formula debugging." },
+      { title: "Ablebits: Advanced Excel Solutions and Data Transformation", url: "https://www.ablebits.com", snippet: "Step-by-step guides for automating repetitive spreadsheet tasks and fixing data discrepancies." },
+      { title: "Contextures: Excel Pivot Tables, Validation and Conditional Rules", url: "https://www.contextures.com", snippet: "Advanced spreadsheet modeling, data validation drop-downs, and VBA automation." },
+      { title: "MrExcel: Troubleshooting Complex Workbook Formulas", url: "https://www.mrexcel.com", snippet: "Community verified solutions for formula errors, dynamic ranges, and legacy workbook migration." }
+    ],
+    "cloud-infrastructure": [
+      { title: "AWS Documentation: Compute Architecture and VPC Topologies", url: "https://docs.aws.amazon.com", snippet: "Production sizing benchmarks, IAM security policies, and multi-region deployment architectures." },
+      { title: "Google Cloud Architecture Framework: High Availability Setups", url: "https://cloud.google.com/architecture", snippet: "Design principles for scalable infrastructure, egress cost management, and network peering." },
+      { title: "DigitalOcean Community: Linux Administration and Docker Guides", url: "https://www.digitalocean.com/community", snippet: "Production tutorials on systemd units, firewall rules, and container runtime configuration." },
+      { title: "HashiCorp Learn: Infrastructure as Code and Terraform Provisioning", url: "https://developer.hashicorp.com", snippet: "Declarative infrastructure workflows, state management, and configuration drift prevention." },
+      { title: "Red Hat Enterprise Linux Deployment and Systems Operations Guide", url: "https://access.redhat.com", snippet: "Kernel tuning, SELinux policies, and enterprise storage administration." }
+    ],
+    "ai-developer-tools": [
+      { title: "Hugging Face: Transformer Architecture and Tensor Optimizations", url: "https://huggingface.co/docs", snippet: "Model quantization workflows, FP8/BF16 throughput, and inference engine benchmarks." },
+      { title: "vLLM Documentation: High-Throughput LLM Serving and PagedAttention", url: "https://docs.vllm.ai", snippet: "Memory fragmentation prevention, continuous batching, and KV-cache optimization." },
+      { title: "NVIDIA Developer Technical Blog: CUDA and TensorRT Performance", url: "https://developer.nvidia.com/blog", snippet: "Kernel profiling, NVLink bandwidth benchmarks, and multi-GPU cluster interconnects." },
+      { title: "PyTorch Performance Tuning Guide: Distributed Training Pipelines", url: "https://pytorch.org/tutorials", snippet: "FSDP and DeepSpeed memory offloading, gradient accumulation, and mixed precision." },
+      { title: "LangChain Documentation: Production Agent Orchestration and Tool Use", url: "https://python.langchain.com", snippet: "Context window budget allocation, prompt caching, and structured output parsing." }
+    ],
+    "os-systems": [
+      { title: "Microsoft Learn: Windows Server Architecture and Migration Workflows", url: "https://learn.microsoft.com/windows-server", snippet: "Active Directory domain controller replication, Hyper-V failover clustering, and group policies." },
+      { title: "ArchWiki: Linux Kernel Configuration and Filesystem Tuning", url: "https://wiki.archlinux.org", snippet: "In-depth system administration, systemd journal auditing, and POSIX permissions." },
+      { title: "Ubuntu Server Guide: Security Hardening and OpenSSH Configuration", url: "https://ubuntu.com/server/docs", snippet: "Network interface configuration, netplan routing, and AppArmor profiles." },
+      { title: "Debian Administrator's Handbook: Package Management and Maintenance", url: "https://debian-handbook.info", snippet: "Package dependency resolution, kernel updates, and automated system maintenance." },
+      { title: "FreeBSD Handbook: Storage Pools and ZFS Filesystem Administration", url: "https://docs.freebsd.org", snippet: "Data integrity verification, snapshot replication, and RAID-Z array management." }
+    ]
+  };
+
+  return res.concat(FALLBACK_COMPETITORS[categorySlug] || FALLBACK_COMPETITORS["cloud-infrastructure"]).slice(0, 5);
 }
 
 // 2. Multi-tier Cascading Gemini Generation (Reliable, Zero-Timeout, High-Quality)
@@ -502,12 +568,7 @@ async function run() {
   const lastArticle = existingArticles[existingArticles.length - 1];
   console.log(`[STATUS] Last article: [${lastArticle?.slug}] | Category: ${lastArticle?.categorySlug} | Author: ${lastArticle?.authorId}`);
 
-  // 1. Author Alternation: Sarah Blake <-> Evan Mitchell
-  const nextAuthorId = (lastArticle?.authorId === 'sarah-blake') ? 'evan-mitchell' : 'sarah-blake';
-  const nextAuthorName = (nextAuthorId === 'sarah-blake') ? 'Sarah Blake' : 'Evan Mitchell';
-  console.log(`[AUTHOR ROTATION] Today's Author: ${nextAuthorName} (${nextAuthorId})`);
-
-  // 2. Category Round-Robin: Data -> Cloud -> AI -> OS
+  // 1. Category Round-Robin: Data -> Cloud -> AI -> OS
   let lastCatIndex = -1;
   if (lastArticle?.categorySlug) {
     lastCatIndex = SILO_ROTATION.findIndex(s => s.slug === lastArticle.categorySlug);
@@ -560,13 +621,20 @@ async function run() {
   const milteJulteKws = targetRow[4] || '';
   const combinedVolume = parseInt(targetRow[6] || mainVolume.toString(), 10);
 
+  const category = mapCategory(categorySilo);
+  const isDataExcel = category.slug === 'data-excel-automation';
+  const nextAuthorId = isDataExcel ? 'sarah-blake' : 'evan-mitchell';
+  const nextAuthorName = isDataExcel ? 'Sarah Blake' : 'Evan Mitchell';
+  const authorRole = isDataExcel
+    ? 'Senior Data Operations Analyst & Spreadsheet Automation Specialist'
+    : 'Principal Cloud Infrastructure Specialist & Systems Architect';
+
   console.log(`\n[TARGET TOPIC SELECTED] Row ${targetRowIndex + 1} in Sheet2:`);
-  console.log(`  Silo: ${categorySilo}`);
+  console.log(`  Silo: ${categorySilo} -> ${category.name} (${category.slug})`);
   console.log(`  Title: ${proposedTitle}`);
   console.log(`  Target Keyword: ${mainKeyword}`);
-  console.log(`  Author: ${nextAuthorName} (${nextAuthorId})`);
+  console.log(`  Author: ${nextAuthorName} (${nextAuthorId}) | Expertise: ${authorRole}`);
 
-  const category = mapCategory(categorySilo);
   const slug = slugify(mainKeyword);
   const postUrl = `https://techopswire.com/articles/${slug}`;
   const now = new Date();
@@ -637,8 +705,12 @@ async function run() {
       };
     }
 
+    console.log(`[LSI EXTRACTION] Extracting 50+ Google Suggest LSI & Semantic keywords for "${mainKeyword}"...`);
+    const lsiKeywords = await fetchGoogleLsiKeywords(mainKeyword);
+    console.log(`✓ Extracted ${lsiKeywords.length} Google LSI keywords.`);
+
     console.log(`[SERP EXTRACTION] Performing live Google / SERP reverse-engineering for "${mainKeyword}"...`);
-    const serpCompetitors = await fetchLiveSerpCompetitors(mainKeyword);
+    const serpCompetitors = await fetchLiveSerpCompetitors(mainKeyword, category.slug);
     console.log(`[SERP EXTRACTION] Extracted ${serpCompetitors.length} top-ranking competitors from live search:`);
     serpCompetitors.forEach((c, idx) => {
       console.log(`  ${idx + 1}. [${c.title}] (${c.url})`);
@@ -646,8 +718,10 @@ async function run() {
     });
 
     const competitorSummary = serpCompetitors.length > 0
-      ? serpCompetitors.map((c, i) => `Competitor ${i + 1}:\n- Title: "${c.title}"\n- URL: ${c.url}\n- Snippet Content: "${c.snippet}"`).join('\n\n')
+      ? serpCompetitors.map((c, i) => `Competitor ${i + 1}:\n- Title: "${c.title}"\n- URL: ${c.url}\n- Focus: "${c.snippet}"`).join('\n\n')
       : `Top search results for "${mainKeyword}" focus on surface-level definitions.`;
+
+    const lsiContext = lsiKeywords.slice(0, 50).join(', ');
 
     console.log('[GEMINI] Synthesizing competitor content gap and generating authoritative manual...');
 
@@ -656,22 +730,28 @@ async function run() {
       .map(a => `- Title: "${a.title || a.slug}", URL: "/articles/${a.slug}", Category: "${a.categorySlug}", Target: "${a.primaryKeyword || ''}"`)
       .join('\n');
 
-    const prompt = `You are ${nextAuthorName}, a Principal Systems Architect and DevOps Engineer writing for TechOps Wire.
-Write an authoritative, highly comprehensive, hands-on production guide for: "${proposedTitle}".
+    const prompt = `You are ${nextAuthorName}, ${authorRole} writing for TechOps Wire.
+Write an authoritative, exhaustive, publication-grade 2,000+ word technical manual for: "${proposedTitle}".
 Primary Target Keyword: "${mainKeyword}".
-Supporting Semantic / LSI Keywords: ${tags.join(', ')}.
+Supporting Semantic / LSI Keywords from Google (Include these naturally across sections):
+${lsiContext || tags.join(', ')}
 
-LIVE SERP REVERSE-ENGINEERING DATA (Top 5 Ranking Competitors):
+LIVE SERP COMPETITOR AUDIT (Top 5 Competitors on Google):
 ${competitorSummary}
 
-COMPETITOR CONTENT GAP (INFORMATION GAIN) OBJECTIVE:
-1. Reverse-engineer what the top 5 competitors above cover. Most competitors only provide superficial overviews or promotional summaries.
-2. EXPLOIT THE CONTENT GAP: Deliver the concrete engineering substance that competitors miss:
-   - Provide concrete, production-ready CLI commands (e.g. AWS CLI, Azure CLI, gcloud, bash, or PowerShell depending on context).
-   - Provide real architectural diagrams / workflow mechanics with failure modes and latency trade-offs.
-   - Include a comprehensive Decision Matrix / Comparison Table with at least 5 structured columns comparing architectural options.
-   - Include exact financial / operational calculations (e.g., CapEx vs OpEx formula, egress bandwidth cost modeling).
-   - Include a detailed Troubleshooting & Common Pitfalls section covering real production edge cases.
+COMPETITOR CONTENT GAP & INFORMATION GAIN OBJECTIVE:
+1. Top competitors provide surface-level overviews, generic definitions, and marketing fluff.
+2. EXPLOIT THE CONTENT GAP: Deliver deep, production-tested substance:
+   - Provide concrete, production-ready CLI commands, keyboard shortcuts, or exact syntax formulas.
+   - Provide real architectural mechanics, data flows, and trade-offs.
+   - Include a comprehensive Decision Matrix / Comparison Table with at least 5 structured columns comparing options.
+   - Include exact operational calculations, sizing guidelines, or efficiency formulas.
+   - Include a detailed Troubleshooting & Common Pitfalls section covering real edge cases and error messages.
+
+CRITICAL LENGTH & DEPTH MANDATE:
+- The article MUST be at least 1,800 to 2,500 words of rich technical instruction.
+- Each H2 section MUST contain at least 3 to 4 dense, highly informative paragraphs with code or tabular data.
+- Never write brief 1-sentence or 1-paragraph sections.
 
 STRUCTURE REQUIREMENTS:
 1. Lead Paragraph:
@@ -694,7 +774,7 @@ STRUCTURE REQUIREMENTS:
    <div class="my-6 overflow-x-auto">
      <table class="min-w-full text-sm text-left border border-slate-200 rounded-lg">
        <thead class="bg-slate-100 text-slate-800 font-semibold border-b border-slate-200">
-         <tr><th class="px-4 py-3">Feature</th><th class="px-4 py-3">Public Cloud</th><th class="px-4 py-3">On-Premises</th><th class="px-4 py-3">Hybrid Model</th></tr>
+         <tr><th class="px-4 py-3">Feature</th><th class="px-4 py-3">Option A</th><th class="px-4 py-3">Option B</th><th class="px-4 py-3">Enterprise Standard</th><th class="px-4 py-3">Operational Trade-off</th></tr>
        </thead>
        <tbody class="divide-y divide-slate-200 text-slate-700">
          ...
@@ -711,7 +791,7 @@ STRUCTURE REQUIREMENTS:
    <pre class="bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto text-sm font-mono my-4"><code>...</code></pre>
 
 7. Troubleshooting / Common Pitfalls Section:
-   Detailed section covering real operational traps (such as data egress charges, misconfigured security groups, or unattached disk storage waste).
+   Detailed section covering real operational traps (such as data loss, memory leaks, misconfigured permissions, or unattached disk storage waste).
 
 8. Contextual In-Text Internal Linking (Strict Editorial Rules):
    You have access to the complete index of currently published live articles on TechOps Wire:
@@ -726,7 +806,7 @@ ${liveArticlesCatalog}
    - Only link to URLs from the live index above. Never link to unverified or external domains.
 
 9. FAQs Section:
-   Include 4 technical FAQs addressing complex questions.
+   Include 4 to 5 technical FAQs addressing complex questions.
    Also provide the FAQs in a JSON block at the very end of your response:
    \`\`\`json
    [
@@ -738,7 +818,7 @@ ${liveArticlesCatalog}
    \`\`\`
 
 STRICT WRITING RULES:
-- ZERO AI BUZZWORDS: Never use: delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, seamlessly, unlock, pivotal, beacon, elevate, harness, embark, powerhouse, realm, evolution, plethora, game-changer, vital, comprehensive guide, deep dive, in-depth, discover, explore.
+- ZERO AI BUZZWORDS: Never use: delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, seamlessly, unlock, pivotal, beacon, elevate, harness, embark, powerhouse, realm, evolution, plethora, game-changer, vital, comprehensive guide, deep dive, in-depth, discover, explore, modern, digital, pipelines, consumption, technical, verified.
 - ZERO EM-DASHES: Do NOT use the em-dash character '—' or spaced hyphens ' - ' anywhere. Use commas, colons, or parentheses instead.
 - Tone: Hands-on, practical, tested in real production environments.
 - Output ONLY valid HTML for the article body followed by the \`\`\`json FAQ block.`;
@@ -749,11 +829,20 @@ STRICT WRITING RULES:
       const jsonMatch = raw.match(/```json\s*([\s\S]*?)\s*```/i);
       if (jsonMatch) {
         try {
-          faqItems = JSON.parse(jsonMatch[1]);
+          const parsedJson = JSON.parse(jsonMatch[1]);
+          if (Array.isArray(parsedJson)) {
+            faqItems = parsedJson;
+          } else if (parsedJson && typeof parsedJson === 'object') {
+            const arr = parsedJson.faqs || parsedJson.faq || parsedJson.questions || Object.values(parsedJson).find(v => Array.isArray(v));
+            if (Array.isArray(arr)) faqItems = arr;
+          }
         } catch (e) {
           console.warn('[FAQS] JSON parse failed, relying on fallback/regex.');
         }
       }
+      faqItems = (Array.isArray(faqItems) ? faqItems : [])
+        .filter(item => item && item.question && item.answer)
+        .map(item => ({ question: String(item.question).trim(), answer: String(item.answer).trim() }));
 
       let cleaned = raw
         .replace(/```json[\s\S]*?```/gi, '')
@@ -862,7 +951,10 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
     tertiaryImage.caption = sanitizeContent(tertiaryImage.caption || "");
   }
   const { metaTitle, metaDescription } = craftSeoMetadata(proposedTitle, mainKeyword, category.name);
+  const totalWordCount = articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  const dynamicReadingTime = Math.max(7, Math.ceil(totalWordCount / 200));
   const cleanExcerpt = sanitizeContent(`Practical manual covering ${mainKeyword} with step-by-step instructions, commands, and troubleshooting methods.`);
+
   const newArticleObject = `  {
     slug: "${slug}",
     title: "${proposedTitle.replace(/"/g, '\\"')}",
@@ -875,7 +967,7 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
     authorId: "${nextAuthorId}",
     publishedAt: "${now.toISOString()}",
     updatedAt: "${now.toISOString()}",
-    readingTimeMinutes: 8,
+    readingTimeMinutes: ${dynamicReadingTime},
     difficulty: "Intermediate",
     primaryKeyword: "${mainKeyword}",
     primaryVolume: ${mainVolume},
