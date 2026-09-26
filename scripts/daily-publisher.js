@@ -981,15 +981,15 @@ run-command --target="${mainKeyword}" --mode=production</code></pre>
     console.error(`[INDEXING ERROR]:`, e.message);
   }
 
-  // 10. Safety & Quota Control: decrement remaining posts and pause
-  publisherState.postsRemaining = Math.max(0, (publisherState.postsRemaining || 1) - 1);
-  publisherState.paused = true;
-  publisherState.active = false;
+  // 10. Safety & Quota Control: Record run state (Continuous daily publishing)
+  publisherState.active = true;
+  publisherState.paused = false;
+  publisherState.postsRemaining = 1;
   publisherState.lastRunAt = new Date().toISOString();
   publisherState.lastArticlePublished = slug;
-  publisherState.note = "Scheduled single post completed. Automated posting paused until user explicitly requests resumption.";
+  publisherState.note = "Daily automated publishing active. Scheduled everyday at 13:00 UTC (Peak Search Volume).";
   fs.writeFileSync(publisherStatePath, JSON.stringify(publisherState, null, 2), 'utf8');
-  console.log(`[STATE UPDATE] publisher-state.json updated: postsRemaining=${publisherState.postsRemaining}, paused=${publisherState.paused}`);
+  console.log(`[STATE UPDATE] publisher-state.json updated: active=true, next scheduled daily at 13:00 UTC`);
 
   console.log(`=== [DAILY AUTO-PUBLISHER] Daily run complete ===\n`);
   process.exit(0);

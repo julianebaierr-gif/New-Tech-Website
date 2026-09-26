@@ -1,10 +1,10 @@
 {
-  "active": false,
-  "postsRemaining": 0,
-  "paused": true,
+  "active": true,
+  "postsRemaining": 1,
+  "paused": false,
   "maxPosts": 1,
   "targetSchedule": "Daily at 13:00 UTC",
-  "note": "Scheduled single post completed. Automated posting paused until user explicitly requests resumption.",
+  "note": "Daily automated publishing active. Scheduled everyday at 13:00 UTC (Peak Search Volume).",
   "lastRunAt": "2026-09-25T15:16:25.426Z",
   "lastArticlePublished": "benefits-of-cloud-computing"
 }
