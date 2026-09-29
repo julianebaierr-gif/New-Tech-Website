@@ -3447,7 +3447,7 @@ gcloud compute tpus tpu-vm ssh tpu-node-01 --command="ls /dev/accel*"</code></pr
       },
       {
             "question": "Can I perform a factory reset if I have forgotten my Windows password?",
-            "answer": "Yes. You can access the recovery environment by holding the Shift key while clicking Restart on the login screen, then navigating to Troubleshoot > Reset this PC."
+            "answer": "Yes. You can access the recovery environment by holding the Shift key while clicking Restart on the login screen, then selecting Troubleshoot > Reset this PC."
       },
       {
             "question": "What is the difference between a local reinstall and a cloud download?",
