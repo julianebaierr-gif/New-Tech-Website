@@ -26,6 +26,8 @@ const filesToCheck = [
   { path: '.next/server/app/articles/how-to-add-bullet-points-in-excel.html', name: 'Article: bullet-points-excel' },
   { path: '.next/server/app/articles/benefits-of-cloud-computing.html', name: 'Article: cloud-benefits' },
   { path: '.next/server/app/articles/ai-chips-news-today.html', name: 'Article: ai-chips-news-today' },
+  { path: '.next/server/app/articles/how-to-factory-reset-hp-laptop.html', name: 'Article: hp-laptop-reset' },
+  { path: '.next/server/app/articles/how-to-unhide-rows-in-excel.html', name: 'Article: unhide-rows-excel' },
 ];
 
 console.log("=== INSPECTING PRODUCTION BUILT HTML FILES ===");

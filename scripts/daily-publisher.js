@@ -101,60 +101,71 @@ function sanitizeContent(raw) {
   return sanitizeAllContent(raw);
 }
 
-function craftSeoMetadata(proposedTitle, mainKeyword, categoryName) {
-  let cleanTitle = proposedTitle
-    .replace(/&/g, 'and')
-    .replace(/:\s*.*$/, '')
-    .replace(/\(.*?\)/g, '')
-    .replace(/[^\w\s]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
+function craftSeoMetadata(proposedTitle, mainKeyword, categoryName, leadSentence, aiMetaTitle, aiMetaDesc) {
+  let metaTitle = aiMetaTitle;
+  if (!metaTitle || metaTitle.length < 50 || metaTitle.length > 55) {
+    let cleanTitle = proposedTitle
+      .replace(/&/g, 'and')
+      .replace(/:\s*.*$/, '')
+      .replace(/\(.*?\)/g, '')
+      .replace(/[^\w\s]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
 
-  let prefix = cleanTitle;
-  if (prefix.length > 38) {
-    prefix = prefix.slice(0, 38).replace(/\s+\S*$/, '').trim();
-  }
-  let metaTitle = `${prefix} | TechOps Wire`;
-  
-  if (metaTitle.length < 50) {
-    const addOn = " Steps";
-    if (`${prefix}${addOn} | TechOps Wire`.length <= 55) {
-      prefix = `${prefix}${addOn}`;
+    let prefix = cleanTitle;
+    if (prefix.length > 38) {
+      prefix = prefix.slice(0, 38).replace(/\s+\S*$/, '').trim();
+    }
+    metaTitle = `${prefix} | TechOps Wire`;
+    
+    if (metaTitle.length < 50) {
+      const addOn = " Steps";
+      if (`${prefix}${addOn} | TechOps Wire`.length <= 55) {
+        prefix = `${prefix}${addOn}`;
+        metaTitle = `${prefix} | TechOps Wire`;
+      }
+    }
+    if (metaTitle.length < 50) {
+      const addOn = " Manual";
+      if (`${prefix}${addOn} | TechOps Wire`.length <= 55) {
+        prefix = `${prefix}${addOn}`;
+        metaTitle = `${prefix} | TechOps Wire`;
+      }
+    }
+    if (metaTitle.length > 55) {
+      prefix = prefix.slice(0, 55 - 15).replace(/\s+\S*$/, '').trim();
       metaTitle = `${prefix} | TechOps Wire`;
     }
-  }
-  if (metaTitle.length < 50) {
-    const addOn = " Manual";
-    if (`${prefix}${addOn} | TechOps Wire`.length <= 55) {
-      prefix = `${prefix}${addOn}`;
+    while (metaTitle.length < 50) {
+      prefix = prefix + "+";
       metaTitle = `${prefix} | TechOps Wire`;
     }
-  }
-  if (metaTitle.length > 55) {
-    prefix = prefix.slice(0, 55 - 15).replace(/\s+\S*$/, '').trim();
-    metaTitle = `${prefix} | TechOps Wire`;
-  }
-  while (metaTitle.length < 50) {
-    prefix = prefix + "+";
-    metaTitle = `${prefix} | TechOps Wire`;
-  }
-  if (metaTitle.length > 55) {
-    metaTitle = metaTitle.slice(0, 55);
+    if (metaTitle.length > 55) {
+      metaTitle = metaTitle.slice(0, 55);
+    }
   }
 
-  let baseDesc = `Practical manual covering ${mainKeyword} with step-by-step instructions, command lines, troubleshooting methods, and architecture configurations.`;
-  baseDesc = sanitizeContent(baseDesc).replace(/&/g, 'and');
-  if (baseDesc.length > 155) {
-    baseDesc = baseDesc.slice(0, 155);
-  }
-  while (baseDesc.length < 150) {
-    baseDesc += " Read.";
-  }
-  if (baseDesc.length > 155) {
-    baseDesc = baseDesc.slice(0, 155);
+  let metaDescription = aiMetaDesc;
+  if (!metaDescription || metaDescription.length < 150 || metaDescription.length > 155) {
+    let base = leadSentence ? leadSentence.replace(/<[^>]+>/g, '').trim() : '';
+    if (!base || base.length < 80) {
+      base = `Review tested methods, exact syntax, and system architecture for ${mainKeyword}. Step-by-step procedures for systems administration and IT operations.`;
+    }
+    base = sanitizeContent(base).replace(/&/g, 'and');
+    if (base.length > 155) {
+      base = base.slice(0, 155).replace(/\s+\S*$/, '').trim();
+      if (!base.endsWith('.')) base += '.';
+    }
+    while (base.length < 150) {
+      base += " Read more.";
+    }
+    if (base.length > 155) {
+      base = base.slice(0, 155);
+    }
+    metaDescription = base;
   }
 
-  return { metaTitle, metaDescription: baseDesc };
+  return { metaTitle, metaDescription };
 }
 
 // Curated topic image banks with verified Unsplash IDs and zero overlap with existing articles
@@ -826,9 +837,13 @@ STRICT WRITING RULES:
 - Tone: Hands-on, practical, tested in real production environments.
 - Output ONLY valid HTML for the article body followed by the \`\`\`json FAQ block.`;
 
+    let aiExcerpt = '';
+    let aiMetaTitle = '';
+    let aiMetaDesc = '';
+
     const raw = await callGemini(apiKey, prompt);
     if (raw) {
-      // 1. Extract JSON FAQs if present
+      // 1. Extract JSON Metadata & FAQs if present
       const jsonMatch = raw.match(/```json\s*([\s\S]*?)\s*```/i);
       if (jsonMatch) {
         try {
@@ -838,6 +853,9 @@ STRICT WRITING RULES:
           } else if (parsedJson && typeof parsedJson === 'object') {
             const arr = parsedJson.faqs || parsedJson.faq || parsedJson.questions || Object.values(parsedJson).find(v => Array.isArray(v));
             if (Array.isArray(arr)) faqItems = arr;
+            if (parsedJson.excerpt) aiExcerpt = parsedJson.excerpt;
+            if (parsedJson.metaTitle) aiMetaTitle = parsedJson.metaTitle;
+            if (parsedJson.metaDescription) aiMetaDesc = parsedJson.metaDescription;
           }
         } catch (e) {
           console.warn('[FAQS] JSON parse failed, relying on fallback/regex.');
@@ -914,10 +932,19 @@ STRICT WRITING RULES:
     tertiaryImage.alt = sanitizeContent(tertiaryImage.alt || "");
     tertiaryImage.caption = sanitizeContent(tertiaryImage.caption || "");
   }
-  const { metaTitle, metaDescription } = craftSeoMetadata(proposedTitle, mainKeyword, category.name);
+  const leadMatch = articleHtml.match(/<p class="lead[^>]*>([\s\S]*?)<\/p>/i);
+  const leadText = leadMatch ? leadMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+  const firstSentence = leadText ? (leadText.split(/(?<=[.?!])\s+/)[0] || leadText) : '';
+
+  let cleanExcerpt = aiExcerpt;
+  if (!cleanExcerpt || cleanExcerpt.length < 80) {
+    cleanExcerpt = firstSentence ? firstSentence.slice(0, 170).trim() : `Review tested steps, command syntax, and configuration procedures for ${mainKeyword}.`;
+  }
+  cleanExcerpt = sanitizeContent(cleanExcerpt);
+
+  const { metaTitle, metaDescription } = craftSeoMetadata(proposedTitle, mainKeyword, category.name, firstSentence, aiMetaTitle, aiMetaDesc);
   const totalWordCount = articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
   const dynamicReadingTime = Math.max(7, Math.ceil(totalWordCount / 200));
-  const cleanExcerpt = sanitizeContent(`Practical manual covering ${mainKeyword} with step-by-step instructions, commands, and troubleshooting methods.`);
 
   const newArticleObject = `  {
     slug: "${slug}",
