@@ -816,7 +816,7 @@ ${liveArticlesCatalog}
 9. Metadata & FAQs Section:
    Include 4 to 5 technical FAQs addressing complex questions.
    Also provide the Metadata and FAQs in a JSON block at the very end of your response:
-   ```json
+   \`\`\`json
    {
      "excerpt": "A 150-175 character unique summary explaining key technical takeaways.",
      "metaTitle": "A 50-55 character unique meta title ending with | TechOps Wire",
@@ -828,14 +828,14 @@ ${liveArticlesCatalog}
        { "question": "...", "answer": "..." }
      ]
    }
-   ```
+   \`\`\`
 
 STRICT WRITING RULES:
 - ZERO AI BUZZWORDS: Never use: delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, seamlessly, unlock, pivotal, beacon, elevate, harness, embark, powerhouse, realm, evolution, plethora, game-changer, vital, comprehensive guide, deep dive, in-depth, discover, explore, modern, digital, pipelines, consumption, technical, verified.
 - NEVER NUMBER HEADINGS: Never prefix H2 or H3 headings with numbers like '1.', '2.', 'Step 1:', or 'Section 1:'. Headings MUST be clean, natural, and descriptive.
 - ZERO EM-DASHES: Do NOT use the em-dash character '—' or spaced hyphens ' - ' anywhere. Use commas, colons, or parentheses instead.
 - Tone: Hands-on, practical, tested in real production environments.
-- Output ONLY valid HTML for the article body followed by the ```json block.`;
+- Output ONLY valid HTML for the article body followed by the \`\`\`json block.`;
 
     let aiExcerpt = '';
     let aiMetaTitle = '';
