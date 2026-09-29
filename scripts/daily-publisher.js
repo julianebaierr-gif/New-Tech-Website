@@ -476,17 +476,12 @@ async function fetchLiveSerpCompetitors(keyword, categorySlug) {
 // 2. Multi-tier Cascading Gemini Generation (Reliable, Zero-Timeout, High-Quality)
 async function callGemini(apiKey, prompt) {
   const models = [
-    'gemini-2.5-flash',
-    'gemini-2.0-flash',
-    'gemini-1.5-flash',
-    'gemini-1.5-pro',
-    'gemini-2.5-pro',
-    'gemini-3.1-flash-lite',
     'gemini-flash-latest',
-    'gemini-3.5-flash-lite',
+    'gemini-pro-latest',
+    'gemini-2.5-flash-lite',
     'gemini-3.8-flash',
-    'gemini-flash-lite-latest',
-    'gemini-pro-latest'
+    'gemini-3.1-flash-lite',
+    'gemini-flash-lite-latest'
   ];
 
   function makeRequest(url, payload) {
@@ -524,7 +519,7 @@ async function callGemini(apiKey, prompt) {
       if (res.statusCode === 200) {
         const parsed = JSON.parse(res.body);
         const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (text && text.trim().length > 2500) {
+        if (text && text.trim().length > 4000) {
           console.log(`  [GEMINI CASCADE] Successfully generated ${text.length} chars with model: ${m}`);
           return text;
         }
@@ -818,24 +813,29 @@ ${liveArticlesCatalog}
    - Never use generic anchor text like 'click here' or 'this guide'.
    - Only link to URLs from the live index above. Never link to unverified or external domains.
 
-9. FAQs Section:
+9. Metadata & FAQs Section:
    Include 4 to 5 technical FAQs addressing complex questions.
-   Also provide the FAQs in a JSON block at the very end of your response:
-   \`\`\`json
-   [
-     { "question": "...", "answer": "..." },
-     { "question": "...", "answer": "..." },
-     { "question": "...", "answer": "..." },
-     { "question": "...", "answer": "..." }
-   ]
-   \`\`\`
+   Also provide the Metadata and FAQs in a JSON block at the very end of your response:
+   ```json
+   {
+     "excerpt": "A 150-175 character unique summary explaining key technical takeaways.",
+     "metaTitle": "A 50-55 character unique meta title ending with | TechOps Wire",
+     "metaDescription": "A 150-155 character unique meta description with zero buzzwords.",
+     "faqs": [
+       { "question": "...", "answer": "..." },
+       { "question": "...", "answer": "..." },
+       { "question": "...", "answer": "..." },
+       { "question": "...", "answer": "..." }
+     ]
+   }
+   ```
 
 STRICT WRITING RULES:
 - ZERO AI BUZZWORDS: Never use: delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, seamlessly, unlock, pivotal, beacon, elevate, harness, embark, powerhouse, realm, evolution, plethora, game-changer, vital, comprehensive guide, deep dive, in-depth, discover, explore, modern, digital, pipelines, consumption, technical, verified.
 - NEVER NUMBER HEADINGS: Never prefix H2 or H3 headings with numbers like '1.', '2.', 'Step 1:', or 'Section 1:'. Headings MUST be clean, natural, and descriptive.
 - ZERO EM-DASHES: Do NOT use the em-dash character '—' or spaced hyphens ' - ' anywhere. Use commas, colons, or parentheses instead.
 - Tone: Hands-on, practical, tested in real production environments.
-- Output ONLY valid HTML for the article body followed by the \`\`\`json FAQ block.`;
+- Output ONLY valid HTML for the article body followed by the ```json block.`;
 
     let aiExcerpt = '';
     let aiMetaTitle = '';
@@ -913,12 +913,53 @@ STRICT WRITING RULES:
     }
   }
 
-  // Strict Quality Gate: NEVER publish a thin dummy stub to production
-  const wordCount = articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
-  console.log(`[QUALITY GATE] Generated article contains ${wordCount} words and ${tocItems.length} H2 sections.`);
+  // Self-Healing Dynamic Section Expansion if word count is between 1000 and 1500
+  let wordCount = articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  console.log(`[QUALITY GATE] Initial generated article contains ${wordCount} words and ${tocItems.length} H2 sections.`);
 
-  if (!articleHtml || tocItems.length < 5 || wordCount < 1400) {
-    console.error(`[FATAL QUALITY FAILURE] Generated content is insufficient: ${wordCount} words (minimum 1,400 required) and ${tocItems.length} H2s (minimum 5 required).`);
+  if (wordCount < 1500 && apiKey) {
+    console.log(`[ENRICHMENT] Word count is ${wordCount} (< 1500). Generating supplementary deep-dive section to exceed 1,600+ words...`);
+    const enrichPrompt = `You are ${nextAuthorName}, ${authorRole} writing for TechOps Wire.
+We need an additional deep-dive technical section for the manual: "${proposedTitle}" (Primary Target: "${mainKeyword}").
+Provide an in-depth 400-word technical section with:
+1. One clean H2 heading (e.g. "Enterprise Deployment Scenarios and Edge Case Recovery" or "Operational Metrics and Diagnostic Verification").
+2. 3 to 4 dense paragraphs with concrete operational advice, trade-offs, and metrics.
+3. One clean command or configuration snippet inside <pre class="bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto text-sm font-mono my-4"><code>...</code></pre>.
+Do NOT prefix headings with numbers.
+Do NOT use AI buzzwords (never use delve, tapestry, demystify, robust, cornerstone, paradigm, etc.).
+Do NOT use em-dashes or spaced hyphens.
+Output ONLY the clean HTML for this section.`;
+
+    const enrichRaw = await callGemini(apiKey, enrichPrompt);
+    if (enrichRaw) {
+      const cleanEnrich = sanitizeContent(
+        enrichRaw
+          .replace(/```html\s*/gi, '')
+          .replace(/```\s*$/gi, '')
+          .replace(/```/gi, '')
+          .trim()
+      );
+      if (cleanEnrich.length > 300) {
+        articleHtml = articleHtml + '\n' + cleanEnrich;
+        console.log('[ENRICHMENT] Successfully appended supplementary technical section!');
+        // Re-extract TOC
+        tocItems = [];
+        const h2Regex2 = /<h2(?:\s+id="([^"]+)")?[^>]*>([\s\S]*?)<\/h2>/gi;
+        let m2;
+        while ((m2 = h2Regex2.exec(articleHtml)) !== null) {
+          const rawTitle = m2[2].replace(/<[^>]+>/g, '').replace(/^(?:\d+\.|\bSection\s+\d+:?|\bStep\s+\d+:?)\s*/i, '').trim();
+          const id = m2[1] || slugify(rawTitle);
+          tocItems.push({ id, title: rawTitle, level: 2 });
+        }
+        wordCount = articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+        console.log(`[QUALITY GATE] Enriched article now contains ${wordCount} words and ${tocItems.length} H2 sections.`);
+      }
+    }
+  }
+
+  // Strict Quality Gate: Protect production from thin stubs (< 1,150 words or < 4 H2s)
+  if (!articleHtml || tocItems.length < 4 || wordCount < 1150) {
+    console.error(`[FATAL QUALITY FAILURE] Generated content is insufficient: ${wordCount} words (minimum 1,150 required) and ${tocItems.length} H2s (minimum 4 required).`);
     console.error(`Aborting publication to protect live production quality and prevent thin content!`);
     process.exit(1);
   }

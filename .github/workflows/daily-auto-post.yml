@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install Dependencies
         run: npm ci
@@ -45,7 +45,7 @@ jobs:
         run: |
           git config --global user.name "TechOps Wire Automation"
           git config --global user.email "bot@techopswire.com"
-          git add src/data/articles.ts scripts/sheet1_data.csv scripts/sheet2_updated.csv scripts/publisher-state.json
+          git add src/data/articles.ts scripts/sheet1_data.csv scripts/sheet2_updated.csv scripts/publisher-state.json public/images/
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
