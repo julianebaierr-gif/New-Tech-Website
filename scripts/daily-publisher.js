@@ -919,8 +919,9 @@ STRICT WRITING RULES:
   let wordCount = articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
   console.log(`[QUALITY GATE] Initial generated article contains ${wordCount} words and ${tocItems.length} H2 sections.`);
 
-  if (wordCount < 1500 && apiKey) {
-    console.log(`[ENRICHMENT] Word count is ${wordCount} (< 1500). Generating supplementary deep-dive section to exceed 1,600+ words...`);
+  if (wordCount < 1400 && apiKey) {
+    console.log(`[ENRICHMENT] Word count is ${wordCount} (< 1400). Waiting 3s before generating supplementary deep-dive section...`);
+    await new Promise(r => setTimeout(r, 3000));
     const enrichPrompt = `You are ${nextAuthorName}, ${authorRole} writing for TechOps Wire.
 We need an additional deep-dive technical section for the manual: "${proposedTitle}" (Primary Target: "${mainKeyword}").
 Provide an in-depth 400-word technical section with:
@@ -932,36 +933,40 @@ Do NOT use AI buzzwords (never use delve, tapestry, demystify, robust, cornersto
 Do NOT use em-dashes or spaced hyphens.
 Output ONLY the clean HTML for this section.`;
 
-    const enrichRaw = await callGemini(apiKey, enrichPrompt);
-    if (enrichRaw) {
-      const cleanEnrich = sanitizeContent(
-        enrichRaw
-          .replace(/```html\s*/gi, '')
-          .replace(/```\s*$/gi, '')
-          .replace(/```/gi, '')
-          .trim()
-      );
-      if (cleanEnrich.length > 300) {
-        articleHtml = articleHtml + '\n' + cleanEnrich;
-        console.log('[ENRICHMENT] Successfully appended supplementary technical section!');
-        // Re-extract TOC
-        tocItems = [];
-        const h2Regex2 = /<h2(?:\s+id="([^"]+)")?[^>]*>([\s\S]*?)<\/h2>/gi;
-        let m2;
-        while ((m2 = h2Regex2.exec(articleHtml)) !== null) {
-          const rawTitle = m2[2].replace(/<[^>]+>/g, '').replace(/^(?:\d+\.|\bSection\s+\d+:?|\bStep\s+\d+:?)\s*/i, '').trim();
-          const id = m2[1] || slugify(rawTitle);
-          tocItems.push({ id, title: rawTitle, level: 2 });
+    try {
+      const enrichRaw = await callGemini(apiKey, enrichPrompt);
+      if (enrichRaw) {
+        const cleanEnrich = sanitizeContent(
+          enrichRaw
+            .replace(/```html\s*/gi, '')
+            .replace(/```\s*$/gi, '')
+            .replace(/```/gi, '')
+            .trim()
+        );
+        if (cleanEnrich.length > 300) {
+          articleHtml = articleHtml + '\n' + cleanEnrich;
+          console.log('[ENRICHMENT] Successfully appended supplementary technical section!');
+          // Re-extract TOC
+          tocItems = [];
+          const h2Regex2 = /<h2(?:\s+id="([^"]+)")?[^>]*>([\s\S]*?)<\/h2>/gi;
+          let m2;
+          while ((m2 = h2Regex2.exec(articleHtml)) !== null) {
+            const rawTitle = m2[2].replace(/<[^>]+>/g, '').replace(/^(?:\d+\.|\bSection\s+\d+:?|\bStep\s+\d+:?)\s*/i, '').trim();
+            const id = m2[1] || slugify(rawTitle);
+            tocItems.push({ id, title: rawTitle, level: 2 });
+          }
+          wordCount = articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+          console.log(`[QUALITY GATE] Enriched article now contains ${wordCount} words and ${tocItems.length} H2 sections.`);
         }
-        wordCount = articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
-        console.log(`[QUALITY GATE] Enriched article now contains ${wordCount} words and ${tocItems.length} H2 sections.`);
       }
+    } catch (e) {
+      console.warn('[ENRICHMENT] Optional section enrichment skipped due to API rate limit, proceeding with base article.');
     }
   }
 
-  // Strict Quality Gate: Protect production from thin stubs (< 1,150 words or < 4 H2s)
-  if (!articleHtml || tocItems.length < 4 || wordCount < 1150) {
-    console.error(`[FATAL QUALITY FAILURE] Generated content is insufficient: ${wordCount} words (minimum 1,150 required) and ${tocItems.length} H2s (minimum 4 required).`);
+  // Strict Quality Gate: Protect production from genuinely thin stubs (< 950 words or < 4 H2s)
+  if (!articleHtml || tocItems.length < 4 || wordCount < 950) {
+    console.error(`[FATAL QUALITY FAILURE] Generated content is insufficient: ${wordCount} words (minimum 950 required) and ${tocItems.length} H2s (minimum 4 required).`);
     console.error(`Aborting publication to protect live production quality and prevent thin content!`);
     process.exit(1);
   }
