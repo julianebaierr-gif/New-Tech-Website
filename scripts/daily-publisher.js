@@ -476,12 +476,11 @@ async function fetchLiveSerpCompetitors(keyword, categorySlug) {
 // 2. Multi-tier Cascading Gemini Generation (Reliable, Zero-Timeout, High-Quality)
 async function callGemini(apiKey, prompt) {
   const models = [
-    'gemini-flash-latest',
-    'gemini-pro-latest',
-    'gemini-2.5-flash-lite',
-    'gemini-3.8-flash',
     'gemini-3.1-flash-lite',
-    'gemini-flash-lite-latest'
+    'gemini-flash-lite-latest',
+    'gemini-flash-latest',
+    'gemini-3.8-flash',
+    'gemini-pro-latest'
   ];
 
   function makeRequest(url, payload) {
@@ -672,6 +671,9 @@ async function run() {
   let articleHtml = '';
   let tocItems = [];
   let faqItems = [];
+  let aiExcerpt = '';
+  let aiMetaTitle = '';
+  let aiMetaDesc = '';
 
   if (apiKey) {
     console.log('[AI IMAGE] Attempting dynamic AI image generation tailored to keyword...');
@@ -837,9 +839,9 @@ STRICT WRITING RULES:
 - Tone: Hands-on, practical, tested in real production environments.
 - Output ONLY valid HTML for the article body followed by the \`\`\`json block.`;
 
-    let aiExcerpt = '';
-    let aiMetaTitle = '';
-    let aiMetaDesc = '';
+    aiExcerpt = '';
+    aiMetaTitle = '';
+    aiMetaDesc = '';
 
     const raw = await callGemini(apiKey, prompt);
     if (raw) {
