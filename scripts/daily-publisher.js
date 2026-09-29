@@ -465,13 +465,15 @@ async function fetchLiveSerpCompetitors(keyword, categorySlug) {
 // 2. Multi-tier Cascading Gemini Generation (Reliable, Zero-Timeout, High-Quality)
 async function callGemini(apiKey, prompt) {
   const models = [
+    'gemini-2.5-flash',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash',
+    'gemini-1.5-pro',
+    'gemini-2.5-pro',
     'gemini-3.1-flash-lite',
     'gemini-flash-latest',
     'gemini-3.5-flash-lite',
     'gemini-3.8-flash',
-    'gemini-3.5-flash',
-    'gemini-3.6-flash',
-    'gemini-3.7-flash',
     'gemini-flash-lite-latest',
     'gemini-pro-latest'
   ];
@@ -484,7 +486,7 @@ async function callGemini(apiKey, prompt) {
         path: u.pathname + u.search,
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        timeout: 60000
+        timeout: 90000
       }, (r) => {
         let b = '';
         r.on('data', chunk => b += chunk);
@@ -503,7 +505,7 @@ async function callGemini(apiKey, prompt) {
       const payload = {
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
-          temperature: 0.25,
+          temperature: 0.3,
           maxOutputTokens: 8192
         }
       };
@@ -511,7 +513,7 @@ async function callGemini(apiKey, prompt) {
       if (res.statusCode === 200) {
         const parsed = JSON.parse(res.body);
         const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (text && text.trim().length > 200) {
+        if (text && text.trim().length > 2500) {
           console.log(`  [GEMINI CASCADE] Successfully generated ${text.length} chars with model: ${m}`);
           return text;
         }
@@ -852,11 +854,23 @@ STRICT WRITING RULES:
         .replace(/\s*```$/i, '')
         .trim();
 
-      articleHtml = sanitizeContent(cleaned);
+      // Convert Markdown headings to HTML if Gemini used markdown
+      cleaned = cleaned.replace(/^##\s+(.+)$/gm, (match, headingText) => {
+        const cleanH = headingText.replace(/^\d+[\.\)]\s*/, '').trim();
+        return `<h2 id="${slugify(cleanH)}" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">${cleanH}</h2>`;
+      });
+      cleaned = cleaned.replace(/^###\s+(.+)$/gm, (match, headingText) => {
+        const cleanH = headingText.replace(/^\d+[\.\)]\s*/, '').trim();
+        return `<h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">${cleanH}</h3>`;
+      });
 
-      // Strip leading numbers from headings if any
-      articleHtml = articleHtml.replace(/<h2([^>]*)>\s*(?:\d+\.|\bSection\s+\d+:?|\bStep\s+\d+:?)\s*/gi, '<h2$1>');
-      articleHtml = articleHtml.replace(/<h3([^>]*)>\s*(?:\d+\.|\bSection\s+\d+:?|\bStep\s+\d+:?)\s*/gi, '<h3$1>');
+      // Strip leading numbers from headings: <h2>1. Heading</h2> -> <h2>Heading</h2>
+      cleaned = cleaned.replace(/<h([23])([^>]*)>\s*(?:\d+[\.\)]\s*|Section\s*\d+[:\s]*|Step\s*\d+[:\s]*)([\s\S]*?)<\/h\1>/gi, '<h$1$2>$3</h$1>');
+
+      // Remove duplicate FAQ section from HTML body (handled by FaqAccordion)
+      cleaned = cleaned.replace(/<h2[^>]*>\s*(?:\d+[\.\)]\s*)?(?:Frequently Asked Questions|FAQ)[\s\S]*$/gi, '');
+
+      articleHtml = sanitizeContent(cleaned);
 
       // Validate internal links against existing live articles to guarantee 0 broken links
       const validSlugs = new Set(existingArticles.map(a => a.slug));
@@ -871,80 +885,24 @@ STRICT WRITING RULES:
       });
 
       // Extract TOC from H2 headings
-      const h2Regex = /<h2(?:\s+id="([^"]+)")?[^>]*>([^<]+)<\/h2>/gi;
+      const h2Regex = /<h2(?:\s+id="([^"]+)")?[^>]*>([\s\S]*?)<\/h2>/gi;
       let m;
       while ((m = h2Regex.exec(articleHtml)) !== null) {
-        const rawTitle = m[2].replace(/^(?:\d+\.|\bSection\s+\d+:?|\bStep\s+\d+:?)\s*/i, '').trim();
+        const rawTitle = m[2].replace(/<[^>]+>/g, '').replace(/^(?:\d+\.|\bSection\s+\d+:?|\bStep\s+\d+:?)\s*/i, '').trim();
         const id = m[1] || slugify(rawTitle);
         tocItems.push({ id, title: rawTitle, level: 2 });
       }
     }
   }
 
-  // Fallback structured content if Gemini is unavailable
-  if (!articleHtml || tocItems.length < 4) {
-    console.log('[FALLBACK] Constructing structured article blueprint...');
-    tocItems = [
-      { id: "overview-and-prerequisites", title: "Overview and Core Prerequisites", level: 2 },
-      { id: "step-by-step-walkthrough", title: "Step-by-Step Implementation", level: 2 },
-      { id: "keyboard-shortcuts-and-commands", title: "Shortcuts, Commands, and Syntax", level: 2 },
-      { id: "common-pitfalls-and-errors", title: "Common Mistakes and How to Avoid Them", level: 2 },
-      { id: "advanced-tips-and-automation", title: "Advanced Workflows and Best Practices", level: 2 },
-      { id: "verification-and-troubleshooting", title: "Verification and Troubleshooting Guide", level: 2 }
-    ];
+  // Strict Quality Gate: NEVER publish a thin dummy stub to production
+  const wordCount = articleHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  console.log(`[QUALITY GATE] Generated article contains ${wordCount} words and ${tocItems.length} H2 sections.`);
 
-    faqItems = [
-      { question: `What is the fastest way to handle ${mainKeyword}?`, answer: `Use the standard shortcut or command sequence outlined in the guide to complete the task within seconds.` },
-      { question: `Can this procedure be automated?`, answer: `Yes, by scripting the steps using batch operations or dynamic formulas, you can run this process automatically.` },
-      { question: `Will this modification affect existing data?`, answer: `Always keep a backup copy before making irreversible edits or running bulk operations.` }
-    ];
-
-    articleHtml = `
-<p class="lead text-lg text-slate-700 leading-relaxed mb-6">
-  Working with ${mainKeyword} efficiently requires understanding the fundamental operating mechanics, proper syntax, and common configuration pitfalls. This guide walks through direct methods tested on active production systems.
-</p>
-
-<div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-  <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Action Summary</h4>
-  <p class="text-slate-700 text-sm">
-    To manage <strong>${mainKeyword}</strong>, review the exact command sequence and verify your active parameters before applying changes.
-  </p>
-</div>
-
-<h2 id="overview-and-prerequisites" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Overview and Core Prerequisites</h2>
-<p class="text-slate-700 leading-relaxed mb-4">
-  Before starting any modification, confirm that your environment matches minimum version requirements and that user permissions are properly granted.
-</p>
-
-<h2 id="step-by-step-walkthrough" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Step-by-Step Implementation</h2>
-<ol class="list-decimal pl-6 space-y-3 text-slate-700 mb-6">
-  <li>Open the active application or administrative terminal console.</li>
-  <li>Locate the target dataset or configuration file.</li>
-  <li>Apply the verified settings detailed below and save your adjustments.</li>
-</ol>
-
-<h2 id="keyboard-shortcuts-and-commands" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Shortcuts, Commands, and Syntax</h2>
-<p class="text-slate-700 leading-relaxed mb-4">
-  Standard execution follows this baseline syntax:
-</p>
-<pre><code># Execution command for ${slug}
-run-command --target="${mainKeyword}" --mode=production</code></pre>
-
-<h2 id="common-pitfalls-and-errors" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Common Mistakes and How to Avoid Them</h2>
-<p class="text-slate-700 leading-relaxed mb-4">
-  Avoid applying bulk changes without first checking reference ranges and syntax arguments.
-</p>
-
-<h2 id="advanced-tips-and-automation" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Advanced Workflows and Best Practices</h2>
-<p class="text-slate-700 leading-relaxed mb-4">
-  For high-volume operations, automate execution using scheduled routines or dynamic formula references.
-</p>
-
-<h2 id="verification-and-troubleshooting" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Verification and Troubleshooting Guide</h2>
-<p class="text-slate-700 leading-relaxed mb-4">
-  Verify your output records against known baseline values to ensure calculations match expected thresholds.
-</p>
-`;
+  if (!articleHtml || tocItems.length < 5 || wordCount < 1400) {
+    console.error(`[FATAL QUALITY FAILURE] Generated content is insufficient: ${wordCount} words (minimum 1,400 required) and ${tocItems.length} H2s (minimum 5 required).`);
+    console.error(`Aborting publication to protect live production quality and prevent thin content!`);
+    process.exit(1);
   }
 
   // 5. Append New Article to src/data/articles.ts
