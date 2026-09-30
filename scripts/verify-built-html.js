@@ -29,6 +29,7 @@ const filesToCheck = [
   { path: '.next/server/app/articles/how-to-factory-reset-hp-laptop.html', name: 'Article: hp-laptop-reset' },
   { path: '.next/server/app/articles/how-to-unhide-rows-in-excel.html', name: 'Article: unhide-rows-excel' },
   { path: '.next/server/app/articles/cloud-download-vs-local-reinstall.html', name: 'Article: cloud-download-vs-local-reinstall' },
+  { path: '.next/server/app/articles/bvostfus-python-issue-fix.html', name: 'Article: bvostfus-python-issue-fix' },
 ];
 
 console.log("=== INSPECTING PRODUCTION BUILT HTML FILES ===");
