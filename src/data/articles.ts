@@ -4030,19 +4030,19 @@ ldd venv/lib/python3.x/site-packages/some_module.so</code></pre>
     secondaryKeywords: ["how to take screenshot on dell laptop","how to screenshot dell","screenshot on a dell","how to take screenshot on dell computer"],
     combinedVolume: 20100,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1517433456452-f9633a875f6f",
+    coverImage: "/images/articles/dell-screenshot-cover.jpg",
+    coverImageId: "dell-screenshot-cover",
     secondaryImage: {
-      "id": "photo-1515378791036-0648a3ef77b2",
-      "url": "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Systems administrator typing administrative commands on laptop keyboard",
-      "caption": "Keyboard shortcuts like Windows key and Print Screen bypass interactive capture dialogs."
+      "id": "dell-screenshot-keyboard-shortcuts",
+      "url": "/images/articles/dell-screenshot-keyboard-shortcuts.jpg",
+      "alt": "Dell laptop keyboard close-up highlighting Print Screen and Windows shortcut keys",
+      "caption": "The PrtScn and Function key combinations trigger instant screen capture to clipboard or storage."
     },
     tertiaryImage: {
-      "id": "photo-1588872657578-7efd1f1555ed",
-      "url": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Dell laptop open on desktop showing Windows operating system display",
-      "caption": "High-DPI displays require native scaling adjustments for clear screenshot captures."
+      "id": "dell-screenshot-snipping-tool",
+      "url": "/images/articles/dell-screenshot-snipping-tool.jpg",
+      "alt": "Dell monitor displaying Windows 11 Snipping Tool markup options and capture gallery",
+      "caption": "The integrated Snipping Tool provides region selection, pen annotations, and rapid image saving."
     },
     tableOfContents: [
       {
