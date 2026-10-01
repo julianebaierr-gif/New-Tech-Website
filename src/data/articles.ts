@@ -4179,19 +4179,19 @@ Add-Type -AssemblyName System.Windows.Forms
     secondaryKeywords: ["how to do xlookup","what does vlookup do","how to do an xlookup","how to do xlookup in excel","how to do an xlookup in excel"],
     combinedVolume: 6700,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1590283603385-17ffb3a7f29f",
+    coverImage: "/images/articles/excel-xlookup-cover.jpg",
+    coverImageId: "excel-xlookup-cover",
     secondaryImage: {
-      "id": "photo-1611974789855-9c2a0a7236a3",
-      "url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Data analytics screen displaying market charts and tabular matrices",
-      "caption": "Decoupling lookup and return arrays ensures formulas remain stable when tables expand."
+      "id": "excel-xlookup-multiple-criteria",
+      "url": "/images/articles/excel-xlookup-multiple-criteria.jpg",
+      "alt": "Microsoft Excel worksheet demonstrating XLOOKUP multiple criteria formula",
+      "caption": "Using boolean logic within the lookup array allows XLOOKUP to match multiple conditions simultaneously."
     },
     tertiaryImage: {
-      "id": "photo-1642543492481-44e81e3914a7",
-      "url": "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Spreadsheet calculation grid with numerical formulas and data ranges",
-      "caption": "Formula validation ensures accuracy across mission-critical spreadsheet workflows."
+      "id": "excel-xlookup-troubleshooting-na",
+      "url": "/images/articles/excel-xlookup-troubleshooting-na.jpg",
+      "alt": "Excel spreadsheet demonstrating XLOOKUP custom error handling against #N/A errors",
+      "caption": "Utilizing the if_not_found argument prevents unsightly #N/A errors across client reporting workbooks."
     },
     tableOfContents: [
       {
