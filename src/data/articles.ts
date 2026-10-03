@@ -4305,9 +4305,9 @@ Add-Type -AssemblyName System.Windows.Forms
     slug: "cloud-based-file-storage",
     title: "What is Cloud Storage? Object vs Block vs File Storage",
     headline: "What is Cloud Storage? Object vs Block vs File Storage",
-    excerpt: "A Engineering Manual to cloud storage architectures, comparing block, file, and object storage for production infrastructure and performance optimization.",
+    excerpt: "An architectural evaluation of cloud storage models, comparing block devices, shared NFS file systems, and scalable object stores for production deployments.",
     metaTitle: "What is Cloud Storage Object vs Block | TechOps Wire",
-    metaDescription: "Learn the technical differences between object, block, and file storage for cloud infrastructure. Optimize performance and costs with our expert guide.",
+    metaDescription: "Compare object, block, and file cloud storage systems. Evaluate latency tradeoffs, NFS network mounts, S3 object buckets, and AWS EC2 block volume setups.",
     categorySlug: "cloud-infrastructure",
     categoryName: "Cloud & Infrastructure",
     authorId: "evan-mitchell",
@@ -4320,20 +4320,20 @@ Add-Type -AssemblyName System.Windows.Forms
     secondaryKeywords: ["best cloud storage for photos and videos","cloud storage for photographers"],
     combinedVolume: 1900,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1523961131990-5ea7c61b2107",
+    coverImage: "/images/articles/cloud-storage-architectures-cover.jpg",
+    coverImageId: "cloud-storage-architectures-cover",
     secondaryImage: {
-      "id": "photo-1522071820081-009f0129c71c",
-      "url": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "DevOps engineering team collaborating on cloud deployment configurations",
-      "caption": "Standardized infrastructure-as-code scripts enforce consistency across environments."
-},
+      id: "cloud-storage-nfs-terminal",
+      url: "/images/articles/cloud-storage-nfs-terminal.jpg",
+      alt: "Enterprise Linux terminal displaying NFS cloud storage mount commands and IOPS metrics",
+      caption: "Mounting shared file systems requires calibrating read/write buffer sizes and transmission timeout limits."
+    },
     tertiaryImage: {
-      "id": "photo-1537498425277-c283d32ef9db",
-      "url": "https://images.unsplash.com/photo-1537498425277-c283d32ef9db?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "High-performance compute clusters and fiber optic network interfaces",
-      "caption": "Fiber interconnects provide microsecond latency between distributed database nodes."
-},
+      id: "cloud-storage-san-arrays",
+      url: "/images/articles/cloud-storage-san-arrays.jpg",
+      alt: "Enterprise datacenter storage rack containing high-density flash NVMe storage arrays",
+      caption: "Dedicated SAN and NVMe storage arrays provide dedicated block-level I/O for database clusters."
+    },
     tableOfContents: [
       {
             "id": "storage-architectures",

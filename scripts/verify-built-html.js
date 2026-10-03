@@ -32,6 +32,7 @@ const filesToCheck = [
   { path: '.next/server/app/articles/bvostfus-python-issue-fix.html', name: 'Article: bvostfus-python-issue-fix' },
   { path: '.next/server/app/articles/how-to-screenshot-on-dell.html', name: 'Article: how-to-screenshot-on-dell' },
   { path: '.next/server/app/articles/how-to-use-xlookup.html', name: 'Article: how-to-use-xlookup' },
+  { path: '.next/server/app/articles/cloud-based-file-storage.html', name: 'Article: cloud-based-file-storage' },
 ];
 
 console.log("=== INSPECTING PRODUCTION BUILT HTML FILES ===");
