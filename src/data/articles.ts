@@ -3538,8 +3538,8 @@ exit</code></pre>
     title: "How to Hide, Unhide, and View Hidden Rows in Excel",
     headline: "How to Hide, Unhide, and View Hidden Rows in Excel",
     excerpt: "Master row visibility controls in Excel workbooks. Restore hidden Row 1 using Name Box coordinates, apply keyboard shortcuts, and resolve active filter locks.",
-    metaTitle: "How to Unhide Rows in Excel Step-by-Step | TechOps Wire",
-    metaDescription: "Unhide rows in Excel across Windows and Mac. Master mouse shortcuts, Name Box tricks for hidden row 1, VBA macros, and fix stubborn hidden rows quickly.",
+    metaTitle: "How to Unhide Rows in Excel Steps | TechOps Wire",
+    metaDescription: "Unhide rows in Excel across Windows and Mac. Master mouse shortcuts, Name Box tricks for hidden row 1, VBA macros, and fix unhide not working issues.",
     categorySlug: "data-excel-automation",
     categoryName: "Data & Excel Automation",
     authorId: "sarah-blake",
@@ -3606,68 +3606,76 @@ exit</code></pre>
     faqs: [
           {
                 "question": "Why is the Unhide option grayed out in Excel?",
-                "answer": "The Unhide option is typically grayed out because the worksheet is protected. You must go to the Review tab and select Unprotect Sheet to regain access to visibility controls."
+                "answer": "The Unhide option is typically grayed out because the worksheet is protected, or you have not selected the rows surrounding the hidden range. Ensure the sheet is unprotected and that you have selected the row headers above and below the hidden section."
           },
           {
-                "question": "How do I unhide rows that are hidden by a filter?",
-                "answer": "Rows hidden by a filter cannot be unhidden using the standard Unhide command. You must clear the filter by going to the Data tab and clicking the Clear button in the Sort & Filter group."
+                "question": "How do I unhide row 1 if I cannot select it?",
+                "answer": "Use the Select All button in the top-left corner of the grid (the triangle between column A and row 1), then right-click any row header and select Unhide. Alternatively, type 'A1' in the Name Box, press Enter, then use the Home > Format > Unhide Rows menu path."
           },
           {
-                "question": "What is the fastest way to unhide all rows in a workbook?",
-                "answer": "The fastest way is to use a VBA macro that loops through all worksheets and sets the Hidden property to False, or by selecting the entire sheet using the top-left corner button and selecting Unhide."
+                "question": "Does unhiding rows affect my formulas?",
+                "answer": "Standard hidden rows are still included in most calculations. However, if you use functions like SUBTOTAL or AGGREGATE, you can configure them to ignore hidden rows, which will change the result when rows are hidden or unhidden."
           },
           {
-                "question": "Does unhiding rows affect formulas that use SUM?",
-                "answer": "Yes, standard SUM formulas include hidden rows. If you want to ignore hidden rows in your calculations, use the SUBTOTAL or AGGREGATE functions instead."
+                "question": "Why does Ctrl + Shift + 9 not work on my computer?",
+                "answer": "This is often caused by a conflict with Windows input language settings, which use the same shortcut to switch keyboards. Try using the Alt + H, O, U, R menu sequence instead, or adjust your Windows keyboard language settings."
           },
           {
-                "question": "Why can't I see the double-line indicator for hidden rows?",
-                "answer": "If you cannot see the double-line indicator, the rows might be hidden by a filter or grouping, or the zoom level of your screen is making the indicator too small to see. Try adjusting your zoom or checking the Data tab for active filters."
+                "question": "Can I unhide all rows in a workbook at once?",
+                "answer": "Yes, you can use a simple VBA macro to loop through all worksheets and set the Hidden property to False. This is the most efficient way to clean up workbooks with many hidden rows across multiple tabs."
           }
     ],
     contentHtml: `
-<p class="lead text-lg text-slate-700 leading-relaxed mb-6">Managing row visibility is a fundamental skill for any data analyst working with large-scale financial models or operational datasets. When you need to know how to unhide rows in Excel, you are often dealing with data integrity issues, hidden calculation errors, or the need to audit complex spreadsheets. Understanding the difference between a manually hidden row, a filtered row, and a grouped outline is essential for maintaining control over your workspace. This manual provides the Engineering foundation to manipulate row states, resolve visibility conflicts, and automate visibility tasks across your entire workbook architecture.</p>
+<p class="lead text-lg text-slate-700 leading-relaxed mb-6">Mastering row visibility is a fundamental skill for any data analyst managing complex workbooks. Whether you are cleaning raw data, preparing financial reports, or managing large datasets, knowing how to unhide rows in Excel ensures that no critical information remains trapped behind a hidden state. This Manual provides the Engineering precision required to navigate row visibility, from standard context menu operations to advanced programmatic solutions for bulk visibility management.</p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
   <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Keyboard & Action Summary</h4>
-  <p class="text-slate-700 text-sm">To unhide rows quickly, select the rows surrounding the hidden area and press <strong>Ctrl + Shift + 9</strong> (Windows) or <strong>Cmd + Shift + 9</strong> (macOS). If row 1 is hidden, click the Select All button (top-left corner), then right-click any row header and select Unhide. If these methods fail, check if your sheet is protected or if the rows are hidden by a filter, which requires clearing the filter via the Data tab.</p>
+  <p class="text-slate-700 text-sm">To unhide rows using the keyboard, select the rows surrounding the hidden area and press <strong>Ctrl + Shift + 9</strong> (Windows) or <strong>Cmd + Shift + 9</strong> (macOS). If you need to unhide row 1, use the Name Box by typing "A1" and pressing Enter, then navigate to the Home tab, select Format, and choose Unhide Rows. For filtered data, you must clear the filter from the Data tab rather than using the standard unhide command.</p>
 </div>
 
 <h2 id="row-visibility-mechanics" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Row Visibility Mechanics in Standard Spreadsheet Engines</h2>
 
-<p>Excel manages row visibility through a specific object property known as the Hidden attribute. When a row is hidden, its RowHeight property is set to zero, and the Hidden property of the Row object is toggled to True. This state is distinct from simply resizing a row to a very small height, as the application treats hidden rows as non-interactive elements during standard navigation. Understanding this distinction is critical when you perform tasks like <a href="/articles/how-to-remove-duplicates-in-excel" class="text-blue-600 font-medium hover:underline">remove duplicates in Excel</a>, as hidden rows are often ignored by default operations.</p>
+<p>Excel manages row visibility through a specific property within the worksheet object model. When a row is hidden, its RowHeight property is set to zero. This is distinct from deleting a row, which removes the row index entirely from the worksheet structure. Because the row index remains present, formulas referencing these cells continue to calculate values unless specific functions like SUBTOTAL or AGGREGATE are employed to ignore hidden rows.</p>
 
-<p>The visual representation of hidden rows is a subtle double-line indicator appearing between the row headers of the visible rows adjacent to the hidden range. If you hover your cursor over this divider, the pointer transforms into a double-sided arrow with a line through the center. This interface cue allows you to manually drag the boundary to restore the row height. However, this manual method is inefficient for large datasets where hundreds of rows might be collapsed, necessitating the use of programmatic or shortcut-based restoration methods.</p>
+<p>The visual indicator for hidden rows is a subtle double-line border between the row headers. If you hover your cursor over this boundary, the pointer transforms into a double-sided arrow with a split bar. This visual cue is the primary way to identify that rows are hidden without relying on the row number sequence. If the sequence jumps from 5 to 7, you know row 6 is hidden.</p>
 
-<p>It is also important to note that hidden rows remain part of the calculation engine. Formulas such as SUM or AVERAGE will continue to include values located in hidden rows unless you specifically use the SUBTOTAL or AGGREGATE functions. These functions are designed to ignore hidden rows if the correct function number is selected. When you <a href="/articles/excel-drop-down-list" class="text-blue-600 font-medium hover:underline">Excel drop-down list</a> items are linked to hidden rows, the data remains valid for validation purposes, which can lead to unexpected results if the user is unaware of the underlying data structure.</p>
+<p>It is important to distinguish between manually hidden rows and rows hidden by a filter. Manually hidden rows retain their standard gray header color. Rows hidden by an AutoFilter or Advanced Filter display blue row numbers and a funnel icon in the column header. Standard unhide commands will not affect filtered rows, as their visibility is controlled by the filter criteria applied to the dataset. You must clear the filter to restore these rows to view.</p>
+
+<p>Finally, consider the impact of grouping or outlining. When you use the Group feature, Excel creates a collapsible outline level. This is a different mechanism than the standard Hide command. Rows hidden via grouping are controlled by the plus and minus buttons in the margin. Attempting to unhide these rows using the standard context menu may not work if the group remains collapsed, requiring you to click the outline button to expand the range.</p>
 
 <h2 id="primary-mouse-and-context-menu-methods" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Primary Mouse and Context Menu Methods for Unhiding Rows</h2>
 
-<p>The most common approach to reveal hidden data involves the context menu. To unhide rows in an Excel spreadsheet, you must first select the row headers immediately above and below the hidden section. For example, if rows 5 through 10 are hidden, you must click and drag your mouse across the row headers for 4 and 11. Once these headers are highlighted, right-click anywhere within the selected header area and choose the Unhide option from the menu. This action resets the RowHeight property of all rows within the selection to the default value.</p>
+<p>The most common method to reveal hidden content involves the row header interface. To perform this, select the row header immediately above the hidden range and the row header immediately below it. For example, if row 5 is hidden, click and drag from row 4 to row 6. Once the range is highlighted, right-click on the selected headers and choose the Unhide option from the context menu.</p>
 
-<p>When you need to unhide rows in Excel all at once, the selection process is the primary constraint. You can select the entire worksheet by clicking the triangle button located at the intersection of the row and column headers (the top-left corner of the grid). Once the entire sheet is selected, right-clicking any row header and selecting Unhide will force every hidden row in the active worksheet to become visible. This is the fastest way to reset the visibility state of a sheet that has been heavily modified by previous users.</p>
+<p>If you prefer using the ribbon interface, select the surrounding rows as described above. Navigate to the Home tab on the top ribbon. Within the Cells group, click the Format button. A dropdown menu will appear. Hover over the Hide & Unhide option, which will expand a secondary menu. Select Unhide Rows. This action forces Excel to reset the RowHeight property of all rows within the selection to the default height.</p>
 
-<p>For users working on macOS, the process is identical in logic but slightly different in interface. You can unhide rows in Excel on a MacBook by selecting the surrounding headers and using the two-finger tap to trigger the context menu. If you are using Excel Online, the interface is simplified, and you will Locate the Unhide option directly within the right-click menu of the row headers. Note that in web-based versions, the responsiveness of the UI may vary depending on the browser, so ensure the selection is fully highlighted before attempting the command.</p>
+<p>For users who need to unhide multiple non-contiguous blocks of rows, the mouse method requires careful selection. You can hold the Ctrl key (or Cmd on Mac) to select multiple ranges of row headers. Once all surrounding rows are selected, right-clicking any of the selected headers and choosing Unhide will reveal all hidden rows within those selections simultaneously. This is a significant time-saver when cleaning up messy spreadsheets.</p>
+
+<p>Be aware that if you accidentally select only one row, the Unhide option may remain grayed out or inactive. The application requires a range that encompasses the hidden index to calculate the boundary for restoration. If you are struggling to select the correct rows, ensure you are clicking the actual gray row numbers on the far left of the interface, rather than clicking inside the cells of the worksheet.</p>
 
 <h2 id="keyboard-shortcuts-windows-and-macos" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Keyboard Shortcuts and Navigation Workflows (Windows and macOS)</h2>
 
-<p>Keyboard shortcuts provide a significant efficiency gain for power users. The standard command to unhide rows in Excel is Ctrl + Shift + 9 on Windows. To execute this, select the rows flanking the hidden area and press the combination simultaneously. If you are working on a Mac, the equivalent command is Cmd + Shift + 9. These shortcuts bypass the need to navigate through menus, allowing for rapid toggling of visibility during data review sessions.</p>
+<p>Keyboard shortcuts significantly increase the speed of spreadsheet operations. On Windows, the standard shortcut to unhide rows is Ctrl + Shift + 9. To use this, select the rows surrounding the hidden area using Shift + Spacebar to select the entire row, then expand your selection with the arrow keys. Once the surrounding rows are highlighted, press the shortcut. If you need to <a href="/articles/how-to-remove-duplicates-in-excel" class="text-blue-600 font-medium hover:underline">remove duplicates in Excel</a> after unhiding, this workflow keeps your hands on the keyboard.</p>
 
-<p>A common Engineering conflict occurs on Windows 10 and 11 systems where the Ctrl + Shift + 9 shortcut is intercepted by the operating system to switch input language or keyboard layouts. If your shortcut is not triggering the unhide command, you must check your Windows Language settings and disable the hotkey conflict. Alternatively, you can use the legacy Excel shortcut sequence: Alt, H, O, U, L. This sequence navigates the ribbon menu to Home, Format, Hide & Unhide, and finally Unhide Rows.</p>
+<p>On macOS, the shortcut is Cmd + Shift + 9. The logic remains identical to the Windows version. Select the row headers, then trigger the command. If you are working on a MacBook, ensure your function keys are not overriding the command. Sometimes, the system-level shortcuts for macOS window management can conflict with Excel shortcuts, requiring you to adjust your System Settings if the command fails to execute.</p>
 
-<p>When you need to unhide columns in Excel, the shortcut is Ctrl + Shift + 0 (zero). Similar to the row shortcut, this requires selecting the columns on either side of the hidden range. If you are working on a laptop with a compact keyboard, ensure that your function keys are not overriding the number row. For those who frequently <a href="/articles/how-to-add-bullet-points-in-excel" class="text-blue-600 font-medium hover:underline">add bullet points in Excel</a> or perform other formatting tasks, mastering these keyboard sequences will significantly reduce the time spent on repetitive interface interactions.</p>
+<p>A frequent issue on Windows 10 and 11 is the conflict with input language switching. The operating system often reserves Ctrl + Shift for changing keyboard layouts. If your shortcut is not working, it is likely being intercepted by the OS. You can resolve this by changing your keyboard language settings in the Windows Control Panel or by using the Alt + H, O, U, R sequence, which is the legacy menu navigation path that bypasses the Ctrl + Shift conflict.</p>
+
+<p>If you are working with columns, the shortcut is Ctrl + 0 (zero) to hide and Ctrl + Shift + 0 to unhide. Note that the zero key is often confused with the letter O. Always use the number row for these commands. If you are trying to <a href="/articles/excel-drop-down-list" class="text-blue-600 font-medium hover:underline">Excel drop-down list</a> management, keeping your columns visible is essential for data validation integrity.</p>
 
 <h2 id="unhiding-row-1-edge-cases" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Unhiding Row 1 and Column A Edge Cases (Name Box and Go To Special)</h2>
 
-<p>Unhiding the very first row or column presents a unique challenge because there is no header above row 1 or to the left of column A to select. If you attempt to click the header for row 2 and drag upward, you will fail to capture the hidden row 1. To resolve this, you must use the Select All button located at the top-left corner of the grid. Once the entire sheet is selected, right-clicking any row header and choosing Unhide will reveal row 1.</p>
+<p>Unhiding row 1 presents a unique challenge because there is no row header above it to select. Right-clicking row 2 will not provide the Unhide option for row 1. To resolve this, you must use the Select All button, which is the small triangle located in the top-left corner of the worksheet where the row and column headers intersect. Clicking this selects the entire sheet. Once selected, right-click any row header and choose Unhide.</p>
 
-<p>Another reliable method for unhiding row 1 involves the Name Box, which is the field to the left of the formula bar. If you type A1 into the Name Box and press Enter, Excel will select cell A1, even if the row is hidden. Once the cell is selected, you can navigate to the Home tab, click the Format button in the Cells group, select Hide & Unhide, and choose Unhide Rows. This method is particularly useful when you are working with frozen panes that make standard header selection difficult.</p>
+<p>An alternative method involves the Name Box, which is the input field to the left of the formula bar. Type "A1" into the Name Box and press Enter. This forces Excel to select cell A1, even if it is currently hidden. Once the cell is selected, go to the Home tab, click Format, select Hide & Unhide, and choose Unhide Rows. This method is highly effective when you are dealing with frozen panes that make manual selection difficult.</p>
 
-<p>The Go To Special dialog box is a third option for this edge case. Press F5 on your keyboard to open the Go To dialog, click the Special button, and select the option for Row Differences or simply navigate to cell A1. Once the selection is active, use the ribbon menu to unhide the row. These techniques are essential for troubleshooting files where the header row has been hidden to prevent users from modifying the primary data structure.</p>
+<p>The Go To Special dialog box is another reliable tool for this task. Press F5 to open the Go To dialog, then click the Special button. Select the "Row differences" or simply type the cell reference of the hidden row in the Reference box. Once the hidden cell is active, the ribbon commands for unhiding become available. This is particularly useful if you need to <a href="/articles/how-to-add-bullet-points-in-excel" class="text-blue-600 font-medium hover:underline">add bullet points in Excel</a> to data that was previously obscured.</p>
+
+<p>If you are working on a Mac, the Select All button remains the most consistent method. However, if you are using Excel Online, the interface may behave differently. In the web version, you can often drag the boundary between the top of the sheet and row 2 downward to manually resize the row height, which effectively unhides the row without needing to navigate through menus.</p>
 
 <h2 id="comparative-feature-matrix" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Comparative Feature Matrix: Hide vs Filter vs Group vs Zero Row Height</h2>
 
-<p>Understanding the underlying mechanism of visibility is Essential for data integrity. The following table outlines the differences between various methods used to manage row visibility in Excel.</p>
+<p>Understanding the differences between various visibility methods is essential for maintaining data integrity. The following table outlines how these features interact with the Excel engine.</p>
 
 <div class="my-6 overflow-x-auto">
   <table class="min-w-full text-sm text-left border border-slate-200 rounded-lg">
@@ -3675,47 +3683,53 @@ exit</code></pre>
       <tr><th class="px-4 py-3">Visibility Feature</th><th class="px-4 py-3">Trigger Method</th><th class="px-4 py-3">Header Visual Indicator</th><th class="px-4 py-3">Formula Behavior (SUBTOTAL)</th><th class="px-4 py-3">Recommended Use Case</th></tr>
     </thead>
     <tbody class="divide-y divide-slate-200 text-slate-700">
-      <tr><td class="px-4 py-3">Hidden Rows</td><td class="px-4 py-3">Right-click > Hide</td><td class="px-4 py-3">Double-line divider</td><td class="px-4 py-3">Ignored</td><td class="px-4 py-3">Static data exclusion</td></tr>
-      <tr><td class="px-4 py-3">AutoFilter</td><td class="px-4 py-3">Data > Filter</td><td class="px-4 py-3">Blue numbers</td><td class="px-4 py-3">Ignored</td><td class="px-4 py-3">Dynamic data analysis</td></tr>
-      <tr><td class="px-4 py-3">Grouping</td><td class="px-4 py-3">Data > Group</td><td class="px-4 py-3">Outline bar (+/-)</td><td class="px-4 py-3">Ignored</td><td class="px-4 py-3">Hierarchical reporting</td></tr>
-      <tr><td class="px-4 py-3">Zero Height</td><td class="px-4 py-3">Format > Row Height</td><td class="px-4 py-3">Double-line divider</td><td class="px-4 py-3">Ignored</td><td class="px-4 py-3">Custom layout control</td></tr>
-      <tr><td class="px-4 py-3">VBA Hidden</td><td class="px-4 py-3">Macro/Script</td><td class="px-4 py-3">Double-line divider</td><td class="px-4 py-3">Ignored</td><td class="px-4 py-3">Automated workflows</td></tr>
+      <tr><td class="px-4 py-3 font-medium">Standard Hide</td><td class="px-4 py-3">Right-click Header</td><td class="px-4 py-3">Double-line</td><td class="px-4 py-3">Ignored</td><td class="px-4 py-3">Static data cleanup</td></tr>
+      <tr><td class="px-4 py-3 font-medium">AutoFilter</td><td class="px-4 py-3">Data Tab</td><td class="px-4 py-3">Blue Numbers</td><td class="px-4 py-3">Ignored</td><td class="px-4 py-3">Dynamic data analysis</td></tr>
+      <tr><td class="px-4 py-3 font-medium">Grouping</td><td class="px-4 py-3">Data > Group</td><td class="px-4 py-3">Outline Bar</td><td class="px-4 py-3">Ignored</td><td class="px-4 py-3">Hierarchical reports</td></tr>
+      <tr><td class="px-4 py-3 font-medium">Zero Height</td><td class="px-4 py-3">Format > Row Height</td><td class="px-4 py-3">Double-line</td><td class="px-4 py-3">Included</td><td class="px-4 py-3">Custom formatting</td></tr>
+      <tr><td class="px-4 py-3 font-medium">VBA Hidden</td><td class="px-4 py-3">Macro Code</td><td class="px-4 py-3">Double-line</td><td class="px-4 py-3">Ignored</td><td class="px-4 py-3">Automated workflows</td></tr>
     </tbody>
   </table>
 </div>
 
-<p>The distinction between these methods is most apparent when you copy and paste data. If you select a range that contains hidden rows and copy it, Excel will include the hidden data in the paste operation unless you use the Alt + ; (semicolon) shortcut to select only visible cells. This is a common source of errors in financial reporting where users accidentally include hidden, outdated, or sensitive data in their final output.</p>
+<p>The distinction between standard hidden rows and zero-height rows is subtle but critical. When you set a row height to zero, the row is technically hidden, but it is not flagged as "Hidden" in the same way the standard Hide command flags it. This means that some functions may still include these rows in their calculations. Always use the standard Hide command for data management to ensure consistency across your workbooks.</p>
 
-<p>Filtered rows are managed by the AutoFilter engine, which is separate from the standard Hidden property. If you attempt to unhide rows using the standard Unhide command on a filtered dataset, nothing will happen. You must clear the filter by clicking the funnel icon in the column header or by Operating to the Data tab and selecting Clear. This is a frequent point of confusion for users who assume all hidden data is managed by the same interface.</p>
+<p>Grouping is the preferred method for financial statements where you need to toggle between summary and detail views. Unlike standard hiding, grouping provides a clear visual interface for the user to expand and collapse sections. This reduces the risk of users accidentally deleting hidden data because they did not realize it was there.</p>
+
+<p>Filtered rows are the most common source of confusion. Because the filter is a dynamic state, you cannot simply "unhide" a filtered row. You must remove the filter criteria. If you Locate yourself frequently hiding and unhiding the same rows, consider using the Group feature instead, as it is designed for repeated toggling.</p>
 
 <h2 id="automating-bulk-unhide-vba" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Automating Bulk Row Visibility with VBA and Office Scripts</h2>
 
-<p>For workbooks containing dozens of sheets, manual unhiding is impractical. You can use a simple VBA macro to unhide all rows across every worksheet in the active workbook. Open the Visual Basic Editor (Alt + F11), insert a new module, and paste the following code. This script iterates through every sheet and sets the Hidden property of all rows to False.</p>
+<p>For large workbooks with hundreds of sheets, manual unhiding is inefficient. You can use a simple VBA macro to iterate through every worksheet and ensure all rows are visible. This is a common requirement in data auditing where you need to ensure no data is being obscured by previous users.</p>
 
 <pre class="bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto text-sm font-mono my-4"><code>Sub UnhideAllRowsInWorkbook()
     Dim ws As Worksheet
-    For Each ws In ActiveWorkbook.Worksheets
+    For Each ws In ThisWorkbook.Worksheets
         ws.Rows.Hidden = False
     Next ws
 End Sub</code></pre>
 
-<p>If you are working in Excel Online, you can use Office Scripts to achieve a similar result. Office Scripts use TypeScript, which is more secure and compatible with cloud-based workflows. The following script snippet will unhide all rows in the currently active worksheet. You can run this from the Automate tab in the Excel ribbon.</p>
+<p>To use this code, press Alt + F11 to open the VBA editor, insert a new module, and paste the code above. You can then run the macro by pressing F5. This script sets the Hidden property of all rows in every sheet to False, effectively clearing any hidden rows in the entire file. Always save a backup of your workbook before running bulk automation scripts.</p>
+
+<p>For Excel Online users, Office Scripts provide a similar capability using TypeScript. This is useful for cloud-based workflows where VBA is not supported. The following script performs the same function for the active worksheet.</p>
 
 <pre class="bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto text-sm font-mono my-4"><code>function main(workbook: ExcelScript.Workbook) {
   let sheet = workbook.getActiveWorksheet();
   let range = sheet.getRange();
-  range.getRows().setHidden(false);
+  range.setHidden(false);
 }</code></pre>
 
-<p>These automation tools are particularly useful when you receive files from external sources that have been heavily formatted with hidden rows to obscure data. By running a script, you ensure that no hidden information is missed, providing a clean slate for your analysis. Always review the code before execution to ensure it aligns with your specific workbook requirements.</p>
+<p>These automated methods are superior to manual intervention when dealing with standardized report templates. By embedding these scripts into your workflow, you ensure that every team member is viewing the same data, eliminating the risk of hidden rows causing discrepancies in final analysis or reporting.</p>
 
 <h2 id="troubleshooting-unhide-not-working" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Thorough Troubleshooting: Why Hidden Rows Will Not Unhide</h2>
 
-<p>If you Locate that your attempts to unhide rows are not working, the most common cause is sheet protection. If the worksheet is protected, the Unhide command will be grayed out in the context menu. You must go to the Review tab and click Unprotect Sheet. If the sheet is password-protected, you will need the credentials to proceed. Without unprotecting the sheet, you cannot modify the visibility of any rows or columns.</p>
+<p>If you Locate that your attempts to unhide rows are failing, the most common culprit is sheet protection. If the worksheet is protected, the Unhide command will be disabled in the ribbon and the context menu. You must go to the Review tab and click Unprotect Sheet. If a password is required, you will need the credentials to proceed. Without unprotecting the sheet, you cannot modify row visibility.</p>
 
-<p>Another frequent issue is the presence of frozen panes. If the rows you are trying to unhide are located within the frozen area, they may not respond to standard selection methods. Try unfreezing the panes via the View tab, unhiding the rows, and then reapplying the freeze. This is a common issue when dealing with legacy templates that have complex window configurations.</p>
+<p>Another frequent issue is frozen panes. If row 1 is frozen, it may appear as though it is hidden when it is actually just locked in place. If you cannot scroll to it, go to the View tab and select Unfreeze Panes. This will restore normal scrolling behavior and allow you to see if the row was actually hidden or just pinned to the top of the window.</p>
 
-<p>Finally, ensure that you are not confusing hidden rows with filtered rows. If the row numbers are blue, the rows are hidden by a filter. Right-clicking and selecting Unhide will have no effect on filtered data. You must clear the filter from the Data tab. If the rows are still not appearing, check for any active Grouping levels in the left margin. Clicking the plus sign or the number 2 in the outline bar will expand the grouped rows, which is a separate mechanism from the standard hidden row state.</p>
+<p>If you are working with a shared workbook or a file with restricted permissions, certain features may be disabled by the administrator. Check the title bar of your Excel window to see if it says "Read-Only" or "Protected View." If you are in Protected View, you must click "Enable Editing" before you can make any changes to the row visibility or structure of the document.</p>
+
+<p>Finally, verify that you are not dealing with a table object that has specific filtering applied. Tables in Excel have their own filtering logic that can override standard row visibility. If your data is inside a formal Table (created via Insert > Table), look for the filter arrows in the header row. Clearing these filters is the only way to reveal the rows contained within the table structure. If you still cannot unhide the rows, try copying the data to a new, clean workbook to rule out file corruption.</p>
 `
   },
   {
