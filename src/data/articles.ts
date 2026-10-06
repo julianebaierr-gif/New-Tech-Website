@@ -3538,8 +3538,8 @@ exit</code></pre>
     title: "How to Hide, Unhide, and View Hidden Rows in Excel",
     headline: "How to Hide, Unhide, and View Hidden Rows in Excel",
     excerpt: "Master row visibility controls in Excel workbooks. Restore hidden Row 1 using Name Box coordinates, apply keyboard shortcuts, and resolve active filter locks.",
-    metaTitle: "How to Unhide Rows in Excel Steps | TechOps Wire",
-    metaDescription: "Unhide rows in Excel across Windows and Mac. Master mouse shortcuts, Name Box tricks for hidden row 1, VBA macros, and fix unhide not working issues.",
+    metaTitle: "How to Unhide Rows in Excel Step-by-Step | TechOps Wire",
+    metaDescription: "Unhide rows in Excel across Windows and Mac. Master mouse shortcuts, Name Box tricks for hidden row 1, VBA macros, and fix stubborn hidden rows quickly.",
     categorySlug: "data-excel-automation",
     categoryName: "Data & Excel Automation",
     authorId: "sarah-blake",
@@ -4625,11 +4625,11 @@ curl -X POST http://localhost:11434/api/generate \
   },
   {
     slug: "how-to-clean-keyboard-keys",
-    title: "How to Safely Clean Mechanical & Laptop Keyboards (Complete Guide)",
-    headline: "How to Safely Clean Mechanical & Laptop Keyboards (Complete Guide)",
-    excerpt: "A Thorough Engineering manual on how to clean keyboard keys safely, covering mechanical builds, laptop scissor switches, and solvent best practices.",
-    metaTitle: "How to Safely Clean Mechanical and Steps | TechOps Wire",
-    metaDescription: "Learn how to clean keyboard keys effectively and safely. Expert guide covering mechanical keycap removal, laptop maintenance, and sticky switch repair.",
+    title: "How to Clean Keyboard Keys on Laptop and PC Systems",
+    headline: "How to Clean Keyboard Keys on Laptop and PC Systems",
+    excerpt: "An engineering maintenance tutorial on cleaning mechanical keycaps and laptop keyboard switches safely using high-purity isopropyl alcohol and wire pullers.",
+    metaTitle: "How to Clean Keyboard Keys on Laptops | TechOps Wire",
+    metaDescription: "Clean mechanical keycaps and laptop scissor switches safely. Remove dust, grease, and sticky drink residue with isopropyl alcohol and anti-static brushes.",
     categorySlug: "os-systems",
     categoryName: "OS & Systems",
     authorId: "evan-mitchell",
@@ -4642,20 +4642,20 @@ curl -X POST http://localhost:11434/api/generate \
     secondaryKeywords: ["how to clean keyboard","how to clean keyboard keycaps"],
     combinedVolume: 13750,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1517433456452-f9633a875f6f",
+    coverImage: "/images/articles/how-to-clean-keyboard-keys-cover.jpg",
+    coverImageId: "how-to-clean-keyboard-keys-cover",
     secondaryImage: {
-      "id": "photo-1515378791036-0648a3ef77b2",
-      "url": "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Systems administrator typing administrative commands on laptop keyboard",
-      "caption": "Command line interfaces bypass GUI overhead for rapid enterprise system maintenance."
-},
+      id: "how-to-clean-keyboard-keycaps-wash",
+      url: "/images/articles/how-to-clean-keyboard-keycaps-wash.jpg",
+      alt: "Washing mechanical keyboard keycaps in mild soapy solution and drying stems on microfiber towel",
+      caption: "Soaking extracted keycaps in mild soapy water removes finger oils before drying stems facing up."
+    },
     tertiaryImage: {
-      "id": "photo-1563770660941-20978e870e26",
-      "url": "https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Enterprise server blades and system storage drive enclosures",
-      "caption": "Hot-swappable storage arrays provide uninterrupted operations during disk failures."
-},
+      id: "how-to-clean-laptop-keyboard-keys",
+      url: "/images/articles/how-to-clean-laptop-keyboard-keys.jpg",
+      alt: "Technician cleaning laptop keyboard scissor switches with an antistatic precision brush at 45 degree angle",
+      caption: "Tilted surface brushing prevents debris from falling deeper into delicate laptop scissor mechanisms."
+    },
     tableOfContents: [
       {
             "id": "mechanical-vs-laptop-architecture",
@@ -4663,7 +4663,7 @@ curl -X POST http://localhost:11434/api/generate \
             "level": 2
       },
       {
-            "id": "Thorough-comparison-matrix",
+            "id": "keyboard-cleaning-methods-matrix",
             "title": "Keyboard Cleaning Methodologies Compared",
             "level": 2
       },
@@ -4715,13 +4715,13 @@ curl -X POST http://localhost:11434/api/generate \
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
   <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Decision Matrix</h4>
-  <p class="text-slate-700 text-sm">Selecting the proper cleaning modality depends directly on your chassis architecture. While modular builds support Full cap extraction, ultra-slim laptops demand strict surface-level maintenance to prevent structural failure of miniature scissor switches.</p>
+  <p class="text-slate-700 text-sm">Selecting the proper cleaning modality depends directly on your chassis architecture. While modular builds support total keycap removal, ultra-slim laptops demand strict surface-level maintenance to prevent structural failure of miniature scissor switches.</p>
 </div>
 
 <h2 id="mechanical-vs-laptop-architecture" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Mechanical Versus Laptop Architecture</h2>
 
 <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Structural Differences and Risk Profiles</h3>
-<p class="text-slate-700 leading-relaxed mb-4">Mechanical switch assemblies feature modular keycaps mounted over individual spring-loaded stems, which simplifies deep cleaning workflows. Conversely, Standard portable computers integrate shallow scissor mechanisms or low-profile butterfly switches bonded directly to delicate membrane layers. When maintaining these compact systems, operators must avoid excessive fluid application because moisture can easily seep past the chassis seams and short-circuit internal components. For background on how hardware constraints influence system maintenance, consider how engineers balance physical durability with component design principles found in <a href="/articles/docker-container-architecture" class="text-blue-600 font-medium hover:underline">Docker container architecture</a> regarding modular isolation versus monolithic vulnerability.</p>
+<p class="text-slate-700 leading-relaxed mb-4">Mechanical switch assemblies feature modular keycaps mounted over individual spring-loaded stems, which simplifies deep cleaning workflows. Conversely, standard portable computers integrate shallow scissor mechanisms or low-profile butterfly switches bonded directly to delicate membrane layers. When maintaining these compact systems, operators must avoid excessive fluid application because moisture can easily seep past the chassis seams and short-circuit internal components. When performing hardware maintenance on sensitive laptop chassis, such as during a hardware overhaul or diagnostic workflow like an <a href="/articles/how-to-factory-reset-hp-laptop" class="text-blue-600 font-medium hover:underline">HP laptop system reset</a>, power isolation is essential before servicing internal input assemblies.</p>
 
 <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Evaluating Debris Ingress Patterns</h3>
 <p class="text-slate-700 leading-relaxed mb-4">Dust, skin oils, and particulate matter accumulate rapidly in the gaps between switches. In enterprise environments where workstations run continuously, this particulate buildup increases electrical resistance on circuit pads and causes key registration failures. Regular inspection protocols help mitigate these risks before they result in permanent input failure.</p>
@@ -4729,7 +4729,7 @@ curl -X POST http://localhost:11434/api/generate \
 <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Preparation and Safety Protocols</h3>
 <p class="text-slate-700 leading-relaxed mb-4">Before initiating any maintenance procedure, disconnect the peripheral from its power source or shut down the host machine entirely. For integrated portables, ensure the battery is disabled in firmware if possible, or keep the system powered off to prevent accidental keystrokes from executing unintended terminal commands during the cleaning process.</p>
 
-<h2 id="Thorough-comparison-matrix" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Keyboard Cleaning Methodologies Compared</h2>
+<h2 id="keyboard-cleaning-methods-matrix" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Keyboard Cleaning Methodologies Compared</h2>
 
 <p class="text-slate-700 leading-relaxed mb-4">Choosing the correct procedure depends on the specific hardware type, available tools, and the severity of contamination. The following matrix details the primary approaches used in professional maintenance environments.</p>
 
@@ -4806,7 +4806,7 @@ curl -X POST http://localhost:11434/api/generate \
 <p class="text-slate-700 leading-relaxed mb-4">Always select high-purity isopropyl alcohol rated at ninety-nine percent for electronics maintenance. Lower concentrations, such as seventy percent rubbing alcohol, contain excessive water content that leaves mineral deposits and accelerates oxidation on exposed metal contacts. Pure alcohol evaporates rapidly without leaving conductive residue.</p>
 
 <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Avoiding Harmful Solvents</h3>
-<p class="text-slate-700 leading-relaxed mb-4">Never apply acetone, paint thinner, household window cleaners, or abrasive scouring powders to plastic keycaps or chassis surfaces. These chemicals dissolve ABS and PBT plastics, permanently warping textured key finishes and stripping printed legends. For guidance on maintaining strict chemical and system environment hygiene, review standards similar to those applied in <a href="/articles/linux-file-permissions-chmod-chown" class="text-blue-600 font-medium hover:underline">Linux file permissions</a> where strict access boundaries prevent unintended system damage.</p>
+<p class="text-slate-700 leading-relaxed mb-4">Never apply acetone, paint thinner, household window cleaners, or abrasive scouring powders to plastic keycaps or chassis surfaces. These chemicals dissolve ABS and PBT plastics, permanently warping textured key finishes and stripping printed legends. Just as administrators apply strict boundaries in <a href="/articles/linux-file-permissions-chmod-chown" class="text-blue-600 font-medium hover:underline">Linux file permissions</a> to prevent catastrophic system modification, maintaining strict solvent boundaries prevents irreversible damage to sensitive input hardware.</p>
 
 <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Application Best Practices</h3>
 <p class="text-slate-700 leading-relaxed mb-4">Never pour cleaning solutions directly onto input devices. Always apply the solvent to a cleaning cloth or swab first, ensuring the material is damp rather than dripping. This controlled application prevents liquid migration into sensitive electronic enclosures.</p>
@@ -4814,7 +4814,7 @@ curl -X POST http://localhost:11434/api/generate \
 <h2 id="troubleshooting-and-common-pitfalls" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Troubleshooting and Common Pitfalls</h2>
 
 <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Diagnosing Unresponsive Keys After Cleaning</h3>
-<p class="text-slate-700 leading-relaxed mb-4">If a key fails to register input following a cleaning cycle, trapped moisture or incomplete switch seating is usually the root cause. Verify that the keycap stem is aligned correctly on mechanical switches. If fluid ingress is suspected, place the keyboard in a well-ventilated area for twenty-four hours to allow Full evaporation before reconnecting power.</p>
+<p class="text-slate-700 leading-relaxed mb-4">If a key fails to register input following a cleaning cycle, trapped moisture or incomplete switch seating is usually the root cause. Verify that the keycap stem is aligned correctly on mechanical switches. If fluid ingress is suspected, place the keyboard in a well-ventilated area for twenty-four hours to allow moisture to evaporate fully before reconnecting power.</p>
 
 <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Resolving Sticky Switch Actuation</h3>
 <p class="text-slate-700 leading-relaxed mb-4">Residue from sugary beverages often leaves mechanical or scissor switches feeling sluggish. Flush the affected switch housing with a small amount of high-purity isopropyl alcohol using a precision dropper while the board is disconnected. Actuate the switch repeatedly to dissolve internal sugar crystals, then allow full evaporation.</p>
@@ -4824,7 +4824,7 @@ curl -X POST http://localhost:11434/api/generate \
 
 <h2 id="execution-verification" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Execution Verification and Testing</h2>
 
-<p class="text-slate-700 leading-relaxed mb-4">Once maintenance is Full and all components are fully dried and reassembled, verify functionality using specialized diagnostic software. Connect the peripheral to your workstation and execute an interactive input testing utility to confirm every switch registers cleanly without chatter or delay.</p>
+<p class="text-slate-700 leading-relaxed mb-4">Once maintenance is finished and all components are fully dried and reassembled, verify functionality using specialized diagnostic software. Connect the peripheral to your workstation and execute an interactive input testing utility to confirm every switch registers cleanly without chatter or delay.</p>
 
 <ol class="list-decimal pl-6 space-y-3 text-slate-700 mb-6">
   <li>Connect the cleaned peripheral to an isolated test port on your workstation.</li>
