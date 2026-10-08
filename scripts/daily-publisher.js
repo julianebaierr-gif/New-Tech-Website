@@ -17,8 +17,21 @@ const path = require('path');
 const https = require('https');
 const { execSync } = require('child_process');
 
-// 93 Banned Words Scanner Replacements
+// Banned Words Scanner Replacements
 const BANNED_REPLACEMENTS = [
+  { p: /\bAn engineering review\b/gi, r: "A guide" },
+  { p: /\bEngineering review\b/gi, r: "Technical guide" },
+  { p: /\bAn architectural review\b/gi, r: "A system evaluation" },
+  { p: /\bAn engineering breakdown\b/gi, r: "A system breakdown" },
+  { p: /\bAn engineering\b/gi, r: "A systems" },
+  { p: /\bAn architectural\b/gi, r: "A system" },
+  { p: /\bA practical breakdown\b/gi, r: "A direct breakdown" },
+  { p: /\bA practical analysis\b/gi, r: "A direct analysis" },
+  { p: /\bA practical guide\b/gi, r: "A setup guide" },
+  { p: /\bA practical\b/gi, r: "A direct" },
+  { p: /\bPlatform Review\b/gi, r: "Platform Setup" },
+  { p: /\bReview\b/g, r: "Inspect" },
+  { p: /\breview\b/g, r: "inspect" },
   { p: /\bA deep dive into\b/gi, r: "An analysis of" },
   { p: /\bA Guide to\b/gi, r: "A Tutorial on" },
   { p: /\bAdopting\b/gi, r: "Using" },
@@ -147,20 +160,18 @@ function craftSeoMetadata(proposedTitle, mainKeyword, categoryName, leadSentence
 
   let metaDescription = aiMetaDesc;
   if (!metaDescription || metaDescription.length < 150 || metaDescription.length > 155) {
-    let base = leadSentence ? leadSentence.replace(/<[^>]+>/g, '').trim() : '';
-    if (!base || base.length < 80) {
-      base = `Review tested methods, exact syntax, and system architecture for ${mainKeyword}. Step-by-step procedures for systems administration and IT operations.`;
-    }
+    let base = `Configure ${mainKeyword} safely with tested command syntax, verified configurations, operational best practices, and systematic administration roadmaps.`;
     base = sanitizeContent(base).replace(/&/g, 'and');
     if (base.length > 155) {
       base = base.slice(0, 155).replace(/\s+\S*$/, '').trim();
       if (!base.endsWith('.')) base += '.';
     }
     while (base.length < 150) {
-      base += " Read more.";
+      base += " Step-by-step.";
     }
     if (base.length > 155) {
-      base = base.slice(0, 155);
+      base = base.slice(0, 155).replace(/\s+\S*$/, '').trim();
+      if (!base.endsWith('.')) base += '.';
     }
     metaDescription = base;
   }
@@ -820,9 +831,9 @@ ${liveArticlesCatalog}
    Also provide the Metadata and FAQs in a JSON block at the very end of your response:
    \`\`\`json
    {
-     "excerpt": "A 150-175 character unique summary explaining key technical takeaways.",
-     "metaTitle": "A 50-55 character unique meta title ending with | TechOps Wire",
-     "metaDescription": "A 150-155 character unique meta description with zero buzzwords.",
+     "excerpt": "A 150-175 character POINT-TO-POINT summary starting directly with an action verb (such as Set up, Configure, Troubleshoot, Compare). Zero fluff or meta-phrases.",
+      "metaTitle": "A 50-55 character unique meta title ending with | TechOps Wire",
+      "metaDescription": "A 150-155 character POINT-TO-POINT description starting directly with an action verb (such as Set up, Configure, Troubleshoot, Compare). Zero buzzwords, fluff, or padding.",
      "faqs": [
        { "question": "...", "answer": "..." },
        { "question": "...", "answer": "..." },
@@ -833,7 +844,8 @@ ${liveArticlesCatalog}
    \`\`\`
 
 STRICT WRITING RULES:
-- ZERO AI BUZZWORDS: Never use: delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, seamlessly, unlock, pivotal, beacon, elevate, harness, embark, powerhouse, realm, evolution, plethora, game-changer, vital, comprehensive guide, deep dive, in-depth, discover, explore, modern, digital, pipelines, consumption, technical, verified.
+- ZERO AI BUZZWORDS OR FLUFF: Never use: delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, seamlessly, unlock, pivotal, beacon, elevate, harness, embark, powerhouse, realm, evolution, plethora, game-changer, vital, comprehensive guide, deep dive, in-depth, discover, explore, modern, digital, pipelines, consumption, technical, verified, review, an engineering, an architectural, a practical, an engineering review.
+- STRICTLY POINT-TO-POINT METADATA: In excerpt and metaDescription, NEVER write meta-commentary like "An engineering review evaluating...", "A practical breakdown of...", "An architectural evaluation of...", or "Review...". Start IMMEDIATELY with a direct action verb (such as "Set up...", "Configure...", "Troubleshoot...", "Compare...", "Sort...") and concisely state the exact technical tasks and solution.
 - NEVER NUMBER HEADINGS: Never prefix H2 or H3 headings with numbers like '1.', '2.', 'Step 1:', or 'Section 1:'. Headings MUST be clean, natural, and descriptive.
 - ZERO EM-DASHES: Do NOT use the em-dash character '—' or spaced hyphens ' - ' anywhere. Use commas, colons, or parentheses instead.
 - Tone: Hands-on, practical, tested in real production environments.
@@ -986,7 +998,7 @@ Output ONLY the clean HTML for this section.`;
 
   let cleanExcerpt = aiExcerpt;
   if (!cleanExcerpt || cleanExcerpt.length < 80) {
-    cleanExcerpt = firstSentence ? firstSentence.slice(0, 170).trim() : `Review tested steps, command syntax, and configuration procedures for ${mainKeyword}.`;
+    cleanExcerpt = firstSentence ? firstSentence.slice(0, 170).trim() : `Configure tested steps, command syntax, and configuration procedures for ${mainKeyword}.`;
   }
   cleanExcerpt = sanitizeContent(cleanExcerpt);
 

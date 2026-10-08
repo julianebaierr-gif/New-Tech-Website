@@ -20,7 +20,8 @@ const userList = [
   'Orchestrate', 'Paradigm shift', 'Pipelines', 'Pivotal', 'Plethora', 'Powerhouse',
   'Realm', 'Robust', 'Seamless', 'Seamlessly', 'Tapestry', 'Technical', 'Testament',
   'The Ultimate', 'Ultimate', 'Ultimate Guide', 'Ultra-High', 'Uncover', 'Unleash',
-  'Unlock', 'Unpacking', 'Verified', 'Vital', 'Vital role'
+  'Unlock', 'Unpacking', 'Verified', 'Vital', 'Vital role',
+  'An engineering review', 'An engineering', 'An architectural', 'A practical', 'Review'
 ];
 
 function getAllFiles(dir, exts = ['.ts', '.tsx', '.js', '.jsx']) {
@@ -73,6 +74,12 @@ for (const file of files) {
             if (!regex.test(stripped)) {
               continue;
             }
+          }
+        }
+        if (term === 'Review') {
+          // Allow static policy / legal pages only
+          if (rel.includes('editorial-policy') || rel.includes('about') || rel.includes('contact') || rel.includes('terms') || rel.includes('privacy') || rel.includes('not-found')) {
+            continue;
           }
         }
         // Exception: SEO keywords definition array or property

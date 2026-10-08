@@ -1,6 +1,19 @@
 // Complete sanitizer covering all 93 banned words/phrases from scan-user-words.js
 const REPLACEMENTS = [
   // Multi-word phrases first (order matters!)
+  { p: /\bAn engineering review\b/gi, r: "A guide" },
+  { p: /\bEngineering review\b/gi, r: "Technical guide" },
+  { p: /\bAn architectural review\b/gi, r: "A system evaluation" },
+  { p: /\bAn engineering breakdown\b/gi, r: "A system breakdown" },
+  { p: /\bAn engineering\b/gi, r: "A systems" },
+  { p: /\bAn architectural\b/gi, r: "A system" },
+  { p: /\bA practical breakdown\b/gi, r: "A direct breakdown" },
+  { p: /\bA practical analysis\b/gi, r: "A direct analysis" },
+  { p: /\bA practical guide\b/gi, r: "A setup guide" },
+  { p: /\bA practical\b/gi, r: "A direct" },
+  { p: /\bPlatform Review\b/gi, r: "Platform Setup" },
+  { p: /\bReview\b/g, r: "Inspect" },
+  { p: /\breview\b/g, r: "inspect" },
   { p: /\bIn today's fast-paced digital world\b/gi, r: "In enterprise infrastructure" },
   { p: /\bIn today's digital era\b/gi, r: "In enterprise computing" },
   { p: /\bIn today's fast-paced\b/gi, r: "In active production" },
