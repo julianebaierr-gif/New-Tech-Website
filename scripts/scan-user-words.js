@@ -76,7 +76,7 @@ for (const file of files) {
           }
         }
         // Exception: SEO keywords definition array or property
-        if (line.includes('secondaryKeywords') || line.includes('primaryKeyword') || line.includes('how to find duplicates in excel')) {
+        if (line.includes('secondaryKeywords') || line.includes('primaryKeyword') || line.includes('how to find duplicates in excel') || line.includes('how to find profit and loss')) {
           continue;
         }
 
