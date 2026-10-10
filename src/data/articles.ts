@@ -5683,11 +5683,6 @@ NET PROFIT / (NET LOSS)                                             $25,460.00
 
 <p>Catalog engines must enforce write rules on state transitions. For example, entities in the <code>Draft</code> or <code>In Design</code> state remain visible only to authenticated catalog designers and must be excluded from public consumer queries. Once marked <code>Active</code> or <code>Launched</code>, core structural attributes become immutable to protect active quotes and orders. Decommissioning an offering requires transitioning its state to <code>Retired</code>, signaling to CPQ engines that new subscriptions cannot be initiated while preserving record lookups for existing subscribers.</p>
 
-<figure class="my-8 rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
-  <img src="/images/articles/tmf620-resource-modeling.jpg" alt="TMF620 Product Catalog Management API JSON schema modeling and resource hierarchy" width="1200" height="675" class="w-full h-auto object-cover" />
-  <figcaption class="p-3 text-xs text-slate-500 font-mono text-center bg-slate-100 border-t border-slate-200">FIGURE 1: Structural hierarchy of TMF620 entities illustrating relationships between ProductSpecification, ProductOffering, and ProductOfferingPrice models.</figcaption>
-</figure>
-
 <p>Below is a production-compliant JSON payload illustrating a bundled commercial Product Offering that includes functional specification references, characteristic overrides, and recurring price attachments:</p>
 
 <pre class="bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto text-sm font-mono my-4"><code>{
@@ -5856,11 +5851,6 @@ Content-Type: application/json
   <li><code>ProductOfferingStateChangeEvent</code>: Emitted when an offering transitions between lifecycle states (for example, moving from <code>In Test</code> to <code>Active</code>).</li>
   <li><code>ProductOfferingDeleteEvent</code>: Dispatched when an unreferenced entity is purged.</li>
 </ul>
-
-<figure class="my-8 rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
-  <img src="/images/articles/tmf620-api-integration.jpg" alt="Enterprise cloud monitoring for TMF620 catalog synchronization and event streams" width="1200" height="675" class="w-full h-auto object-cover" />
-  <figcaption class="p-3 text-xs text-slate-500 font-mono text-center bg-slate-100 border-t border-slate-200">FIGURE 2: Event-driven distribution topology routing TMF620 state updates through message brokers to downstream operational platforms.</figcaption>
-</figure>
 
 <p>Direct HTTP webhooks can fail if a downstream consumer experiences network partition or restarts. To guarantee message delivery, enterprise architectures implement the Transactional Outbox Pattern. When a catalog write transaction commits in the primary database, an event record is written simultaneously to an outbox table. A background daemon publishes these records to an Apache Kafka topic. Downstream services consume from Kafka at their own pace, ensuring at-least-once processing without dropping catalog updates. When sizing the compute instances running these Kafka brokers and catalog gateways, compare <a href="/articles/aws-ec2-instance-types-explained" class="text-blue-600 font-medium hover:underline">aws ec2 instance types</a> to guarantee sufficient network bandwidth and compute headroom for high-frequency event streaming.</p>
 
