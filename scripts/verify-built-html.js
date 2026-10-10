@@ -37,6 +37,7 @@ const filesToCheck = [
   { path: '.next/server/app/articles/how-to-clean-keyboard-keys.html', name: 'Article: how-to-clean-keyboard-keys' },
   { path: '.next/server/app/articles/how-to-sort-in-google-sheets.html', name: 'Article: how-to-sort-in-google-sheets' },
   { path: '.next/server/app/articles/cloud-accounting-for-small-business.html', name: 'Article: cloud-accounting-for-small-business' },
+  { path: '.next/server/app/articles/tmf620-product-catalog-management-api.html', name: 'Article: tmf620-product-catalog-management-api' },
 ];
 
 console.log("=== INSPECTING PRODUCTION BUILT HTML FILES ===");
