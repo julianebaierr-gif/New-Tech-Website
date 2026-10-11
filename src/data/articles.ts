@@ -5889,9 +5889,9 @@ Content-Type: application/json
     slug: "how-to-freeze-columns-in-excel",
     title: "How to Freeze Panes, Top Rows, and Columns in Excel",
     headline: "How to Freeze Panes, Top Rows, and Columns in Excel",
-    excerpt: "Configure viewport persistence in Excel by locking headers and data points to maintain context during large-scale dataset navigation and analysis.",
-    metaTitle: "How to Freeze Panes Top Rows and Steps | TechOps Wire",
-    metaDescription: "Configure how to freeze columns in excel safely with tested command syntax, Validated configurations, operational best practices, and systematic.",
+    excerpt: "Lock spreadsheet headers and identifier columns in Excel using Freeze Panes shortcuts, custom cell coordinate selections, and multi-axis split view layouts.",
+    metaTitle: "How to Freeze Columns and Panes in Excel | TechOps Wire",
+    metaDescription: "Freeze columns and rows in Excel with step-by-step View ribbon shortcuts, custom cell anchors, multi-pane splits, and troubleshooting for greyed-out menus.",
     categorySlug: "data-excel-automation",
     categoryName: "Data & Excel Automation",
     authorId: "sarah-blake",
@@ -5904,20 +5904,20 @@ Content-Type: application/json
     secondaryKeywords: ["excel freeze top 2 rows","excel freeze top row and first column","how to freeze the top row in excel","how to unfreeze panes in excel"],
     combinedVolume: 5650,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1590283603385-17ffb3a7f29f",
+    coverImage: "/images/articles/excel-freeze-panes-cover.jpg",
+    coverImageId: "excel-freeze-panes-cover",
     secondaryImage: {
-      "id": "photo-1611974789855-9c2a0a7236a3",
-      "url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Data analytics screen displaying market charts and tabular matrices",
-      "caption": "Interactive data worksheets aggregate multi-source records for rapid auditing."
-},
+      id: "excel-freeze-panes-ui",
+      url: "/images/articles/excel-freeze-panes-ui.jpg",
+      alt: "Excel View ribbon interface displaying the Freeze Panes dropdown menu and options",
+      caption: "Accessing the Freeze Panes command from the View ribbon menu in Excel."
+    },
     tertiaryImage: {
-      "id": "photo-1642543492481-44e81e3914a7",
-      "url": "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Spreadsheet calculation grid with numerical formulas and data ranges",
-      "caption": "Formula validation ensures accuracy across mission-critical spreadsheet Workflows."
-},
+      id: "excel-freeze-multiple-columns",
+      url: "/images/articles/excel-freeze-multiple-columns.jpg",
+      alt: "Large Excel spreadsheet with locked header row and frozen multiple columns for data auditing",
+      caption: "Locking multiple columns and rows in Excel for structured data navigation and comparison."
+    },
     tableOfContents: [
       {
             "id": "freeze-panes-mechanics",
@@ -5957,7 +5957,7 @@ Content-Type: application/json
       },
       {
             "question": "Can I freeze columns in Excel Online?",
-            "answer": "Yes, you can freeze columns in Excel Online by navigating to the View tab and selecting Freeze Panes, which will persist for your specific browser session."
+            "answer": "Yes, you can freeze columns in Excel Online by opening the View tab and selecting Freeze Panes, which will persist for your specific browser session."
       },
       {
             "question": "Does freezing panes affect printing?",
@@ -5979,7 +5979,7 @@ Content-Type: application/json
 
 <p>The Excel interface calculates the freeze point based on the top-left corner of the currently selected cell. When you execute the freeze command, Excel locks all rows above the selection and all columns to the left of the selection. This architectural behavior is consistent across most desktop versions, though users often struggle with the distinction between freezing the first row versus a custom selection. Understanding this coordinate-based locking is essential for maintaining data integrity when you <a href="/articles/how-to-sort-in-google-sheets" class="text-blue-600 font-medium hover:underline">sort in google sheets</a> or Excel, as improper locking can lead to visual confusion during data manipulation.</p>
 
-<p>To freeze columns A and B, you must select cell C1. By selecting the first cell in the third column, you instruct the application to anchor everything to the left of that point. If you select cell B2, Excel will freeze both column A and row 1 simultaneously. This dual-axis locking is the most efficient way to manage large datasets where both horizontal and vertical headers are required for reference. If you Locate that the freeze panes button is greyed out, verify that you are not in cell-editing mode or that the sheet is not protected, as these states disable UI interaction.</p>
+<p>To freeze columns A and B, you must select cell C1. By selecting the first cell in the third column, you instruct the application to anchor everything to the left of that point. If you select cell B2, Excel will freeze both column A and row 1 simultaneously. This dual-axis locking is the most efficient way to manage large datasets where both horizontal and vertical headers are required for reference. If you notice that the freeze panes button is greyed out, verify that you are not in cell-editing mode or that the sheet is not protected, as these states disable UI interaction.</p>
 
 <p>For users operating on macOS, the logic remains identical, though the menu pathing differs slightly. You navigate to the View tab and locate the Freeze Panes dropdown. The shortcut key for this operation is Alt, W, F, F on Windows, while Mac users often rely on custom keyboard shortcuts defined in the System Settings. If you are working in a shared environment, such as Excel Online or SharePoint, the freeze state is saved per user session, meaning your view settings will not impact the experience of other collaborators accessing the same file.</p>
 
@@ -6013,7 +6013,7 @@ Content-Type: application/json
 
 <h2 id="troubleshooting-pitfalls" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Troubleshooting and Common Pitfalls</h2>
 
-<p>A frequent issue occurs when users attempt to freeze columns and Locate the option disabled. This is typically caused by being in cell-edit mode, where the cursor is active inside a cell. Press Escape to exit edit mode and re-attempt the command. If you are working with large, complex files, ensure you are not experiencing memory overhead that slows down UI responsiveness. If the freeze panes button is unresponsive, check if the workbook is shared in a legacy mode that restricts view modifications.</p>
+<p>A frequent issue occurs when users attempt to freeze columns and observe the option disabled. This is typically caused by being in cell-edit mode, where the cursor is active inside a cell. Press Escape to exit edit mode and re-attempt the command. If you are working with large, complex files, ensure you are not experiencing memory overhead that slows down UI responsiveness. If the freeze panes button is unresponsive, check if the workbook is shared in a legacy mode that restricts view modifications.</p>
 
 <p>Another common failure involves the freeze first column not working as expected. This usually happens when the user has previously applied a different freeze configuration. Always select Unfreeze Panes before applying a new configuration to clear existing anchors. If you are using Excel for Business Central or other integrated ERP systems, note that some web-based grids have custom UI controls that override standard Excel freeze behavior. In these cases, look for a specific "Pin" icon within the grid header rather than the standard View ribbon.</p>
 
@@ -6021,7 +6021,7 @@ Content-Type: application/json
 
 <h2 id="platform-specific-nuances" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Platform Specific Nuances</h2>
 
-<p>Freezing columns in Excel for Mac follows the same logical flow as the Windows version, though the ribbon layout may shift depending on your version of Office. If you are using Excel on a mobile device, the interface is simplified. You must tap the cell, open the bottom menu, and locate the View tab to Locate the Freeze Panes option. Because mobile screens are limited in size, freezing is even more critical for maintaining data context, but be aware that performance may degrade if you have too many active panes on a low-memory device.</p>
+<p>Freezing columns in Excel for Mac follows the same logical flow as the Windows version, though the ribbon layout may shift depending on your version of Office. If you are using Excel on a mobile device, the interface is simplified. You must tap the cell, open the bottom menu, and locate the View tab to access the Freeze Panes option. Because mobile screens are limited in size, freezing is even more critical for maintaining data context, but be aware that performance may degrade if you have too many active panes on a low-memory device.</p>
 
 <p>In SharePoint or Excel Online, the freeze state is handled by the browser session. If you refresh the page, your freeze settings should persist, but they will not affect other users viewing the same document. This is a significant advantage for collaborative environments where different team members need to focus on different sections of the data. If you are using Smartsheet or other project management tools, the freeze functionality is often referred to as "Locking" or "Pinning" columns, and it is usually accessed via the column header menu rather than a global View tab.</p>
 
@@ -6037,7 +6037,7 @@ End Sub</code></pre>
 
 <p>Maintaining a clean workspace involves more than just freezing panes. If your data is poorly structured, even the best view settings will not help. Ensure your datasets are normalized and that you have removed unnecessary formatting. If you are dealing with large tables, consider using Excel Tables (Ctrl+T) which automatically keeps headers visible at the top of the screen without requiring manual freeze panes configuration. This is often a more stable solution for long-term data management.</p>
 
-<p>When working with cross-functional teams, document your view settings if the file is intended for public Utilization. Users who are not familiar with the file may be confused by frozen panes if they are not expecting them. Always provide a clear instruction or a "Reset View" macro if the file is highly complex. By combining proper column freezing with efficient data structures, you ensure that your spreadsheets remain readable and functional regardless of the dataset size.</p>`
+<p>When working with cross-functional teams, document your view settings if the file is intended for public team use. Users who are not familiar with the file may be confused by frozen panes if they are not expecting them. Always provide a clear instruction or a "Reset View" macro if the file is highly complex. By combining proper column freezing with efficient data structures, you ensure that your spreadsheets remain readable and functional regardless of the dataset size.</p>`
   },
 ];
 export function getSortedArticles(): Article[] {
