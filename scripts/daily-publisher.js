@@ -586,16 +586,7 @@ async function run() {
   const lastArticle = existingArticles[existingArticles.length - 1];
   console.log(`[STATUS] Last article: [${lastArticle?.slug}] | Category: ${lastArticle?.categorySlug} | Author: ${lastArticle?.authorId}`);
 
-  // 1. Category Round-Robin: Data -> Cloud -> AI -> OS
-  let lastCatIndex = -1;
-  if (lastArticle?.categorySlug) {
-    lastCatIndex = SILO_ROTATION.findIndex(s => s.slug === lastArticle.categorySlug);
-  }
-  const nextCatIndex = (lastCatIndex + 1) % SILO_ROTATION.length;
-  const targetSilo = SILO_ROTATION[nextCatIndex];
-  console.log(`[CATEGORY ROTATION] Today's Target Category: ${targetSilo.name} (${targetSilo.prefix})`);
-
-  // 3. Read Sheet2 and find the first 'Pending' topic in targetSilo
+  // 1. Read Sheet2 and find the first pending, uncovered topic starting from the top of the sheet
   const sheet2Path = path.join(__dirname, 'sheet2_updated.csv');
   const sourcePath = fs.existsSync(sheet2Path) ? sheet2Path : path.join(__dirname, 'sheet2.csv');
   const sheet2Content = fs.readFileSync(sourcePath, 'utf8');
@@ -605,25 +596,17 @@ async function run() {
   let targetRow = null;
 
   for (let r = 1; r < rows.length; r++) {
-    const rowSilo = (rows[r][0] || '').toLowerCase();
     const status = (rows[r][9] || '').trim().toLowerCase();
-    if (rowSilo.includes(targetSilo.prefix.toLowerCase()) && (status === 'pending' || status === '')) {
+    const mainKw = (rows[r][2] || '').trim().toLowerCase();
+    const testSlug = slugify(mainKw);
+    const isAlreadyCovered = existingArticles.some(a => 
+      a.slug === testSlug || 
+      a.primaryKeyword?.toLowerCase() === mainKw
+    );
+    if ((status === 'pending' || status === '') && !isAlreadyCovered) {
       targetRowIndex = r;
       targetRow = rows[r];
       break;
-    }
-  }
-
-  // Fallback if target category has no pending topics left
-  if (!targetRow) {
-    console.log(`[FALLBACK] No pending topics in ${targetSilo.name}. Searching other categories...`);
-    for (let r = 1; r < rows.length; r++) {
-      const status = (rows[r][9] || '').trim().toLowerCase();
-      if (status === 'pending' || status === '') {
-        targetRowIndex = r;
-        targetRow = rows[r];
-        break;
-      }
     }
   }
 
