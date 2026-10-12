@@ -70,9 +70,9 @@ for (const file of files) {
           if (stripped.includes('find /') || stripped.includes('find -')) {
             stripped = stripped.replace(/find \/|find -/g, '');
           }
-          // Excel "Find and Replace" feature name, dialog, or slug
-          if (/find\s*(and|&)\s*replace|find-and-replace/i.test(stripped)) {
-            stripped = stripped.replace(/find\s*(and|&)\s*replace|find-and-replace/gi, '');
+          // Excel "Find and Replace", "Find & Select", "Find in Excel", and dialog buttons/tabs
+          if (/find\s*(and|&|&amp;)\s*(replace|select)|find-and-replace|find\s*(all|next|what|tab|dialog|in\s*excel)|find\s*&gt;\s*replace/i.test(stripped)) {
+            stripped = stripped.replace(/find\s*(and|&|&amp;)\s*(replace|select)|find-and-replace|find\s*(all|next|what|tab|dialog|in\s*excel)|find\s*&gt;\s*replace/gi, '');
           }
           if (!regex.test(stripped)) {
             continue;
