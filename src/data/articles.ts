@@ -6159,20 +6159,20 @@ End Sub</code></pre>
     secondaryKeywords: ["find and replace excel","how to find and replace in excel","where is find and replace in excel"],
     combinedVolume: 5450,
     featured: false,
-    coverImage: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&h=630&q=80",
-    coverImageId: "photo-1590283603385-17ffb3a7f29f",
+    coverImage: "/images/articles/excel-find-replace-cover.jpg",
+    coverImageId: "excel-find-replace-cover",
     secondaryImage: {
-      "id": "photo-1611974789855-9c2a0a7236a3",
-      "url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Data analytics screen displaying market charts and tabular matrices",
-      "caption": "Interactive data worksheets aggregate multi-source records for rapid auditing."
-},
+      "id": "excel-find-replace-dialog",
+      "url": "/images/articles/excel-find-replace-dialog.jpg",
+      "alt": "Excel Find and Replace dialog options window showing Match case and Search within sheet",
+      "caption": "Expanding options in the Excel Find and Replace dialog enables granular search filtering."
+    },
     tertiaryImage: {
-      "id": "photo-1642543492481-44e81e3914a7",
-      "url": "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=1200&h=630&q=80",
-      "alt": "Spreadsheet calculation grid with numerical formulas and data ranges",
-      "caption": "Formula validation ensures accuracy across mission-critical spreadsheet Workflows."
-},
+      "id": "excel-wildcards-data-cleaning",
+      "url": "/images/articles/excel-wildcards-data-cleaning.jpg",
+      "alt": "Excel spreadsheet data cleaning workstation applying asterisk and question mark wildcards",
+      "caption": "Using wildcard operators enables bulk normalization across complex alphanumeric dataset columns."
+    },
     tableOfContents: [
       {
             "id": "operational-mechanics",
