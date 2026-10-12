@@ -61,19 +61,21 @@ for (const file of files) {
 
       if (regex.test(line)) {
         if (term === 'Find') {
+          let stripped = line;
           // JS Array.find()
-          if (line.includes('.find(') || line.includes('find(')) {
-            const stripped = line.replace(/\.find\([^)]*\)/g, '');
-            if (!regex.test(stripped)) {
-              continue;
-            }
+          if (stripped.includes('.find(') || stripped.includes('find(')) {
+            stripped = stripped.replace(/\.find\([^)]*\)/g, '');
           }
           // Linux shell command `find /...` or `find -type`
-          if (line.includes('find /') || line.includes('find -')) {
-            const stripped = line.replace(/find \/|find -/g, '');
-            if (!regex.test(stripped)) {
-              continue;
-            }
+          if (stripped.includes('find /') || stripped.includes('find -')) {
+            stripped = stripped.replace(/find \/|find -/g, '');
+          }
+          // Excel "Find and Replace" feature name, dialog, or slug
+          if (/find\s*(and|&)\s*replace|find-and-replace/i.test(stripped)) {
+            stripped = stripped.replace(/find\s*(and|&)\s*replace|find-and-replace/gi, '');
+          }
+          if (!regex.test(stripped)) {
+            continue;
           }
         }
         if (term === 'Review') {
