@@ -40,6 +40,7 @@ const filesToCheck = [
   { path: '.next/server/app/articles/tmf620-product-catalog-management-api.html', name: 'Article: tmf620-product-catalog-management-api' },
   { path: '.next/server/app/articles/how-to-freeze-columns-in-excel.html', name: 'Article: how-to-freeze-columns-in-excel' },
   { path: '.next/server/app/articles/find-and-replace-in-excel.html', name: 'Article: find-and-replace-in-excel' },
+  { path: '.next/server/app/articles/spill-error-in-excel.html', name: 'Article: spill-error-in-excel' },
 ];
 
 console.log("=== INSPECTING PRODUCTION BUILT HTML FILES ===");
