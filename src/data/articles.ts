@@ -6608,10 +6608,10 @@ End Sub</code></pre>
   },
   {
     slug: "microsoft-defender-for-cloud",
-    title: "Microsoft Defender for Cloud: Enterprise Setup & Security Auditing",
-    headline: "Microsoft Defender for Cloud: Enterprise Setup & Security Auditing",
+    title: "Microsoft Defender for Cloud Setup and Security Auditing",
+    headline: "Microsoft Defender for Cloud Setup and Security Auditing",
     excerpt: "Configure Microsoft Defender for Cloud by registering resource providers, establishing cross-cloud connectors, and automating security posture assessments.",
-    metaTitle: "Microsoft Defender for Cloud Steps+ | TechOps Wire",
+    metaTitle: "Microsoft Defender for Cloud Auditing | TechOps Wire",
     metaDescription: "Configure Microsoft Defender for Cloud by registering resource providers, establishing cross-cloud connectors, and automating security posture assessments.",
     categorySlug: "cloud-infrastructure",
     categoryName: "Cloud & Infrastructure",
