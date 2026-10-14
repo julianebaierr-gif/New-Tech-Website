@@ -38,9 +38,9 @@ export function TableOfContents({ items }: TableOfContentsProps) {
         <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
         </svg>
-        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+        <p className="text-xs font-bold uppercase tracking-wider text-slate-900">
           Contents
-        </h4>
+        </p>
       </div>
       <nav className="space-y-1.5 max-h-[70vh] overflow-y-auto pr-1">
         {items.map((item) => {
