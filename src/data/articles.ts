@@ -6623,6 +6623,10 @@ End Sub</code></pre>
     primaryKeyword: "microsoft defender for cloud",
     primaryVolume: 1700,
     secondaryKeywords: [
+      "cloud detection and response",
+      "cloud vulnerability management",
+      "cloud threat protection",
+      "cdr security",
       "microsoft defender for cloud vs sentinel",
       "microsoft defender for cloud pricing",
       "enable microsoft defender for cloud",
@@ -6655,6 +6659,16 @@ End Sub</code></pre>
       {
         "id": "defender-vs-sentinel",
         "title": "Defender for Cloud vs Microsoft Sentinel: Architectural Roles",
+        "level": 2
+      },
+      {
+        "id": "cloud-detection-and-response",
+        "title": "Cloud Detection and Response (CDR) and Threat Protection",
+        "level": 2
+      },
+      {
+        "id": "cloud-vulnerability-management",
+        "title": "Vulnerability Management in Cloud Computing and Remediation",
         "level": 2
       },
       {
@@ -6693,6 +6707,14 @@ End Sub</code></pre>
         "answer": "Microsoft Defender for Cloud operates as a Cloud Native Application Protection Platform (CNAPP) focusing on posture management (CSPM) and workload protection (CWPP). Microsoft Sentinel is a Security Information and Event Management (SIEM) and Security Orchestration Automation and Response (SOAR) platform that ingests logs across all tools for correlation and enterprise-wide incident response."
       },
       {
+        "question": "What is cloud detection and response (CDR) in Microsoft Defender for Cloud?",
+        "answer": "Cloud detection and response (CDR) combines agentless cloud discovery with runtime behavioral analytics. Defender for Cloud identifies active attacks such as credential dumping, anomalous container executions, and suspicious API token manipulation in real time."
+      },
+      {
+        "question": "How do you assess and remediate vulnerabilities in cloud workloads?",
+        "answer": "Defender for Cloud utilizes integrated vulnerability scanners powered by Microsoft Defender Vulnerability Management to audit virtual machine operating systems, container images in registries, and SQL databases. Remediation occurs either through automated OS patching tools or by rebuilding immutable infrastructure images."
+      },
+      {
         "question": "What is the difference between the Free Foundations CSPM and Enhanced Workload Protection plans?",
         "answer": "Foundations CSPM is free and provides continuous security assessments, regulatory compliance baselines, and Secure Score calculations. The Enhanced Workload Protection plans add real-time threat detection, automated vulnerability scanning, just-in-time VM access, and behavioral analytics across servers, containers, storage, and databases."
       },
@@ -6705,7 +6727,7 @@ End Sub</code></pre>
         "answer": "Yes. You can configure Workflow Automation rules in Defender for Cloud to trigger Azure Logic Apps whenever specific recommendation IDs or alert severities occur, automatically enforcing network restrictions or rotating exposed credentials."
       }
     ],
-    contentHtml: `<p class="lead text-lg text-slate-700 leading-relaxed mb-6">Microsoft Defender for Cloud functions as a Cloud Native Application Protection Platform (CNAPP) combining Cloud Security Posture Management (CSPM) and Cloud Workload Protection (CWPP) across Azure, Amazon Web Services (AWS), Google Cloud Platform (GCP), and hybrid on-premises datacenters. Security architects and DevOps teams deploy Defender for Cloud to bridge visibility blind spots across fragmented cloud accounts, establishing unified compliance standards and automated incident response runbooks. The central operational challenge involves calibrating real-time detection telemetry against Log Analytics ingestion costs while maintaining zero disruption to production container deployments.</p>
+    contentHtml: `<p class="lead text-lg text-slate-700 leading-relaxed mb-6">Microsoft Defender for Cloud functions as a Cloud Native Application Protection Platform (CNAPP) combining Cloud Security Posture Management (CSPM) and Cloud Workload Protection (CWPP) across Azure, Amazon Web Services (AWS), Google Cloud Platform (GCP), and hybrid on-premises datacenters. Establishing reliable cloud security for businesses requires a layered defense that can secure the cloud across multi-tenant infrastructure, virtual host hypervisors, and distributed applications. Operating as an enterprise threat protection service, the platform delivers unified cloud based threat protection and continuous security posture enforcement across public clouds and on-premises clusters. The central operational challenge involves calibrating real-time detection telemetry against Log Analytics ingestion costs while maintaining zero disruption to production container deployments.</p>
 
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
   <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Decision Matrix</p>
@@ -6716,7 +6738,7 @@ End Sub</code></pre>
 
 <p>A production deployment begins with establishing administrative control at the root Azure Management Group level. Applying Defender for Cloud policies to the management group guarantees that every existing and newly provisioned subscription automatically inherits baseline security controls. This programmatic inheritance eliminates configuration drift across decentralized engineering groups. To onboard non-Azure infrastructure, administrators configure native multi-cloud connectors. These connectors use OpenID Connect (OIDC) identity federation to establish secure API access into AWS IAM roles and GCP service accounts without storing permanent secret keys.</p>
 
-<p>When orchestrating multi-cloud connectivity, ensure that your underlying <a href="/articles/docker-container-architecture" class="text-blue-600 font-medium hover:underline">Docker container architecture</a> is explicitly registered. Container nodes and serverless microservices represent the primary lateral movement vector during unauthorized cluster intrusions. Use the following Azure CLI commands to register the required security providers and enable Defender across an active Azure subscription:</p>
+<p>When configuring multi-cloud connectivity, ensure that your underlying <a href="/articles/docker-container-architecture" class="text-blue-600 font-medium hover:underline">Docker container architecture</a> is explicitly registered. Securing network perimeters requires connecting external endpoints with internet security cloud telemetry while integrating cloud security web policies. This protects ingress routes, strengthening cloud hosting cyber security across multi-region tenant pools. Container nodes and serverless microservices represent the primary lateral movement vector during unauthorized cluster intrusions. Use the following Azure CLI commands to register the required security providers and enable Defender across an active Azure subscription:</p>
 
 <pre class="bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto text-sm font-mono my-4"><code># Register required resource providers
 az provider register --namespace Microsoft.Security
@@ -6741,6 +6763,24 @@ az security pricing create --name "VirtualMachines" --tier "Standard" --subplan 
 </ul>
 
 <p>To connect both systems, configure Continuous Export in Defender for Cloud to stream security alerts and compliance findings directly into the primary Sentinel Log Analytics workspace. This pipeline provides security analysts with unified incident timelines that correlate infrastructure vulnerabilities with identity sign-in anomalies.</p>
+
+<h2 id="cloud-detection-and-response" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Cloud Detection and Response (CDR) and Threat Protection</h2>
+
+<p>Static posture auditing identifies configuration errors, but defending active workloads requires real-time cloud detection and response capabilities. Known in security engineering as cdr cloud architecture, this discipline shifts focus from point-in-time scanning to dynamic behavior analysis. Understanding what is threat prevention in cloud infrastructure begins with distinguishing between perimeter firewalls and runtime workload sensors. An effective threat prevention solution intercepts malicious processes at the operating system kernel and API control plane before lateral traversal occurs.</p>
+
+<p>Defender for Cloud delivers an integrated threat protection system through its workload protection plans. When applied to compute clusters, this security threat protection engine analyzes process execution trees, memory space allocations, and network socket bindings. As part of an end-to-end cdr security strategy, the platform performs cloud threat detection and response across virtual machines and managed Kubernetes nodes. For microservices and front-end workloads, cloud application detection and response monitors HTTP traffic profiles and API invocation patterns. When deployed alongside Web Application Firewalls, it reinforces cloud website security by flagging SQL injections and remote code execution payloads in flight.</p>
+
+<p>SecOps teams evaluating cloud detection and response solutions prioritize telemetry correlation speed and low false-positive rates. Delivering unified cloud threat protection requires continuous ingestion from host daemons and network flows. Defender for Cloud feeds continuous cloud detection events into centralized investigation graphs. By providing an automated threat protection solution, the platform gives analysts the tooling needed to isolate compromised nodes, revoke compromised IAM tokens, and terminate malicious daemons within seconds of detection, establishing secure cloud threat management across hybrid compute fleets.</p>
+
+<h2 id="cloud-vulnerability-management" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Vulnerability Management in Cloud Computing and Remediation</h2>
+
+<p>The importance of vulnerability management in cloud environments has escalated as infrastructure teams shift toward rapid continuous deployment schedules. Autoscaling groups, transient container pods, and serverless functions create a dynamic perimeter where unpatched packages introduce immediate exposure. Practicing vulnerability management in cloud computing requires automated engines that evaluate assets without degrading application throughput.</p>
+
+<p>When evaluating scanning platforms, engineers look for the common features of cloud vulnerability management tools. These include agentless disk snapshot inspection, native container registry image scanning, Common Vulnerabilities and Exposures (CVE) severity ranking via the Exploit Prediction Scoring System (EPSS), and software bill of materials (SBOM) generation. In Defender for Cloud, these capabilities are powered by Microsoft Defender Vulnerability Management (MDVM), offering continuous inventory visibility across Windows, Linux, and container base images.</p>
+
+<p>To determine how to assess cloud vulnerability management maturity across your organization, audit three key indicators: scanning coverage across all active cloud accounts, mean time to detect unpatched packages, and remediation completion rates. Engineering teams implement cloud vulnerability management best practices by incorporating security gates into build systems. Applying best practices for integrating vulnerability management into cloud security ensures that container images with critical severity CVEs are blocked in CI workflows before deployment to production registries.</p>
+
+<p>Executing the most effective vulnerability remediation for cloud environments depends on whether resources are mutable or immutable. For mutable compute instances, teams configure automated patching schedules through Azure Update Manager to apply security fixes during maintenance windows. For immutable container fleets and virtual machine scale sets, the superior remediation path avoids live patching; instead, developers update base container images, run automated regression tests, and roll out updated instances via blue-green or canary deployments.</p>
 
 <h2 id="security-auditing-and-compliance" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Security Auditing and Continuous Compliance</h2>
 
