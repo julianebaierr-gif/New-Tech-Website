@@ -35,4 +35,8 @@ next-env.d.ts
 
 # local utility scripts
 scripts/trigger-daily-post.js
+scripts/check-workflow-status.js
+scripts/inspect-silos-status.js
+scripts/list-published-history.js
+scripts/test-candidate-selection.js
 

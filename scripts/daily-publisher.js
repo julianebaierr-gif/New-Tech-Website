@@ -197,7 +197,11 @@ const SILO_IMAGES = {
     { id: "photo-1531403009284-440f080d1e12", url: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&h=630&q=80", alt: "Cloud systems topology diagram and infrastructure workflow planning", caption: "Careful architectural design prevents routing bottlenecks across virtual private clouds." },
     { id: "photo-1523961131990-5ea7c61b2107", url: "https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?auto=format&fit=crop&w=1200&h=630&q=80", alt: "Abstract digital network streams connecting distributed cloud endpoints", caption: "High-throughput network backbones distribute packet loads across multi-region clusters." },
     { id: "photo-1522071820081-009f0129c71c", url: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&h=630&q=80", alt: "DevOps engineering team collaborating on cloud deployment configurations", caption: "Standardized infrastructure-as-code scripts enforce consistency across environments." },
-    { id: "photo-1537498425277-c283d32ef9db", url: "https://images.unsplash.com/photo-1537498425277-c283d32ef9db?auto=format&fit=crop&w=1200&h=630&q=80", alt: "High-performance compute clusters and fiber optic network interfaces", caption: "Fiber interconnects provide microsecond latency between distributed database nodes." }
+    { id: "photo-1537498425277-c283d32ef9db", url: "https://images.unsplash.com/photo-1537498425277-c283d32ef9db?auto=format&fit=crop&w=1200&h=630&q=80", alt: "High-performance compute clusters and fiber optic network interfaces", caption: "Fiber interconnects provide microsecond latency between distributed database nodes." },
+    { id: "photo-1544197150-b99a580bb7a8", url: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&h=630&q=80", alt: "Cloud datacenter server racks and network switches", caption: "Enterprise server installations require redundant power distribution and security controls." },
+    { id: "photo-1558494949-ef010cbdcc31", url: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&h=630&q=80", alt: "High-density server storage arrays with illuminated status indicators", caption: "Storage arrays with continuous health checks prevent data loss during hardware failures." },
+    { id: "photo-1550751827-4bd374c3f58b", url: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=630&q=80", alt: "Cybersecurity engineer workstation monitoring enterprise cloud defenses", caption: "Unified security consoles detect suspicious activities and enforce policy compliance." },
+    { id: "photo-1614064641938-3bbee52942c7", url: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=1200&h=630&q=80", alt: "Digital padlock and cyber defense shielding over networked infrastructure", caption: "Cloud security posture management continuously scans for misconfigurations and vulnerabilities." }
   ],
   "ai-developer-tools": [
     { id: "photo-1525547719571-a2d4ac8945e2", url: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=1200&h=630&q=80", alt: "Software engineer interacting with modern AI coding interface and laptop", caption: "AI coding extensions accelerate developer iteration cycles while preserving test rigor." },
@@ -586,28 +590,43 @@ async function run() {
   const lastArticle = existingArticles[existingArticles.length - 1];
   console.log(`[STATUS] Last article: [${lastArticle?.slug}] | Category: ${lastArticle?.categorySlug} | Author: ${lastArticle?.authorId}`);
 
-  // 1. Read Sheet2 and find the first pending, uncovered topic starting from the top of the sheet
+  // 1. Read Sheet2 and find the next pending, uncovered topic following Category Round-Robin order
   const sheet2Path = path.join(__dirname, 'sheet2_updated.csv');
   const sourcePath = fs.existsSync(sheet2Path) ? sheet2Path : path.join(__dirname, 'sheet2.csv');
   const sheet2Content = fs.readFileSync(sourcePath, 'utf8');
   const rows = parseCSV(sheet2Content);
 
+  // Category rotation determination: advance to next silo after last published article
+  let lastSiloIdx = SILO_ROTATION.findIndex(s => s.slug === lastArticle?.categorySlug);
+  if (lastSiloIdx === -1) lastSiloIdx = 0;
+  const targetSiloIdx = (lastSiloIdx + 1) % SILO_ROTATION.length;
+  console.log(`[ROTATION] Advancing silo: ${SILO_ROTATION[lastSiloIdx].name} -> ${SILO_ROTATION[targetSiloIdx].name}`);
+
   let targetRowIndex = -1;
   let targetRow = null;
 
-  for (let r = 1; r < rows.length; r++) {
-    const status = (rows[r][9] || '').trim().toLowerCase();
-    const mainKw = (rows[r][2] || '').trim().toLowerCase();
-    const testSlug = slugify(mainKw);
-    const isAlreadyCovered = existingArticles.some(a => 
-      a.slug === testSlug || 
-      a.primaryKeyword?.toLowerCase() === mainKw
-    );
-    if ((status === 'pending' || status === '') && !isAlreadyCovered) {
-      targetRowIndex = r;
-      targetRow = rows[r];
-      break;
+  // Search in target category first, then wrap around remaining silos if exhausted
+  for (let offset = 0; offset < SILO_ROTATION.length; offset++) {
+    const currentSilo = SILO_ROTATION[(targetSiloIdx + offset) % SILO_ROTATION.length];
+    for (let r = 1; r < rows.length; r++) {
+      const rowCategory = mapCategory(rows[r][0]);
+      if (rowCategory.slug !== currentSilo.slug) continue;
+
+      const status = (rows[r][9] || '').trim().toLowerCase();
+      const mainKw = (rows[r][2] || '').trim().toLowerCase();
+      const testSlug = slugify(mainKw);
+      const isAlreadyCovered = existingArticles.some(a => 
+        a.slug === testSlug || 
+        a.primaryKeyword?.toLowerCase() === mainKw
+      );
+
+      if ((status === 'pending' || status === '') && !isAlreadyCovered) {
+        targetRowIndex = r;
+        targetRow = rows[r];
+        break;
+      }
     }
+    if (targetRow) break;
   }
 
   if (!targetRow) {
