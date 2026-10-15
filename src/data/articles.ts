@@ -6926,6 +6926,7 @@ az security alert list \
     publishedAt: "2026-10-15T13:00:00Z",
     updatedAt: "2026-10-15T13:00:00Z",
     readingTimeMinutes: 12,
+    difficulty: "Intermediate",
     primaryKeyword: "what is agentic ai",
     primaryVolume: 5400,
     secondaryKeywords: [
