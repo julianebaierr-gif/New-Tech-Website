@@ -8,10 +8,11 @@ Always enforce these permanent editorial, technical SEO, and content quality sta
    - Never include `&` (`&amp;`) or numbered prefixes (`1.`, `Step 1:`) in `<h2>` or `<h3>` headings.
 
 2. **Natural Keyword Integration (No Keyword Trains, Typo Stuffing, or Bolding):**
-   - Never bold (`<strong>`, `<b>`, `**`) injected SEO keywords.
-   - Never chain multiple synonym/keyword variations into a single sentence or paragraph (e.g., never write comma-separated trains like *"how to alphabetize in Excel, how to alphabetise in Excel, how to sort Excel alphabetically..."*). Limit keyword integration to 1–2 natural phrases per paragraph, and drop redundant near-duplicate variations that already share the same root stems.
-   - Never force raw search typos, shorthand strings, or broken grammar (e.g., `"agen ai"`, `"agentic def"`, `"agentic mean"`, `"bvostfus"`) into article prose. Address the underlying technical intent using clean, natural English.
-   - Keep platform-specific guides focused on their primary platform (e.g., do not flood a Google Sheets tutorial with Excel keyword lists).
+   - Always retain the article's `primaryKeyword` 2–3 times naturally across the article (e.g., in the lead paragraph, one body section, and one FAQ) so core search rankings are preserved.
+   - Never bold (`<strong>`, `<b>`, `**`) injected SEO keywords; reserve `<strong>` strictly for genuine UI ribbon paths, dialog labels, or list item lead-ins ending with a colon (`:`).
+   - Never chain multiple synonym/keyword variations or 3+ question phrases (`how to...`, `what is...`, `where is...`) into a single paragraph. Limit keyword integration to 1–2 natural phrases per paragraph, and drop redundant near-duplicate variations that already share the same root stems.
+   - Never force raw search typos, shorthand strings, or unrelated scraped competitor brands into `secondaryKeywords` or article prose.
+   - Keep platform-specific guides focused on their primary platform (e.g., do not include `"in excel"` keywords in a Google Sheets article's `secondaryKeywords` or body).
    - Cross-check `scripts/sheet1_data.csv` and `scripts/sheet2.csv` before adding keywords to avoid cannibalizing future scheduled posts.
 
 3. **Substantiated Technical Claims & Official vs. Practical Limits:**
@@ -19,13 +20,16 @@ Always enforce these permanent editorial, technical SEO, and content quality sta
    - When troubleshooting SaaS/cloud latency or outages, separate verifiable user-side diagnostics (e.g., checking `status.openai.com`, inspecting browser DevTools/WebSockets, disabling extensions) from general server-side architectural bottlenecks.
 
 4. **Concrete, Reproducible Comparison Matrices:**
-   - Comparison tables must use specific, measurable criteria (e.g., latency in ms, context token limits, VRAM/RAM capacity, exact CLI flags, or protocol specifications) rather than vague single-word labels like `"Massive"`, `"High (Network)"`, or `"Low (Local)"`.
+   - Comparison tables must use specific, measurable criteria (e.g., latency in ms, context token limits, VRAM/RAM capacity, exact CLI flags, or protocol specifications) rather than vague single-word cells like `"High"`, `"Medium"`, `"Low"`, `"None"`, `"Yes"`, or `"No"`.
 
 5. **Realistic Claims & Safe Security Terminology:**
-   - Avoid absolute, unverifiable operational guarantees such as `"zero unplanned downtime"` or `"100% immune"`; use realistic engineering phrasing like `"mitigate unplanned downtime risks"`.
+   - Avoid absolute, unverifiable operational guarantees such as `"zero unplanned downtime"`, `"zero downtime"`, `"100% accuracy"`, or `"guarantee flawless"`; use realistic engineering phrasing like `"minimize service disruption"` or `"high accuracy"`.
    - Avoid grey-hat or circumvention phrasing such as `"bypass login locks"`; use authorized administration phrasing like `"run startup repair"` or `"execute authorized account recovery"`.
 
-6. **Zero Banned AI Buzzwords & Strict Meta Limits:**
+6. **Zero Banned AI Buzzwords, Clean Punctuation & Strict Meta Limits:**
+   - Never use em-dashes (`—`) anywhere in `contentHtml` or `faqs`, and never use `&` in `title`, `headline`, `<h2>`, or `<h3>`.
+   - Ensure `tableOfContents` entries match the exact `<h2>` `id` attributes in `contentHtml` in 1-to-1 order.
+   - Always run `node scripts/sanitize-rules.js` (must return **0 audit issues**).
    - Always run `node scripts/scan-user-words.js` (must return **0 matches**).
    - Always run `node scripts/verify-all-meta-limits.js` (must return **100% PASS**: Meta Titles 50–55 chars, Meta Descriptions 150–155 chars).
    - Never alter existing live article URLs/slugs unless explicitly requested.
