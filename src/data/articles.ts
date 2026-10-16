@@ -793,12 +793,12 @@ aws ec2 describe-instance-types   --filters "Name=current-generation,Values=true
   During the global operational peak (roughly 13:00 to 21:00 UTC, when European workdays overlap with North American business hours), millions of concurrent users submit requests simultaneously.
 </p>
 <p class="text-slate-700 leading-relaxed mb-4">
-  When incoming concurrency exceeds available compute nodes, infrastructure load balancers have two choices: return HTTP 503 Service Unavailable errors, or implement dynamic rate throttling. Providers universally choose rate throttling. Under heavy queue saturation:
+  Before troubleshooting local browser or network settings, always check <code class="text-xs bg-slate-100 px-1.5 py-0.5 rounded">status.openai.com</code> to verify whether OpenAI is reporting elevated error rates or degraded latency. When incoming traffic spikes across shared LLM inference clusters, cloud providers typically apply queue prioritization and dynamic rate management:
 </p>
 <ul class="list-disc pl-6 space-y-2 text-slate-700 mb-6">
-  <li>Free-tier user prompts are deferred into lower-priority execution queues, waiting for idle cluster capacity.</li>
-  <li>The maximum generation token rate per active session is dynamically dialed down to prevent cluster thermal overload.</li>
-  <li>Speculative decoding engines (which use smaller helper models to draft tokens ahead of validation) get temporarily disabled to conserve compute cycles.</li>
+  <li>Free-tier requests are generally placed in lower-priority request queues behind paid Plus, Team, and Enterprise tiers during peak demand.</li>
+  <li>Per-session token streaming rates can fluctuate based on active batch sizes and cluster load balancing.</li>
+  <li>Reasoning-heavy prompts or complex tool invocations require additional server-side compute passes before visible output tokens begin streaming.</li>
 </ul>
 
 <h2 id="reason-2-token-generation-speed" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Autoregressive Generation and Memory Bandwidth Limits</h2>
@@ -2206,7 +2206,7 @@ docker run -d --name web-api --network internal-app-net -p 3000:3000 my-api</cod
     faqs: [
       {
             "question": "What is the maximum file size for ChatGPT Plus uploads?",
-            "answer": "For ChatGPT Plus and Enterprise subscriptions, individual file uploads are capped at 512 MB per file. However, CSV and Excel spreadsheets exceeding approximately 2,000,000 cells will trigger execution timeouts during Python pandas parsing."
+            "answer": "Per OpenAI official documentation, individual file uploads are capped at 512 MB per file (with text and document files additionally capped at 2 million tokens per file, and images capped at 20 MB). For CSV and Excel spreadsheets, practical size limits are further constrained by the stateful Python Code Interpreter environment, where multi-million-cell tables can encounter pandas memory or execution timeouts."
       },
       {
             "question": "How can I analyze a 500-page PDF without hitting token caps?",
@@ -2218,7 +2218,7 @@ docker run -d --name web-api --network internal-app-net -p 3000:3000 my-api</cod
       },
       {
             "question": "Why does ChatGPT return 'Error analyzing file' on clean CSVs?",
-            "answer": "This error occurs when the spreadsheet contains non-UTF-8 encodings (like ISO-8859-1 or Windows-1252), corrupt delimiter rows, or when Python exceeds its 1 GB container RAM allocation while parsing."
+            "answer": "This error commonly occurs when the spreadsheet contains non-UTF-8 character encodings (such as ISO-8859-1 or Windows-1252), inconsistent delimiter rows, or when an in-memory pandas DataFrame operation exceeds available sandbox container memory during execution."
       },
       {
             "question": "How many files can I upload in a single prompt?",
@@ -2234,7 +2234,7 @@ docker run -d --name web-api --network internal-app-net -p 3000:3000 my-api</cod
 <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
   <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Upload Specs Summary</p>
   <p class="text-slate-700 text-sm">
-    Individual document uploads are capped at a <strong>512 MB hard ceiling</strong> per file, with a maximum of <strong>10 files per prompt</strong>. Tabular spreadsheets hit practical processing limits at approximately <strong>2,000,000 cells</strong> or <strong>1 GB container RAM</strong>. To analyze massive datasets reliably, convert workbooks to clean CSVs, split lengthy PDFs into distinct sections, or deploy external vector retrieval (RAG).
+    According to OpenAI's official file upload specifications, individual files are capped at <strong>512 MB per file</strong> (up to <strong>2 million tokens</strong> for text documents and <strong>20 MB</strong> for images). In practice, spreadsheets processed inside the Python Data Analysis sandbox are bounded by container memory and per-run execution timeouts rather than raw disk size alone. To analyze large datasets reliably, convert multi-tab Excel workbooks to UTF-8 CSVs, split large PDFs, or use retrieval-augmented generation (RAG).
   </p>
 </div>
 
@@ -4990,12 +4990,10 @@ sudo evtest /dev/input/event0
   <li>Add additional subordinate levels as required, and click the blue <strong>Sort</strong> button to execute the transformation.</li>
 </ol>
 
-<h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Cross-Platform Workflows: How to Sort and Alphabetize in Excel</h3>
-<p class="text-slate-700 mb-4">Enterprise teams often manage hybrid workflows across both Google Sheets and desktop Microsoft 365. Understanding how to sort in Excel and how to reorder data in Excel ensures parity between systems. The native sort feature in Excel provides identical functionality for sorting information in Excel across workbooks.</p>
+<h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Cross-Platform Parity: Google Sheets vs Microsoft Excel Sorting</h3>
+<p class="text-slate-700 mb-4">Enterprise teams frequently exchange workbooks between Google Sheets and desktop Microsoft Excel. While Google Sheets separates <em>Sort sheet</em> and <em>Sort range</em> into distinct menu commands, Microsoft Excel consolidates range sorting under <strong>Data &gt; Sort</strong> on the main ribbon. When you sort in Excel, the platform automatically detects contiguous data boundaries and checks <em>My data has headers</em> to keep column titles anchored at the top.</p>
 
-<p class="text-slate-700 mb-4">When working in Excel, operators can sort ascending in Excel or arrange in ascending order in Excel using the ribbon controls under <strong>Data &gt; Sort</strong>. Choosing ascending order Excel (often abbreviated as ascending Excel) orders records from A to Z or smallest to largest, whereas choosing Excel descending order flips records from Z to A. To sort Excel sheet by column, highlight your table and ensure Excel sort rows by column data respects adjacent fields. Running an Excel sort rows by column action with headers enabled prevents your title row from mixing with records.</p>
-
-<p class="text-slate-700 mb-4">If an analyst asks can you alphabetize in Excel or how can I sort alphabetically in Excel, the process is straightforward: highlight the target table, click Sort, pick your column, and set the order to A to Z. Whether you want to know how to alphabetize in Excel, how to alphabetise in Excel, how to arrange alphabetically in Excel, how to sort a Excel sheet, how to sort rows in Excel, how to put Excel in alphabetical order, how to sort a column alphabetically in Excel, how to alphabetize a column in Excel, how to sort Excel alphabetically, how to put a column in alphabetical order in Excel, or how to make alphabetical order in Excel, the ribbon dialog manages it reliably. When you need to Excel organize alphabetically or figure out how to put ABC order in Excel—such as understanding how to put names in alphabetical order in Excel—make sure first and last names reside in separate columns or use text formulas to sort by family name.</p>
+<p class="text-slate-700 mb-4">To alphabetize in Excel or sort rows by column values without breaking relational records, highlight the full table range, open the Sort dialog, choose the target column, and set the order to <em>A to Z</em> (ascending) or <em>Z to A</em> (descending). When organizing full names alphabetically across either spreadsheet platform, store first and last names in separate columns or extract the surname into a helper column before sorting.</p>
 
 <h2 id="filter-views-in-collaborative-workspaces" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Filter Views in Collaborative Shared Workspaces</h2>
 
@@ -5041,15 +5039,11 @@ sudo evtest /dev/input/event0
 
 <h2 id="alphabetical-order-and-citation-sorting" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Alphabetizing Lists, Names, and Academic Citations in Spreadsheets</h2>
 
-<h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Using Spreadsheets as an A to Z Alphabetical Order Sorter</h3>
-<p class="text-slate-700 mb-4">Beyond tabular corporate ledgers, spreadsheets function as an instant alphabetical order tool and alphabetical order sorter for everyday textual data. When educators, content managers, or students need to alphabetise a list, alphabetize a list, or put in alphabetical order a batch of raw records, spreadsheets outperform dedicated web tools. If you need to know how to sort words in alphabetical order or require an a to z sorter, simply paste your text items vertically into Column A.</p>
-
-<p class="text-slate-700 mb-4">Rather than relying on an ad-heavy external alphabetical order generator, abc order generator, or alphabetical order creator, entering <code>=SORT(A1:A50)</code> immediately accomplishes the task. If you want to sort text from A to Z, put these words in alphabetical order, or put this in ABC order, the formula executes instantaneously. Analysts frequently sort alphabetically to arrange alphabetical words in order, put list in alphabetical order, write the words in alphabetical order, or handle putting words in ABC order without manual copy-paste errors. A cloud spreadsheet operates as a clean word organizer and lightweight alphabetize app that retains all your raw strings securely.</p>
+<h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Sorting Raw Text Lists and Glossaries From A to Z</h3>
+<p class="text-slate-700 mb-4">Beyond numeric ledgers, Google Sheets serves as a fast, non-destructive tool to alphabetize a list of raw text strings, glossary terms, or inventory tags. Instead of pasting sensitive corporate data into third-party web utilities, paste your unorganized text items vertically into Column A and enter <code>=SORT(A1:A50)</code> in Column B. The formula automatically outputs the list in clean A-to-Z order while preserving the original input sequence in Column A.</p>
 
 <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Alphabetizing Academic Reference Citations and Bibliographies</h3>
-<p class="text-slate-700 mb-4">A critical application for text sorting occurs in academic research and formal publishing, where style guides mandate strict alphabetical order citations. Researchers wondering how to put sources in alphabetical order, how to put citations in alphabetical order, or how to put references in alphabetical order often struggle with manual formatting in document editors.</p>
-
-<p class="text-slate-700 mb-4">Spreadsheets provide an ideal mechanism to alphabetize citations and structure an MLA alphabetical order bibliography. To understand how to alphabetize bibliography collections, alphabetize work cited entries, or format a work cited in alphabetical order list, paste each bibliographic citation into its own individual cell in Column A. Then, in Column B, enter:</p>
+<p class="text-slate-700 mb-4">Documentation writers and researchers also use Google Sheets to put citations and bibliography references in alphabetical order for APA or MLA documentation. Paste each reference entry into its own cell in Column A, and use the dynamic sort formula in Column B:</p>
 
 <pre class="bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto text-sm font-mono my-4"><code>=SORT(A1:A50, 1, TRUE)</code></pre>
 
@@ -7204,13 +7198,9 @@ def database_worker_node(state: AgentSystemState) -> Dict:
 
 <h2 id="agentic-platforms-and-certifications" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Agentic AI Platforms and Professional Training Paths</h2>
 
-<p>As the market expands, system architects assess an extensive agentic ai platforms list to choose the best agentic ai stack for their workload. Selecting an enterprise agentic platform requires evaluating agentic ai providers, independent agentic ai vendors, and scalable agentic tools. Teams compare proprietary agentic ai platforms alongside flexible open-source libraries to deploy custom agentic ai apps that match internal data compliance mandates.</p>
+<p>When selecting an enterprise agentic platform, system architects compare managed cloud offerings (such as AWS Bedrock Agents, Azure AI Foundry, and Vertex AI Agent Builder) against open-source orchestration stacks (such as LangGraph, CrewAI, and AutoGen). Evaluating agentic ai providers and independent vendors requires verifying native support for durable state persistence, OpenTelemetry trace observability, and sandboxed code execution before deploying custom agentic ai apps in production.</p>
 
-<p>To identify the top agentic ai platforms and best agentic tools, engineers look for native support for asynchronous state persistence, distributed agent communication, and sandboxed code execution. Leading software options range from developer-focused code runtimes to full-featured enterprise suites providing integrated agentic tools and observability dashboards.</p>
-
-<p>For technicians seeking to advance their agentic ai engineering expertise and build proven agentic ai skills, educational institutions and cloud vendors provide specialized curricula. Practitioners can enroll in an agentic ai course or structured agentic ai training to master state machine design and tool schemas. Those starting out benefit from beginner agentic ai courses with project work, while experienced developers participate in best agentic ai courses and agentic ai courses online to prepare for industry credentials.</p>
-
-<p>Earning an official agentic ai certification or completing an agentic ai certification course validates a developer's ability to coordinate multi-agent fleets safely. Options include certification for agentic ai beginner to advanced engineers, an agentic ai foundation certification, and rigorous agentic ai certifications with live projects. When reviewing the best certification programs for agentic ai, prioritize practical programs that offer a specialized certification for agentic ai tools and use cases alongside curated agentic ai learning resources.</p>
+<p>For engineers building agentic ai engineering expertise and practical agentic ai skills, vendor-backed curricula such as LangChain Academy, DeepLearning.AI short courses, and Microsoft AutoGen workshops provide hands-on lab environments. Enrolling in structured agentic ai training or completing an agentic ai certification course with live multi-agent projects helps practitioners validate their proficiency in state graph design, tool-calling schemas, and runtime safety guardrails.</p>
 
 <h2 id="enterprise-trust-and-security" class="text-2xl font-bold text-slate-900 mt-10 mb-4 scroll-mt-24">Building Trust and Security in Enterprise Agentic Systems</h2>
 
