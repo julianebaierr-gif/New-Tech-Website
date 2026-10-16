@@ -108,12 +108,21 @@ const REPLACEMENTS = [
   { p: /\bAdopt\b/gi, r: "Apply" },
   { p: /\bAdopting\b/gi, r: "Implementing" },
   { p: /\bPipelines\b/gi, r: "Workflows" },
-  { p: /\bComplete\b/gi, r: "Full" }
+  { p: /\bComplete\b/gi, r: "Full" },
+  { p: /\bbypass login locks\b/gi, r: "run startup repair" },
+  { p: /\bbypass login\b/gi, r: "execute account recovery" },
+  { p: /\bzero unplanned downtime\b/gi, r: "minimal unplanned downtime" }
 ];
 
 function sanitizeAllContent(raw) {
   if (!raw) return raw;
   let text = raw;
+
+  // Enforce strict heading hierarchy: convert any <h4 ...>...</h4> to <p ...>...</p>
+  text = text.replace(/<h4\b([^>]*)>([\s\S]*?)<\/h4>/gi, (match, attrs, inner) => {
+    const cleanInner = inner.replace(/&amp;/g, 'and').replace(/&/g, 'and');
+    return `<p${attrs}>${cleanInner}</p>`;
+  });
 
   // Run replacements
   for (const { p, r } of REPLACEMENTS) {

@@ -78,7 +78,7 @@ const categoryHubDetails: Record<string, {
     sub1: "Enterprise OS Configuration and Hardening",
     p1: "Desktop and server operating systems form the foundation of enterprise device fleets. Properly managing BitLocker encryption, Remote Desktop gateway policies, and granular octal permissions protects corporate data from unauthorized exfiltration. Our step-by-step instructions focus on administrative efficiency without bypassing security controls.",
     sub2: "Server Lifecycle Planning and Migration",
-    p2: "Legacy infrastructure phase-outs, including operating system end-of-support deadlines, require structured migration plans to prevent unexpected compliance failures. We construct phased upgrade schedules covering hardware inventory, backup verification, and parallel virtualization strategies to ensure zero unplanned downtime during server cutovers.",
+    p2: "Legacy infrastructure phase-outs, including operating system end-of-support deadlines, require structured migration plans to prevent unexpected compliance failures. We construct phased upgrade schedules covering hardware inventory, backup verification, and parallel virtualization strategies to mitigate unplanned downtime risks during server cutovers.",
     sub3: "Hardware Compatibility and Rollback Safeguards",
     p3: "Before documenting server upgrades, our team tests bare-metal installations and hypervisor snapshots. We verify backup images, driver compatibility matrices, and automated restore procedures to guarantee rollback capability if an in-place upgrade stalls."
   }
