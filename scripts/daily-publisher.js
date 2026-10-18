@@ -375,7 +375,7 @@ function slugify(text) {
     .trim();
 }
 
-// 1. Google Suggest LSI Extractor (50+ Real Semantic Keywords)
+// 1. Google Suggest LSI Extractor (200+ Real Semantic Keywords)
 async function fetchGoogleLsiKeywords(keyword) {
   const getSuggest = (query) => new Promise((resolve) => {
     https.get('https://suggestqueries.google.com/complete/search?client=firefox&q=' + encodeURIComponent(query), (res) => {
@@ -395,16 +395,23 @@ async function fetchGoogleLsiKeywords(keyword) {
   const words = keyword.split(/\s+/).filter(w => !['today', 'news', 'and', 'or', 'in', 'the', 'for', 'with', 'to', 'how'].includes(w.toLowerCase()));
   const rootPhrase = words.slice(0, 2).join(' ') || keyword;
 
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  const modifiers = [
+    'steps', 'guide', 'tutorial', 'formula', 'shortcut', 'macro', 'vba', 'power query',
+    'filter', 'large dataset', 'automatically', 'without losing data', 'mac', 'windows',
+    'google sheets', 'office 365', 'counta', 'isblank', 'special cells', 'helper column',
+    'delete empty rows', 'clean data', 'best way', 'keyboard shortcut', 'in excel 365',
+    'why cant i', 'cant delete', 'greyed out', 'multiple sheets', 'csv file'
+  ];
+
   const querySeeds = [
     keyword,
     rootPhrase,
-    `${rootPhrase} guide`,
-    `${rootPhrase} steps`,
-    `${rootPhrase} tutorial`,
-    `${rootPhrase} commands`,
-    `${rootPhrase} comparison`,
-    `${rootPhrase} troubleshooting`,
-    ...['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'm', 'n', 'p', 's', 't', 'v', 'w'].map(l => `${rootPhrase} ${l}`)
+    ...modifiers.map(m => `${rootPhrase} ${m}`),
+    ...modifiers.map(m => `${keyword} ${m}`),
+    ...alphabet.map(l => `${rootPhrase} ${l}`),
+    ...alphabet.map(l => `${keyword} ${l}`),
+    ...alphabet.map(l => `how to ${rootPhrase} ${l}`)
   ];
 
   const lsiSet = new Set();
@@ -415,13 +422,19 @@ async function fetchGoogleLsiKeywords(keyword) {
         lsiSet.add(kw.trim());
       }
     });
-    if (lsiSet.size >= 65) break;
+    if (lsiSet.size >= 210) break;
   }
 
   return Array.from(lsiSet);
 }
 
-// 2. Multi-Source Competitor Scraper (Google News/Search RSS with Silo Fallbacks)
+// 2. Multi-Source Competitor Scraper (Top 10 Non-Social Media Competitors)
+const SOCIAL_MEDIA_DOMAINS = [
+  'youtube.com', 'youtu.be', 'twitter.com', 'x.com', 'reddit.com',
+  'facebook.com', 'instagram.com', 'tiktok.com', 'pinterest.com',
+  'linkedin.com', 'quora.com', 'medium.com'
+];
+
 async function fetchLiveSerpCompetitors(keyword, categorySlug) {
   const fetchGoogleRss = () => new Promise((resolve) => {
     https.get('https://news.google.com/rss/search?q=' + encodeURIComponent(keyword) + '&hl=en-US&gl=US&ceid=US:en', {
@@ -436,14 +449,15 @@ async function fetchLiveSerpCompetitors(keyword, categorySlug) {
         for (const it of items) {
           const title = it.match(/<title>([^<]+)<\/title>/)?.[1] || '';
           const link = it.match(/<link>([^<]+)<\/link>/)?.[1] || '';
-          if (title && link) {
+          const isSocial = SOCIAL_MEDIA_DOMAINS.some(d => link.toLowerCase().includes(d));
+          if (title && link && !isSocial) {
             competitors.push({
               title: title.replace(/&quot;/g, '"').replace(/&amp;/g, '&'),
               url: link,
               snippet: `Published analysis covering ${title}`
             });
           }
-          if (competitors.length >= 5) break;
+          if (competitors.length >= 10) break;
         }
         resolve(competitors);
       });
@@ -451,41 +465,71 @@ async function fetchLiveSerpCompetitors(keyword, categorySlug) {
   });
 
   const res = await fetchGoogleRss();
-  if (res.length >= 3) return res;
 
-  // Domain-specific curated fallback competitors if RSS is restricted
+  // Curated top non-social media technical authorities
   const FALLBACK_COMPETITORS = {
     "data-excel-automation": [
-      { title: "Microsoft Support: Excel Formulas, Functions and Data Cleaning", url: "https://support.microsoft.com/en-us/excel", snippet: "Official technical documentation covering spreadsheet formulas, array syntax, and table operations." },
+      { title: "Microsoft Support: Find and remove duplicate or blank rows in Excel", url: "https://support.microsoft.com/en-us/office/find-and-remove-duplicates", snippet: "Official technical documentation covering spreadsheet formulas, array syntax, and table operations." },
       { title: "Exceljet: Practical Excel Workflows and Function Tutorials", url: "https://exceljet.net", snippet: "Clear explanations of spreadsheet mechanics, keyboard shortcuts, and formula debugging." },
       { title: "Ablebits: Advanced Excel Solutions and Data Transformation", url: "https://www.ablebits.com", snippet: "Step-by-step guides for automating repetitive spreadsheet tasks and fixing data discrepancies." },
-      { title: "Contextures: Excel Pivot Tables, Validation and Conditional Rules", url: "https://www.contextures.com", snippet: "Advanced spreadsheet modeling, data validation drop-downs, and VBA automation." },
-      { title: "MrExcel: Troubleshooting Complex Workbook Formulas", url: "https://www.mrexcel.com", snippet: "Community verified solutions for formula errors, dynamic ranges, and legacy workbook migration." }
+      { title: "TrumpExcel: Excel Tutorials, Formulas, and Macro Automation", url: "https://trumpexcel.com", snippet: "Structured tutorials covering filter operations, sort tricks, and VBA routines for massive datasets." },
+      { title: "AutomateExcel: Excel Tutorials, VBA Functions, and Shortcuts", url: "https://www.automateexcel.com", snippet: "Fast keyboard shortcuts, automated VBA macro scripts, and workbook optimization guidelines." },
+      { title: "Spreadsheeto: Practical Excel Guides for Data Integrity", url: "https://spreadsheeto.com", snippet: "Detailed breakdowns on preventing formula errors, empty string traps, and spreadsheet corruption." },
+      { title: "Lifewire: Practical Spreadsheet Management and Computing Guides", url: "https://www.lifewire.com", snippet: "Step-by-step guidance on managing spreadsheet tables and row operations across versions." },
+      { title: "How-To Geek: Technical Software and Spreadsheet Walkthroughs", url: "https://www.howtogeek.com", snippet: "In-depth testing of spreadsheet features, keyboard shortcuts, and software stability." },
+      { title: "Excel Campus: Advanced Excel Modeling and Automation Workflows", url: "https://www.excelcampus.com", snippet: "Expert tutorials on Power Query ETL, structured tables, and automated formula ranges." },
+      { title: "Contextures: Excel Pivot Tables, Validation and Data Cleaning", url: "https://www.contextures.com", snippet: "Deep dive into data normalization, non-printing characters, and legacy workbook migration." }
     ],
     "cloud-infrastructure": [
       { title: "AWS Documentation: Compute Architecture and VPC Topologies", url: "https://docs.aws.amazon.com", snippet: "Production sizing benchmarks, IAM security policies, and multi-region deployment architectures." },
       { title: "Google Cloud Architecture Framework: High Availability Setups", url: "https://cloud.google.com/architecture", snippet: "Design principles for scalable infrastructure, egress cost management, and network peering." },
       { title: "DigitalOcean Community: Linux Administration and Docker Guides", url: "https://www.digitalocean.com/community", snippet: "Production tutorials on systemd units, firewall rules, and container runtime configuration." },
       { title: "HashiCorp Learn: Infrastructure as Code and Terraform Provisioning", url: "https://developer.hashicorp.com", snippet: "Declarative infrastructure workflows, state management, and configuration drift prevention." },
-      { title: "Red Hat Enterprise Linux Deployment and Systems Operations Guide", url: "https://access.redhat.com", snippet: "Kernel tuning, SELinux policies, and enterprise storage administration." }
+      { title: "Red Hat Enterprise Linux Deployment and Systems Operations Guide", url: "https://access.redhat.com", snippet: "Kernel tuning, SELinux policies, and enterprise storage administration." },
+      { title: "Kubernetes Documentation: Production Cluster Architecture", url: "https://kubernetes.io/docs", snippet: "Pod scheduling, ingress controllers, persistent volumes, and node autoscaling." },
+      { title: "Cloudflare Learning Center: Network Architecture and Edge Security", url: "https://www.cloudflare.com/learning", snippet: "DDoS mitigation, Anycast routing, DNS resolution mechanics, and zero trust architecture." },
+      { title: "Cisco DevNet: Network Infrastructure Automation and Telemetry", url: "https://developer.cisco.com", snippet: "Enterprise routing tables, BGP peering, packet analysis, and interface throughput." },
+      { title: "O'Reilly Media: Cloud Native Architecture and Reliability Engineering", url: "https://www.oreilly.com", snippet: "Site reliability engineering principles, incident management, and distributed systems." },
+      { title: "Linux Foundation: Systems Architecture and Kernel Operations", url: "https://www.linuxfoundation.org", snippet: "Low-level system calls, cgroups, memory management, and file systems." }
     ],
     "ai-developer-tools": [
       { title: "Hugging Face: Transformer Architecture and Tensor Optimizations", url: "https://huggingface.co/docs", snippet: "Model quantization workflows, FP8/BF16 throughput, and inference engine benchmarks." },
       { title: "vLLM Documentation: High-Throughput LLM Serving and PagedAttention", url: "https://docs.vllm.ai", snippet: "Memory fragmentation prevention, continuous batching, and KV-cache optimization." },
       { title: "NVIDIA Developer Technical Blog: CUDA and TensorRT Performance", url: "https://developer.nvidia.com/blog", snippet: "Kernel profiling, NVLink bandwidth benchmarks, and multi-GPU cluster interconnects." },
       { title: "PyTorch Performance Tuning Guide: Distributed Training Pipelines", url: "https://pytorch.org/tutorials", snippet: "FSDP and DeepSpeed memory offloading, gradient accumulation, and mixed precision." },
-      { title: "LangChain Documentation: Production Agent Orchestration and Tool Use", url: "https://python.langchain.com", snippet: "Context window budget allocation, prompt caching, and structured output parsing." }
+      { title: "LangChain Documentation: Production Agent Orchestration and Tool Use", url: "https://python.langchain.com", snippet: "Context window budget allocation, prompt caching, and structured output parsing." },
+      { title: "OpenAI Platform Documentation: Enterprise API Integration", url: "https://platform.openai.com/docs", snippet: "Function calling schemas, structured JSON output, latency minimization, and token budgeting." },
+      { title: "Anthropic API Documentation: Claude Architecture and Context Caching", url: "https://docs.anthropic.com", snippet: "System prompt engineering, prompt caching mechanics, and tool use orchestration." },
+      { title: "LlamaIndex Documentation: Advanced RAG Architecture and Vector Search", url: "https://docs.llamaindex.ai", snippet: "Hybrid search indexing, hierarchical chunking, and metadata filtering." },
+      { title: "Papers with Code: State of the Art Machine Learning Benchmarks", url: "https://paperswithcode.com", snippet: "Empirical latency evaluations, parameter counts, and benchmark leaderboards." },
+      { title: "Weights & Biases: MLOps and Model Evaluation in Production", url: "https://wandb.ai", snippet: "Hyperparameter tracking, experiment auditing, and drift detection telemetry." }
     ],
     "os-systems": [
       { title: "Microsoft Learn: Windows Server Architecture and Migration Workflows", url: "https://learn.microsoft.com/windows-server", snippet: "Active Directory domain controller replication, Hyper-V failover clustering, and group policies." },
       { title: "ArchWiki: Linux Kernel Configuration and Filesystem Tuning", url: "https://wiki.archlinux.org", snippet: "In-depth system administration, systemd journal auditing, and POSIX permissions." },
       { title: "Ubuntu Server Guide: Security Hardening and OpenSSH Configuration", url: "https://ubuntu.com/server/docs", snippet: "Network interface configuration, netplan routing, and AppArmor profiles." },
       { title: "Debian Administrator's Handbook: Package Management and Maintenance", url: "https://debian-handbook.info", snippet: "Package dependency resolution, kernel updates, and automated system maintenance." },
-      { title: "FreeBSD Handbook: Storage Pools and ZFS Filesystem Administration", url: "https://docs.freebsd.org", snippet: "Data integrity verification, snapshot replication, and RAID-Z array management." }
+      { title: "FreeBSD Handbook: Storage Pools and ZFS Filesystem Administration", url: "https://docs.freebsd.org", snippet: "Data integrity verification, snapshot replication, and RAID-Z array management." },
+      { title: "Red Hat Customer Portal: Linux Performance Tuning Guide", url: "https://access.redhat.com", snippet: "cgroups v2, hugepages allocation, disk I/O schedulers, and network stack tuning." },
+      { title: "Apple Support: macOS Deployment and Fleet Management Reference", url: "https://support.apple.com/guide/deployment", snippet: "MDM profiles, FileVault encryption, APFS filesystem snapshots, and terminal automation." },
+      { title: "Server Fault: Enterprise System Administration and Troubleshooting", url: "https://serverfault.com", snippet: "Production incident post-mortems, hardware fault diagnosis, and network debugging." },
+      { title: "Kernel.org: Linux Kernel Documentation and Architecture", url: "https://www.kernel.org/doc", snippet: "Process management, virtual memory subsystem, block device drivers, and sysfs." },
+      { title: "IBM Documentation: Enterprise Operating Systems and Virtualization", url: "https://www.ibm.com/docs", snippet: "Logical partitions, high-availability storage subsystems, and operational recovery." }
     ]
   };
 
-  return res.concat(FALLBACK_COMPETITORS[categorySlug] || FALLBACK_COMPETITORS["cloud-infrastructure"]).slice(0, 5);
+  const combined = res.concat(FALLBACK_COMPETITORS[categorySlug] || FALLBACK_COMPETITORS["data-excel-automation"]);
+  // De-duplicate by title/url and take top 10
+  const seenUrls = new Set();
+  const top10 = [];
+  for (const c of combined) {
+    if (!seenUrls.has(c.url)) {
+      seenUrls.add(c.url);
+      top10.push(c);
+    }
+    if (top10.length >= 10) break;
+  }
+  return top10;
 }
 
 // 2. Multi-tier Cascading Gemini Generation (Reliable, Zero-Timeout, High-Quality)
@@ -688,47 +732,82 @@ async function run() {
   let aiMetaTitle = '';
   let aiMetaDesc = '';
 
+  const localCover = `/images/articles/${slug}-cover.jpg`;
+  const localMid = `/images/articles/${slug}-mid.jpg`;
+  const localDetail = `/images/articles/${slug}-detail.jpg`;
+  const publicDir = path.join(__dirname, '../public');
+
+  if (fs.existsSync(path.join(publicDir, localCover))) {
+    coverImage = localCover;
+    coverImageId = `${slug}-cover`;
+    console.log(`[LOCAL IMAGE] Using pre-generated cover image: ${localCover}`);
+  }
+  if (fs.existsSync(path.join(publicDir, localMid))) {
+    secondaryImage = {
+      id: `${slug}-mid`,
+      url: localMid,
+      alt: `${proposedTitle} step-by-step implementation interface`,
+      caption: `Step-by-step worksheet interface and formula evaluation for ${mainKeyword}.`
+    };
+    console.log(`[LOCAL IMAGE] Using pre-generated secondary image: ${localMid}`);
+  }
+  if (fs.existsSync(path.join(publicDir, localDetail))) {
+    tertiaryImage = {
+      id: `${slug}-detail`,
+      url: localDetail,
+      alt: `${proposedTitle} production verification and architecture`,
+      caption: `Power Query pipeline and dynamic formula array verification for ${mainKeyword}.`
+    };
+    console.log(`[LOCAL IMAGE] Using pre-generated tertiary image: ${localDetail}`);
+  }
+
   if (apiKey) {
-    console.log('[AI IMAGE] Attempting dynamic AI image generation tailored to keyword...');
-    const coverAi = await generateArticleImageAI(
-      apiKey,
-      `Professional photorealistic 16:9 photograph illustrating ${mainKeyword} for ${proposedTitle}. Accurate technical UI, clean workspace desk, high resolution.`,
-      `${slug}-cover.jpg`
-    );
-    if (coverAi) {
-      coverImage = coverAi;
-      coverImageId = `${slug}-cover`;
+    if (!fs.existsSync(path.join(publicDir, localCover))) {
+      console.log('[AI IMAGE] Attempting dynamic AI image generation tailored to keyword...');
+      const coverAi = await generateArticleImageAI(
+        apiKey,
+        `Professional photorealistic 16:9 photograph illustrating ${mainKeyword} for ${proposedTitle}. Accurate technical UI, clean workspace desk, high resolution.`,
+        `${slug}-cover.jpg`
+      );
+      if (coverAi) {
+        coverImage = coverAi;
+        coverImageId = `${slug}-cover`;
+      }
     }
 
-    const secAi = await generateArticleImageAI(
-      apiKey,
-      `Detailed technical screen close-up illustrating step-by-step implementation for ${mainKeyword}. Clean software interface, sharp focus.`,
-      `${slug}-mid.jpg`
-    );
-    if (secAi) {
-      secondaryImage = {
-        id: `${slug}-mid`,
-        url: secAi,
-        alt: `${proposedTitle} step-by-step implementation interface`,
-        caption: `Practical workflow configuration for ${mainKeyword}.`
-      };
+    if (!fs.existsSync(path.join(publicDir, localMid))) {
+      const secAi = await generateArticleImageAI(
+        apiKey,
+        `Detailed technical screen close-up illustrating step-by-step implementation for ${mainKeyword}. Clean software interface, sharp focus.`,
+        `${slug}-mid.jpg`
+      );
+      if (secAi) {
+        secondaryImage = {
+          id: `${slug}-mid`,
+          url: secAi,
+          alt: `${proposedTitle} step-by-step implementation interface`,
+          caption: `Practical workflow configuration for ${mainKeyword}.`
+        };
+      }
     }
 
-    const tertAi = await generateArticleImageAI(
-      apiKey,
-      `Enterprise technical architecture or analytics report verifying ${mainKeyword}. Production IT environment, modern display.`,
-      `${slug}-detail.jpg`
-    );
-    if (tertAi) {
-      tertiaryImage = {
-        id: `${slug}-detail`,
-        url: tertAi,
-        alt: `${proposedTitle} production verification and architecture`,
-        caption: `Production verification and benchmark setup for ${mainKeyword}.`
-      };
+    if (!fs.existsSync(path.join(publicDir, localDetail))) {
+      const tertAi = await generateArticleImageAI(
+        apiKey,
+        `Enterprise technical architecture or analytics report verifying ${mainKeyword}. Production IT environment, modern display.`,
+        `${slug}-detail.jpg`
+      );
+      if (tertAi) {
+        tertiaryImage = {
+          id: `${slug}-detail`,
+          url: tertAi,
+          alt: `${proposedTitle} production verification and architecture`,
+          caption: `Production verification and benchmark setup for ${mainKeyword}.`
+        };
+      }
     }
 
-    console.log(`[LSI EXTRACTION] Extracting 50+ Google Suggest LSI & Semantic keywords for "${mainKeyword}"...`);
+    console.log(`[LSI EXTRACTION] Extracting 200+ Google Suggest LSI & Semantic keywords for "${mainKeyword}"...`);
     const lsiKeywords = await fetchGoogleLsiKeywords(mainKeyword);
     console.log(`✓ Extracted ${lsiKeywords.length} Google LSI keywords.`);
 
@@ -744,7 +823,7 @@ async function run() {
       ? serpCompetitors.map((c, i) => `Competitor ${i + 1}:\n- Title: "${c.title}"\n- URL: ${c.url}\n- Focus: "${c.snippet}"`).join('\n\n')
       : `Top search results for "${mainKeyword}" focus on surface-level definitions.`;
 
-    const lsiContext = lsiKeywords.slice(0, 50).join(', ');
+    const lsiContext = lsiKeywords.join(', ');
 
     console.log('[GEMINI] Synthesizing competitor content gap and generating authoritative manual...');
 
@@ -756,10 +835,10 @@ async function run() {
     const prompt = `You are ${nextAuthorName}, ${authorRole} writing for TechOps Wire.
 Write an authoritative, exhaustive, publication-grade 2,000+ word technical manual for: "${proposedTitle}".
 Primary Target Keyword: "${mainKeyword}".
-Supporting Semantic / LSI Keywords from Google (Include these naturally across sections):
+Supporting Semantic / LSI Keywords from Google (200+ Semantic & LSI phrases to weave naturally into body prose across sections):
 ${lsiContext || tags.join(', ')}
 
-LIVE SERP COMPETITOR AUDIT (Top 5 Competitors on Google):
+LIVE SERP COMPETITOR AUDIT (Top 10 Competitors on Google - Non-Social Media Authorities):
 ${competitorSummary}
 
 COMPETITOR CONTENT GAP & INFORMATION GAIN OBJECTIVE:
