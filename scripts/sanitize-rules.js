@@ -120,9 +120,33 @@ function sanitizeAllContent(raw) {
     text = text.replace(p, r);
   }
 
-  // Eliminate em-dashes and en-dashes
+  // Eliminate em-dashes and en-dashes permanently
   text = text.replace(/—/g, ', ');
   text = text.replace(/ – /g, ', ');
+
+  // Automatically unbold SEO keywords, questions, or search terms in <strong> or <b> tags
+  text = text.replace(/<(strong|b)\b[^>]*>([\s\S]*?)<\/\1>/gi, (match, tag, inner) => {
+    const cleanText = inner.replace(/<[^>]+>/g, '').trim();
+    const lower = cleanText.toLowerCase();
+
+    // Preserve list item headers ending with a colon (e.g., "Feature:", "Step 1:")
+    if (cleanText.endsWith(':')) return match;
+
+    // Preserve breadcrumbs / UI navigation menus with > or &gt; or →
+    if (cleanText.includes('&gt;') || cleanText.includes('>') || cleanText.includes('→')) return match;
+
+    // Preserve short UI buttons / dialog elements
+    const isUiButton = /^(ok|cancel|home|data|sort|file|view|review|insert|format|edit|delete|email|cell color|my data has headers|create a copy|move or copy|conditional formatting|highlight cells rules|duplicate values|data tools|select all|clear|apply|performance|cpu|memory|disk|gpu)$/i.test(lower);
+    if (isUiButton) return match;
+
+    // Unbold search keywords, questions, or SEO phrases
+    const isKeywordOrQuery = /^(how to|what is|what does|where is|why is|how do|how can|can i|how does|check |#spill|excel |find |replace |substitute |where is change|vlookup |spill |array formula|ctrl shift enter|freeze panes|mac system profiler|linux lscpu)/i.test(lower);
+    if (isKeywordOrQuery) {
+      return inner;
+    }
+
+    return match;
+  });
 
   return text;
 }

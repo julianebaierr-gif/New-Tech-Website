@@ -850,6 +850,7 @@ STRICT WRITING RULES:
 - STRICTLY POINT-TO-POINT METADATA: In excerpt and metaDescription, NEVER write meta-commentary like "An engineering review evaluating...", "A practical breakdown of...", "An architectural evaluation of...", or "Review...". Start IMMEDIATELY with a direct action verb (such as "Set up...", "Configure...", "Troubleshoot...", "Compare...", "Sort...") and concisely state the exact technical tasks and solution.
 - NEVER NUMBER HEADINGS: Never prefix H2 or H3 headings with numbers like '1.', '2.', 'Step 1:', or 'Section 1:'. Headings MUST be clean, natural, and descriptive.
 - ZERO EM-DASHES: Do NOT use the em-dash character '—' or spaced hyphens ' - ' anywhere. Use commas, colons, or parentheses instead.
+- NEVER BOLD KEYWORDS: Never use <strong> or <b> tags around any keywords, search queries, or technical terms in body paragraphs. Keep all keyword occurrences in plain body prose.
 - Tone: Hands-on, practical, tested in real production environments.
 - Output ONLY valid HTML for the article body followed by the \`\`\`json block.`;
 
@@ -945,6 +946,7 @@ Provide an in-depth 400-word technical section with:
 Do NOT prefix headings with numbers.
 Do NOT use AI buzzwords (never use delve, tapestry, demystify, robust, cornerstone, paradigm, etc.).
 Do NOT use em-dashes or spaced hyphens.
+Do NOT bold any keywords or search phrases with <strong> or <b>.
 Output ONLY the clean HTML for this section.`;
 
     try {
