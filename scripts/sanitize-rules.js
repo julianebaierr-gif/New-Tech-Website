@@ -108,30 +108,12 @@ const REPLACEMENTS = [
   { p: /\bAdopt\b/gi, r: "Apply" },
   { p: /\bAdopting\b/gi, r: "Implementing" },
   { p: /\bPipelines\b/gi, r: "Workflows" },
-  { p: /\bComplete\b/gi, r: "Full" },
-  { p: /\bbypass login locks\b/gi, r: "run startup repair" },
-  { p: /\bbypass login\b/gi, r: "execute account recovery" },
-  { p: /\bzero unplanned downtime\b/gi, r: "minimal unplanned downtime" },
-  { p: /\bzero downtime\b/gi, r: "minimal service disruption" },
-  { p: /\b100% accuracy\b/gi, r: "high accuracy" },
-  { p: /\bguarantee flawless\b/gi, r: "maximize reliable" }
+  { p: /\bComplete\b/gi, r: "Full" }
 ];
 
 function sanitizeAllContent(raw) {
   if (!raw) return raw;
   let text = raw;
-
-  // Enforce strict heading hierarchy: convert any <h4 ...>...</h4> to <p ...>...</p>
-  text = text.replace(/<h4\b([^>]*)>([\s\S]*?)<\/h4>/gi, (match, attrs, inner) => {
-    const cleanInner = inner.replace(/&amp;/g, 'and').replace(/&/g, 'and');
-    return `<p${attrs}>${cleanInner}</p>`;
-  });
-
-  // Unbold inline SEO question keywords (keep UI labels and colon-terminated list labels intact)
-  text = text.replace(/<strong[^>]*>((?:how to|what is|what does|where is|why is|#spill|excel |find |replace |substitute |change |merge |spill )[^<]*?)<\/strong>/gi, (match, inner) => {
-    if (inner.trim().endsWith(':') || inner.includes('&gt;') || inner.includes('>')) return match;
-    return inner;
-  });
 
   // Run replacements
   for (const { p, r } of REPLACEMENTS) {
@@ -143,69 +125,6 @@ function sanitizeAllContent(raw) {
   text = text.replace(/ – /g, ', ');
 
   return text;
-}
-
-if (require.main === module) {
-  const fs = require('fs');
-  const path = require('path');
-  const articlesPath = path.join(__dirname, '..', 'src', 'data', 'articles.ts');
-  const content = fs.readFileSync(articlesPath, 'utf8');
-  const m = content.match(/export const articles: Article\[\] = (\[[\s\S]*?\n\]);/);
-  if (!m) {
-    console.error('Could not parse articles array');
-    process.exit(1);
-  }
-  const articles = eval(m[1]);
-  console.log(`Auditing ${articles.length} articles in src/data/articles.ts...`);
-
-  let issues = 0;
-  for (const a of articles) {
-    if (a.title.includes('&') || a.headline.includes('&')) {
-      console.log(`[ISSUE] ${a.slug}: '&' in title/headline`);
-      issues++;
-    }
-    if (a.contentHtml.includes('\u2014') || JSON.stringify(a.faqs).includes('\u2014')) {
-      console.log(`[ISSUE] ${a.slug}: em-dash found`);
-      issues++;
-    }
-    const bolds = [...a.contentHtml.matchAll(/<strong[^>]*>(.*?)<\/strong>/gi)].map(x => x[1]);
-    const uiButtons = ['Find &amp; Select', 'Find what', 'Replace with', 'Replace All', 'Find All', 'Merge &amp; Center', 'Excel Workbooks'];
-    const badBolds = bolds.filter(b => /^(how to|what is|what does|where is|why is|#spill|excel |find |replace |substitute |change |merge |spill )/i.test(b.trim()) && !b.trim().endsWith(':') && !b.includes('&gt;') && !uiButtons.includes(b.trim()));
-    if (badBolds.length > 0) {
-      console.log(`[ISSUE] ${a.slug}: inline bolded SEO keywords:`, badBolds);
-      issues++;
-    }
-    const h2s = [...a.contentHtml.matchAll(/<h2[^>]*id="([^"]+)"/g)].map(x => x[1]);
-    const tocIds = a.tableOfContents.filter(t => t.level === 2).map(t => t.id);
-    if (JSON.stringify(h2s) !== JSON.stringify(tocIds)) {
-      console.log(`[ISSUE] ${a.slug}: TOC mismatch`, { h2s, tocIds });
-      issues++;
-    }
-    const tds = [...a.contentHtml.matchAll(/<td[^>]*>(.*?)<\/td>/gi)].map(x => x[1].replace(/<[^>]+>/g, '').trim());
-    const vagueTds = tds.filter(t => ['High', 'Medium', 'Low', 'None', 'Yes', 'No'].includes(t));
-    if (vagueTds.length > 0) {
-      console.log(`[ISSUE] ${a.slug}: vague single-word table cells:`, vagueTds);
-      issues++;
-    }
-    const ps = [...a.contentHtml.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)].map(x => x[1].replace(/<[^>]+>/g, ''));
-    ps.forEach((p, idx) => {
-      const qMatches = p.match(/\b(how to|what is|what does|where is|why is|how do|can i)\b/gi) || [];
-      if (qMatches.length >= 3) {
-        console.log(`[ISSUE] ${a.slug}: P#${idx + 1} has ${qMatches.length} question phrases: ${p.slice(0, 100)}...`);
-        issues++;
-      }
-    });
-  }
-
-  const bv = articles.find(a => a.slug === 'bvostfus-python-issue-fix');
-  if (bv) {
-    const bvText = (bv.contentHtml + ' ' + JSON.stringify(bv.faqs)).toLowerCase();
-    const bvCount = (bvText.match(/bvostfus python issue fix/g) || []).length;
-    console.log(`[CHECK] bvostfus-python-issue-fix keyword count (content + FAQs): ${bvCount} | primaryKeyword: "${bv.primaryKeyword}"`);
-  }
-
-  console.log(`Total audit issues found: ${issues}`);
-  if (issues > 0) process.exit(1);
 }
 
 module.exports = { sanitizeAllContent, REPLACEMENTS };

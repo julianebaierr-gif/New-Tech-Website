@@ -783,7 +783,7 @@ STRUCTURE REQUIREMENTS:
 
 2. Quick Action Summary Card:
    <div class="my-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-     <p class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Architecture Summary</p>
+     <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1.5 font-mono">Quick Decision Matrix</h4>
      <p class="text-slate-700 text-sm">...</p>
    </div>
 
@@ -793,11 +793,11 @@ STRUCTURE REQUIREMENTS:
    <h3 class="text-xl font-semibold text-slate-800 mt-6 mb-3">Subheading Title</h3>
 
 4. Comprehensive Comparison / Decision Matrix Table:
-   Include a clean HTML table comparing models, trade-offs, or architectures with concrete, measurable criteria (e.g. ms latency ranges, token counts, RAM/VRAM figures, CLI flags) rather than vague single-word labels:
+   Include a clean HTML table comparing models, trade-offs, or architectures:
    <div class="my-6 overflow-x-auto">
      <table class="min-w-full text-sm text-left border border-slate-200 rounded-lg">
        <thead class="bg-slate-100 text-slate-800 font-semibold border-b border-slate-200">
-         <tr><th class="px-4 py-3">Evaluation Criteria</th><th class="px-4 py-3">Option A</th><th class="px-4 py-3">Option B</th><th class="px-4 py-3">Enterprise Standard</th><th class="px-4 py-3">Operational Trade-off</th></tr>
+         <tr><th class="px-4 py-3">Feature</th><th class="px-4 py-3">Option A</th><th class="px-4 py-3">Option B</th><th class="px-4 py-3">Enterprise Standard</th><th class="px-4 py-3">Operational Trade-off</th></tr>
        </thead>
        <tbody class="divide-y divide-slate-200 text-slate-700">
          ...
@@ -846,9 +846,6 @@ ${liveArticlesCatalog}
    \`\`\`
 
 STRICT WRITING RULES:
-- STRICT HEADING HIERARCHY: ONLY use <h2> for main sections and <h3> for subsections. NEVER use <h4>, <h5>, or <h6> anywhere in the article.
-- NATURAL KEYWORD INTEGRATION: Never force raw search typos, broken grammar, or unverified scraped strings into body paragraphs; always write natural, publication-grade engineering prose and never bold keywords.
-- REALISTIC CLAIMS & SAFE TERMINOLOGY: Never make unprovable absolute promises like 'zero unplanned downtime' or '100% immune', and never use grey-hat security phrasing like 'bypass login locks' (use 'authorized account recovery' or 'mitigate unplanned downtime risks').
 - ZERO AI BUZZWORDS OR FLUFF: Never use: delve, tapestry, demystify, testament, bulletproof, robust, cornerstone, paradigm, leverage, orchestrate, seamless, seamlessly, unlock, pivotal, beacon, elevate, harness, embark, powerhouse, realm, evolution, plethora, game-changer, vital, comprehensive guide, deep dive, in-depth, discover, explore, modern, digital, pipelines, consumption, technical, verified, review, an engineering, an architectural, a practical, an engineering review.
 - STRICTLY POINT-TO-POINT METADATA: In excerpt and metaDescription, NEVER write meta-commentary like "An engineering review evaluating...", "A practical breakdown of...", "An architectural evaluation of...", or "Review...". Start IMMEDIATELY with a direct action verb (such as "Set up...", "Configure...", "Troubleshoot...", "Compare...", "Sort...") and concisely state the exact technical tasks and solution.
 - NEVER NUMBER HEADINGS: Never prefix H2 or H3 headings with numbers like '1.', '2.', 'Step 1:', or 'Section 1:'. Headings MUST be clean, natural, and descriptive.
