@@ -619,15 +619,15 @@ async function run() {
 
   const articlesTsPath = path.join(__dirname, '../src/data/articles.ts');
   const articlesTs = fs.readFileSync(articlesTsPath, 'utf8');
-  const articleBlocks = articlesTs.split(/\{\s*slug:\s*["']/);
+  const articleBlocks = articlesTs.split(/\{\s*["']?slug["']?:\s*["']/);
   const existingArticles = [];
   for (let i = 1; i < articleBlocks.length; i++) {
     const block = articleBlocks[i];
     const slug = block.match(/^([^"']+)/)?.[1];
-    const title = block.match(/title:\s*["']([^"']+)["']/)?.[1];
-    const primaryKeyword = block.match(/primaryKeyword:\s*["']([^"']+)["']/)?.[1];
-    const categorySlug = block.match(/categorySlug:\s*["']([^"']+)["']/)?.[1];
-    const authorId = block.match(/authorId:\s*["']([^"']+)["']/)?.[1];
+    const title = block.match(/["']?title["']?:\s*["']([^"']+)["']/)?.[1];
+    const primaryKeyword = block.match(/["']?primaryKeyword["']?:\s*["']([^"']+)["']/)?.[1];
+    const categorySlug = block.match(/["']?categorySlug["']?:\s*["']([^"']+)["']/)?.[1];
+    const authorId = block.match(/["']?authorId["']?:\s*["']([^"']+)["']/)?.[1];
     if (slug) existingArticles.push({ slug, title, primaryKeyword, categorySlug, authorId });
   }
 
