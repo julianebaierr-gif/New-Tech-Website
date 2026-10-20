@@ -88,6 +88,7 @@ export const metadata: Metadata = {
     google: siteConfig.googleSiteVerification,
     other: {
       "msvalidate.01": siteConfig.bingSiteVerification,
+      "ahrefs-site-verification": "7a7c014725cbc4652c5262252e63ffe84624482592b22a1a69924574b846241a",
     },
   },
 };
