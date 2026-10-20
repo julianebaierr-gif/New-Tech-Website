@@ -145,6 +145,15 @@ export default function RootLayout({
           data-key="GWNiuxLBr7VCqm7S2X7EKQ"
           async
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `var ahrefs_analytics_script = document.createElement('script');
+ahrefs_analytics_script.async = true;
+ahrefs_analytics_script.src = 'https://analytics.ahrefs.com/analytics.js';
+ahrefs_analytics_script.setAttribute('data-key', 'GWNiuxLBr7VCqm7S2X7EKQ');
+document.getElementsByTagName('head')[0].appendChild(ahrefs_analytics_script);`,
+          }}
+        />
       </head>
       <body className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
         <Navbar />
