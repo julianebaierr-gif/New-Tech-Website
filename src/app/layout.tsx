@@ -139,6 +139,11 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth bg-white text-slate-900">
       <head>
         <SchemaJsonLd schema={globalSchema} />
+        <script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="GWNiuxLBr7VCqm7S2X7EKQ"
+          async
+        />
       </head>
       <body className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
         <Navbar />
