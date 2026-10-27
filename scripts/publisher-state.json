@@ -6,5 +6,7 @@
   "targetSchedule": "Daily at 13:00 UTC",
   "note": "Daily automated publishing active. Scheduled everyday at 13:00 UTC (Peak Search Volume).",
   "lastRunAt": "2026-10-25T10:41:46.215Z",
-  "lastArticlePublished": "ai-security-posture-management"
+  "lastArticlePublished": "em-dash-on-mac",
+  "lastCategory": "os-systems",
+  "publishedCount": 38
 }
